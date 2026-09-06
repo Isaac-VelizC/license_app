@@ -22,6 +22,7 @@ class LicenseResource extends JsonResource
             'is_trial'       => $this->isTrial(),
             'max_devices'    => $this->max_devices,
             'devices_used'   => $this->whenLoaded('activations', fn() => $this->activations->where('is_active', true)->count()),
+            'activations'    => ActivationResource::collection($this->whenLoaded('activations')),
             'revoked_at'     => $this->revoked_at?->toIso8601String(),
             'revoked_reason' => $this->revoked_reason,
             'client'         => ClientResource::make($this->whenLoaded('client')),

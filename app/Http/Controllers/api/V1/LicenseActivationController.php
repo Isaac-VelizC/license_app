@@ -125,14 +125,18 @@ class LicenseActivationController extends Controller
         ]);
     }
 
-    private function resolveApp(string $appSlug): ?App
+    private function resolveApp(string $slug): ?App
     {
-        return Cache::remember(
-            "app:by-slug:{$appSlug}",
-            now()->addHours(2),
-            fn() =>
-            App::query()->where('slug', $appSlug)->where('is_active', true)->first()
-        );
+        $data = Cache::remember("app:by-slug:{$slug}", now()->addHours(2), function () use ($slug) {
+            $app = App::query()->where('slug', $slug)->where('is_active', true)->first();
+            return $app?->getAttributes();
+        });
+
+        if (! $data) {
+            return null;
+        }
+
+        return (new App())->newFromBuilder($data);
     }
 
     private function findLicense(string $licenseKey, int $appId): ?License

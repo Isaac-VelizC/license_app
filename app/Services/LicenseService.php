@@ -46,11 +46,11 @@ class LicenseService
     /**
      * Busca un trial ya existente para este hwid — evita que reinstalar reinicie el trial.
      */
-    public static function findExistingTrial(App $app, string $hwid): ?self
+    public function findExistingTrial(App $app, string $hwid): ?License
     {
-        return App::forApp($app->id)
+        return License::forApp($app->id)
             ->trials()
-            ->whereHas('activations', fn($q) => $q->where('hwid', $hwid))
+            ->whereHas('activations', fn ($q) => $q->where('hwid', $hwid))
             ->first();
     }
 
@@ -303,7 +303,7 @@ class LicenseService
         $license = $this->findExistingTrial($app, $hwid);
         $alreadyUsed = (bool) $license;
 
-        if (! $license) {
+        if (!$license) {
             $license = $this->createTrial($app, $hwid, $deviceId, $deviceName);
         }
 

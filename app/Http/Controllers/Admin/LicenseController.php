@@ -24,7 +24,7 @@ class LicenseController extends Controller
         $status = $request->string('status')->trim();
 
         $licenses = License::query()
-            ->with(['client', 'app', 'plan'])
+            ->with(['client', 'app', 'plan', 'activations'])
             ->when($search->isNotEmpty(), fn($q) => $q->search($search->toString()))
             ->when($appId > 0, fn($q) => $q->forApp($appId))
             ->when($clientId > 0, fn($q) => $q->forClient($clientId))

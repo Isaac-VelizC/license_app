@@ -17,23 +17,25 @@ export interface LicenseEntity {
     is_trial: boolean;
     max_devices: number;
     devices_used?: number;
+    activations?: ActivationEntity[];
     revoked_at: string | null;
     revoked_reason: string | null;
     app?: AppEntity;
     plan?: PlanEntity;
     client?: ClientEntity;
-    activations?: ActivationEntity[];
+    created_at: string;
 }
 
 export interface ActivationEntity {
     id: number;
-    license_id: number;
     hwid: string;
     device_id: string;
     device_name: string;
     ip_address: string;
+    app_version: string;
     last_seen_at: string | null;
     activated_at: string | null;
+    deactivated_at: string | null;
     is_active: boolean;
 }
 
