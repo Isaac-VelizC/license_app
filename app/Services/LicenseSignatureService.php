@@ -59,6 +59,18 @@ class LicenseSignatureService
         ];
     }
 
+    public function signRaw(string $payload): string
+    {
+        $signature = '';
+        $signed = openssl_sign($payload, $signature, $this->privateKey, OPENSSL_ALGO_SHA256);
+
+        if ($signed === false) {
+            throw new \RuntimeException('Error al firmar: ' . openssl_error_string());
+        }
+
+        return $signature;
+    }
+
     private function buildPayload(
         string $licenseKey,
         string $appSlug,
