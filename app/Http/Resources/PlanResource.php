@@ -13,6 +13,7 @@ class PlanResource extends JsonResource
             'id'              => $this->id,
             'app_id'          => $this->app_id,
             'name'            => $this->name,
+            'qr_image_url'    => $this->qr_image_url,
             'price_cents'     => $this->price_cents,
             'formatted_price' => $this->formatted_price, // accessor del modelo, ej. "499.00 USD"
             'currency'        => $this->currency,

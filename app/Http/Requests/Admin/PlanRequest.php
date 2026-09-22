@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use App\Models\Plan;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Validator;
 
 class PlanRequest extends FormRequest
@@ -18,6 +19,7 @@ class PlanRequest extends FormRequest
         return [
             'name'            => ['required', 'string', 'max:255'],
             // El admin escribe en unidades normales (499.00); se convierte a centavos abajo.
+            'qr_image'        => ['nullable', 'image', 'max:5120'],
             'price'           => ['required', 'numeric', 'min:0'],
             'currency'        => ['nullable', 'string', 'size:3'],
             'duration_days'   => ['nullable', 'integer', 'min:1'],
@@ -32,6 +34,7 @@ class PlanRequest extends FormRequest
     {
         return [
             'name'            => 'nombre',
+            'qr_image'        => 'imagen del QR',
             'price'           => 'precio',
             'currency'        => 'moneda',
             'duration_days'   => 'duración',
@@ -78,23 +81,27 @@ class PlanRequest extends FormRequest
         });
     }
 
-    /**
-     * Convierte 'price' (decimal, lo que escribe el admin) a 'price_cents'
-     * (lo que se persiste y se manda a Stripe), en un solo lugar.
-     */
-    public function validated($key = null, $default = null): array
+    public function toPlanData(): array
     {
-        $data = parent::validated($key, $default);
+        $data = $this->validated();
+        unset($data['qr_image']);
 
         $data['price_cents'] = (int) round(((float) $data['price']) * 100);
         unset($data['price']);
 
-        // Un trial siempre es gratis, sin importar lo que haya escrito el admin
         if (! empty($data['is_trial'])) {
             $data['price_cents'] = 0;
         }
 
         $data['currency'] ??= 'USD';
+
+        if ($this->hasFile('qr_image')) {
+            $path = $this->file('qr_image')->store('plans/qr', 'public');
+            
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+            $disk = Storage::disk('public');
+            $data['qr_image_url'] = $disk->url($path);
+        }
 
         return $data;
     }

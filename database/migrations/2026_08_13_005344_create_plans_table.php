@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('app_id')->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('qr_image_url')->nullable();
             $table->unsignedInteger('price_cents')->default(0); // 49900 = $499.00
             $table->char('currency', 3)->default('USD');          // ← de una vez, ver nota abajo
             $table->integer('duration_days')->nullable();

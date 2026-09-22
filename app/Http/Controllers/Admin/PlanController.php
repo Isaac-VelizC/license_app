@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PlanRequest;
 use App\Models\{App, Plan};
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PlanController extends Controller
 {
     public function store(PlanRequest $request, App $app): RedirectResponse
     {
-        $app->plans()->create($request->validated());
+        $app->plans()->create($request->toPlanData());
 
         CacheHelper::clearAppsCache();
 
@@ -24,8 +25,15 @@ class PlanController extends Controller
 
     public function update(PlanRequest $request, Plan $plan): RedirectResponse
     {
-        $plan->update($request->validated());
-        
+        $data = $request->toPlanData();
+
+        if (isset($data['qr_image_url']) && $plan->qr_image_url) {
+            $oldPath = str_replace(Storage::disk('public')->url(''), '', $plan->qr_image_url);
+            Storage::disk('public')->delete($oldPath);
+        }
+
+        $plan->update($data);
+
         CacheHelper::clearAppsCache();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Plan actualizado correctamente.')]);

@@ -1,7 +1,6 @@
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { Head, router } from "@inertiajs/react";
-import { toggle } from "@/routes/admin/apps";
+import { Head } from "@inertiajs/react";
 import Heading from "@/components/heading";
 import { Button } from "@/components/ui";
 import { dashboard } from "@/routes/admin";

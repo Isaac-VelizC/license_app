@@ -27,21 +27,30 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
             <div>
                 <div className="flex items-start justify-between gap-2">
                     <h2 className="text-lg font-bold">{plan.name}</h2>
-                    <div className="flex flex-wrap justify-end gap-1.5">
+                    <div className="flex flex-wrap gap-1.5">
                         {plan.is_trial && (
                             <Badge variant="soft" color="warning">
                                 Prueba
                             </Badge>
                         )}
+
                         {!plan.is_active && (
                             <Badge variant="outline" color="neutral">
                                 Inactivo
                             </Badge>
                         )}
+
                         <Badge variant="outline" color="info">
                             {plan.is_lifetime
                                 ? "Vitalicio"
                                 : `${plan.duration_days} días`}
+                        </Badge>
+
+                        <Badge
+                            variant="outline"
+                            color={plan.qr_image_url ? "success" : "neutral"}
+                        >
+                            {plan.qr_image_url ? "QR configurado" : "Sin QR"}
                         </Badge>
                     </div>
                 </div>
@@ -86,14 +95,14 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
                         </strong>
                     </span>
                 </div>
-                {!plan.stripe_price_id && !plan.is_trial && (
+                {/*!plan.stripe_price_id && !plan.is_trial && (
                     <div className="flex items-center text-amber-600 dark:text-amber-500">
                         <AlertTriangle className="mr-2.5 size-4 shrink-0" />
                         <span className="text-xs">
                             Sin precio de Stripe — no aparecerá en el checkout.
                         </span>
                     </div>
-                )}
+                )*/}
             </div>
             <div className="flex justify-end gap-2 border-t border-border/60 pt-3">
                 <Button

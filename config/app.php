@@ -2,6 +2,8 @@
 
 return [
 
+    'landing_url' => env('LANDING_URL', 'https://vextopos.com'),
+    
     /*
     |--------------------------------------------------------------------------
     | Application Name

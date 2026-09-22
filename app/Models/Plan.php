@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 
-#[Fillable(['app_id', 'name', 'price_cents', 'currency', 'duration_days', 'max_devices', 'is_trial', 'stripe_price_id', 'is_active'])]
+#[Fillable([
+    'app_id', 'name', 'qr_image_url', 'price_cents',
+    'currency', 'duration_days', 'max_devices',
+    'is_trial', 'stripe_price_id', 'is_active'
+])]
 class Plan extends Model
 {
     use HasFactory;

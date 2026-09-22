@@ -14,7 +14,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Plans (anidados bajo app solo para crear; update/destroy son directos sobre el plan)
     Route::post('plans/{app}', [PlanController::class, 'store'])->name('plans.store');
-    Route::put('plans/{plan}', [PlanController::class, 'update'])->name('plans.update');
+    Route::post('plans/{plan}/update', [PlanController::class, 'update'])->name('plans.update');
     Route::delete('plans/{plan}', [PlanController::class, 'destroy'])->name('plans.destroy');
 
     // Clients

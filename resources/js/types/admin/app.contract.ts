@@ -2,6 +2,7 @@ export interface PlanEntity {
   id: number;
   app_id: number;
   name: string;
+  qr_image_url: string;
   price_cents: number;
   formatted_price: string; // ej. "499.00 USD" — solo para mostrar, nunca para cálculos
   currency: string;
@@ -41,5 +42,6 @@ export interface PlanFormData {
   duration_days: string | number | null;
   max_devices: number;
   is_trial: boolean;
+  qr_image: File | null;
   stripe_price_id: string;
 }

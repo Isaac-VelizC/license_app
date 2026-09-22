@@ -22,13 +22,14 @@ const PlanForm = ({
 }: PlanFormModalProps) => {
     const isEditing = Boolean(editingPlan);
 
-    const { data, setData, post, put, processing, errors, reset, clearErrors } =
+    const { data, setData, post, processing, errors, reset, clearErrors } =
         useForm<PlanFormData>({
             name: "",
             price: "",
             duration_days: "",
             max_devices: 1,
             is_trial: false,
+            qr_image: null,
             stripe_price_id: "",
         });
 
@@ -45,6 +46,7 @@ const PlanForm = ({
                     duration_days: editingPlan.duration_days ?? "",
                     max_devices: editingPlan.max_devices,
                     is_trial: editingPlan.is_trial,
+                    qr_image: null,
                     stripe_price_id: editingPlan.stripe_price_id ?? "",
                 });
             } else {
@@ -72,7 +74,7 @@ const PlanForm = ({
         e.preventDefault();
 
         if (editingPlan) {
-            put(update(editingPlan.id).url, {
+            post(update(editingPlan.id).url, {
                 onSuccess: () => onClose(),
             });
         } else {
@@ -204,8 +206,43 @@ const PlanForm = ({
                     <InputError message={errors.max_devices} />
                 </div>
 
-                {/* Stripe Price ID (opcional) */}
+                {/* QR de pago */}
                 <div className="space-y-1.5">
+                    <Label htmlFor="plan-qr-image">QR de pago</Label>
+
+                    {(data.qr_image || editingPlan?.qr_image_url) && (
+                        <div className="mb-2 overflow-hidden rounded-md border border-border w-24">
+                            <img
+                                src={
+                                    data.qr_image
+                                        ? URL.createObjectURL(data.qr_image)
+                                        : editingPlan!.qr_image_url!
+                                }
+                                alt="Vista previa del QR"
+                                className="aspect-square w-full object-cover"
+                            />
+                        </div>
+                    )}
+
+                    <Input
+                        id="plan-qr-image"
+                        type="file"
+                        accept="image/*"
+                        disabled={processing}
+                        onChange={(e) =>
+                            setData("qr_image", e.target.files?.[0] ?? null)
+                        }
+                    />
+                    <p className="text-xs text-muted-foreground">
+                        {isEditing && editingPlan?.qr_image_url
+                            ? "Sube una imagen nueva solo si quieres reemplazar el QR actual."
+                            : "PNG o JPG, máximo 5MB."}
+                    </p>
+                    <InputError message={errors.qr_image} />
+                </div>
+
+                {/* Stripe Price ID (opcional) */}
+                {/*<div className="space-y-1.5">
                     <Label htmlFor="plan-stripe-price">
                         ID de precio en Stripe
                     </Label>
@@ -224,7 +261,7 @@ const PlanForm = ({
                         compra.
                     </p>
                     <InputError message={errors.stripe_price_id} />
-                </div>
+                </div>*/}
             </div>
         </FormModal>
     );
