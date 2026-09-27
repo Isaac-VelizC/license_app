@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enum\OrderStatusType;
+use App\Events\OrderPaid;
 use App\Models\{Client, Order, Plan, User};
 use App\services\LicenseService;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +60,7 @@ class OrderService
             return $order->fresh(['client', 'plan', 'license']);
         });
 
-        // OrderPaid::dispatch($order);
+        OrderPaid::dispatch($order);
 
         return $order;
     }
