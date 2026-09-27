@@ -63,5 +63,8 @@ class AppServiceProvider extends ServiceProvider
             fn($request) =>
             Limit::perMinute(10)->by($request->input('license_key') ?? $request->ip())
         );
+        RateLimiter::for('orders', function ($request) {
+            return Limit::perHour(5)->by($request->ip());
+        });
     }
 }

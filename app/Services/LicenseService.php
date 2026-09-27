@@ -50,11 +50,11 @@ class LicenseService
     {
         return License::forApp($app->id)
             ->trials()
-            ->whereHas('activations', fn ($q) => $q->where('hwid', $hwid))
+            ->whereHas('activations', fn($q) => $q->where('hwid', $hwid))
             ->first();
     }
 
-    public function issue(Client $client, App $app, Plan $plan): License
+    public function issue(Client $client, App $app, Plan $plan, ?int $orderId = null): License
     {
         if ($plan->app_id !== $app->id) {
             throw new \InvalidArgumentException(__('El plan no pertenece a la aplicación seleccionada.'));
@@ -64,7 +64,7 @@ class LicenseService
             throw new \InvalidArgumentException(__('No se puede emitir manualmente una licencia de prueba.'));
         }
 
-        return DB::transaction(function () use ($client, $app, $plan) {
+        return DB::transaction(function () use ($client, $app, $plan, $orderId) {
             $startsAt = now();
 
             $license = License::create([
@@ -77,7 +77,11 @@ class LicenseService
                 'max_devices' => $plan->max_devices,
             ]);
 
-            LicenseLog::record($license, 'issued', meta: ['plan_id' => $plan->id, 'client_id' => $client->id]);
+            LicenseLog::record($license, 'issued', meta: array_filter([
+                'plan_id'   => $plan->id,
+                'client_id' => $client->id,
+                'order_id'  => $orderId,
+            ]));
 
             return $license;
         });

@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, ChartPie, FolderGit2, KeyIcon, LayoutGrid, ScrollText, Users2 } from 'lucide-react';
+import { BookOpen, ChartPie, FolderGit2, KeyIcon, LayoutGrid, ListOrdered, ScrollText, Users2 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -16,6 +16,7 @@ import {
 import type { NavItem } from '@/types';
 import { dashboard } from "@/routes/admin";
 import { index as appIndex } from '@/routes/admin/apps';
+import { index as ordersIndex } from '@/routes/admin/order';
 import { index as clientIndex } from '@/routes/admin/clients';
 import { index as licensesIndex } from '@/routes/admin/licenses';
 import { index as licenseLogsIndex } from '@/routes/admin/license-logs';
@@ -40,6 +41,11 @@ const mainNavItems: NavItem[] = [
         title: 'Licencias',
         href: licensesIndex().url,
         icon: KeyIcon,
+    },
+    {
+        title: 'Pedidos',
+        href: ordersIndex().url,
+        icon: ListOrdered,
     },
     {
         title: 'Auditoría',
