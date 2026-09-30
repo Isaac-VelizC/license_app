@@ -47,4 +47,9 @@ class OrderApiController extends Controller
 
         return new OrderApiResource($order);
     }
+
+    public function getPlan(Plan $plan)
+    {
+        return new PlanResource($plan);
+    }
 }

@@ -25,4 +25,6 @@ Route::prefix('v1')->group(function () {
     Route::prefix('apps/{app:slug}')->group(function () {
         Route::get('plans', [OrderApiController::class, 'index']);
     });
+    
+    Route::get('plans/{plan}', [OrderApiController::class, 'getPlan']);
 });

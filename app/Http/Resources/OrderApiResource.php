@@ -18,6 +18,7 @@ class OrderApiResource extends JsonResource
                 'name'         => $this->plan->name,
                 'max_devices'  => $this->plan->max_devices,
                 'is_lifetime'  => $this->plan->isLifetime(),
+                'qr_image_url' => $this->plan->qr_image_url,
             ],
             'whatsapp_link' => $this->whatsapp_link,
             'created_at'    => $this->created_at->toIso8601String(),

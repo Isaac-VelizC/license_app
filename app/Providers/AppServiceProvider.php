@@ -8,9 +8,7 @@ use App\services\LicenseSignatureService;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\{Date, DB, Event};
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -68,7 +66,10 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(10)->by($request->input('license_key') ?? $request->ip())
         );
         RateLimiter::for('orders', function ($request) {
-            return Limit::perHour(5)->by($request->ip());
+            return [
+                Limit::perMinute(5)->by($request->ip()),
+                Limit::perHour(20)->by($request->ip()),
+            ];
         });
     }
 }
