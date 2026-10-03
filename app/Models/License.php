@@ -4,15 +4,26 @@ namespace App\Models;
 
 use App\Enum\LicenseStatusType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\{Builder, Model};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 use Override;
 
 #[Fillable([
-    'client_id', 'app_id', 'plan_id', 'license_key', 'status',
-    'starts_at', 'expires_at', 'max_devices', 'revoked_at', 'revoked_reason', 'notes',
+    'client_id',
+    'app_id',
+    'plan_id',
+    'product_version_id',
+    
+    'license_key',
+    'status',
+    'starts_at',
+    'expires_at',
+    'max_devices',
+    'updates_until_version',
+    'revoked_at',
+    'revoked_reason',
+    'notes',
 ])]
 class License extends Model
 {
@@ -52,14 +63,17 @@ class License extends Model
         $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
         $groups = collect(range(1, 3))
-            ->map(fn () => collect(range(1, 4))
-                ->map(fn () => $characters[random_int(0, strlen($characters) - 1)])
+            ->map(fn() => collect(range(1, 4))
+                ->map(fn() => $characters[random_int(0, strlen($characters) - 1)])
                 ->implode(''))
             ->implode('-');
 
         return "LIC-{$groups}";
     }
 
+    /**
+     * RELATIONSHIPS
+     */
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
@@ -74,17 +88,30 @@ class License extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+    
+    public function productVersion(): BelongsTo
+    {
+        return $this->belongsTo(ProductVersion::class);
+    }
 
     public function activations(): HasMany
     {
         return $this->hasMany(Activation::class);
     }
-    
+
     public function logs(): HasMany
     {
         return $this->hasMany(LicenseLog::class);
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+    
+    /**
+     * ATTRIBUTES
+     */
     public function getStatusLabelAttribute(): string
     {
         return $this->status->label();
@@ -95,6 +122,9 @@ class License extends Model
         return $this->status->color();
     }
 
+    /**
+     * SCOPES
+     */
     public function scopeForApp(Builder $query, int $appId): Builder
     {
         return $query->where('app_id', $appId);
@@ -112,7 +142,7 @@ class License extends Model
 
     public function scopeTrials(Builder $query): Builder
     {
-        return $query->whereHas('plan', fn ($q) => $q->where('is_trial', true));
+        return $query->whereHas('plan', fn($q) => $q->where('is_trial', true));
     }
 
     public function scopeSearch(Builder $query, string $search): Builder
@@ -120,11 +150,14 @@ class License extends Model
         $pattern = "%{$search}%";
 
         return $query->where('license_key', 'like', $pattern)
-            ->orWhereHas('client', fn ($q) => $q->where('name', 'like', $pattern)
+            ->orWhereHas('client', fn($q) => $q->where('name', 'like', $pattern)
                 ->orWhere('company_name', 'like', $pattern)
                 ->orWhere('email', 'like', $pattern));
     }
 
+    /**
+     * HELPERS
+     */
     public function isValid(): bool
     {
         if ($this->status !== LicenseStatusType::ACTIVE) {

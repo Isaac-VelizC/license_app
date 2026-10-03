@@ -1,7 +1,8 @@
 import { memo } from "react";
 import {
-    AlertTriangle,
+    PackageCheck,
     Pencil,
+    RefreshCw,
     Smartphone,
     TimerReset,
     Trash2,
@@ -69,6 +70,14 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
                 </p>
             </div>
             <div className="space-y-3 border-t border-border/60 pt-4 text-sm">
+                {/*!plan.stripe_price_id && !plan.is_trial && (
+                    <div className="flex items-center text-amber-600 dark:text-amber-500">
+                        <AlertTriangle className="mr-2.5 size-4 shrink-0" />
+                        <span className="text-xs">
+                            Sin precio de Stripe — no aparecerá en el checkout.
+                        </span>
+                    </div>
+                )*/}
                 <div className="flex items-center text-muted-foreground">
                     <Smartphone className="mr-2.5 size-4 shrink-0 text-primary" />
                     <span>
@@ -79,6 +88,27 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
                         {plan.max_devices === 1
                             ? "dispositivo"
                             : "dispositivos"}
+                    </span>
+                </div>
+
+                <div className="flex items-center text-muted-foreground">
+                    <PackageCheck className="mr-2.5 size-4 shrink-0 text-primary" />
+                    <span>
+                        Versión incluida:{" "}
+                        <strong className="text-foreground">
+                            {plan.product_version?.version ?? "Sin asignar"}
+                        </strong>
+                    </span>
+                </div>
+
+                <div className="flex items-center text-muted-foreground">
+                    <RefreshCw className="mr-2.5 size-4 shrink-0 text-primary" />
+                    <span>
+                        Actualizaciones hasta:{" "}
+                        <strong className="text-foreground">
+                            {plan.updates_until_version ??
+                                "Sin límite definido"}
+                        </strong>
                     </span>
                 </div>
 
@@ -95,14 +125,6 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
                         </strong>
                     </span>
                 </div>
-                {/*!plan.stripe_price_id && !plan.is_trial && (
-                    <div className="flex items-center text-amber-600 dark:text-amber-500">
-                        <AlertTriangle className="mr-2.5 size-4 shrink-0" />
-                        <span className="text-xs">
-                            Sin precio de Stripe — no aparecerá en el checkout.
-                        </span>
-                    </div>
-                )*/}
             </div>
             <div className="flex justify-end gap-2 border-t border-border/60 pt-3">
                 <Button

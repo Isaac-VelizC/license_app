@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('app_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_version_id')->nullable()->constrained();
+
             $table->string('name');
             $table->string('qr_image_url')->nullable();
             $table->unsignedInteger('price_cents')->default(0); // 49900 = $499.00
             $table->char('currency', 3)->default('USD');          // ← de una vez, ver nota abajo
             $table->integer('duration_days')->nullable();
             $table->integer('max_devices')->default(1);
+            $table->string('updates_until_version', 50)->nullable();
             $table->boolean('is_trial')->default(false);
             $table->string('stripe_price_id')->nullable();
             $table->boolean('is_active')->default(true);

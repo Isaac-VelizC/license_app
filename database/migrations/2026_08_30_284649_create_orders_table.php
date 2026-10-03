@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();            
+            $table->id();
             $table->string('order_number')->unique();
 
             $table->foreignId('client_id')->constrained();
             $table->foreignId('plan_id')->constrained();
+            $table->foreignId('product_version_id')->constrained('product_versions')->restrictOnDelete();
+            $table->foreignId('verified_by')->nullable()->constrained('users');
+            $table->foreignId('license_id')->nullable()->constrained();
 
             $table->unsignedInteger('amount_cents');
             $table->string('currency', 3);
@@ -26,15 +29,16 @@ return new class extends Migration
             $table->string('payment_reference')->nullable();
             $table->string('payment_proof_path')->nullable();
             $table->timestamp('paid_at')->nullable();
-            $table->foreignId('verified_by')->nullable()->constrained('users');
-
-            $table->foreignId('license_id')->nullable()->constrained();
 
             $table->timestamp('expires_at')->nullable();
 
             $table->timestamps();
 
             $table->index('status');
+            $table->index('client_id');
+            $table->index('plan_id');
+            $table->index('product_version_id');
+            $table->index('expires_at');
         });
     }
 

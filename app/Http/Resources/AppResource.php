@@ -18,6 +18,7 @@ class AppResource extends JsonResource
             'plans_count'    => $this->whenCounted('plans'),
             'licenses_count' => $this->whenCounted('licenses'),
             'plans'          => PlanResource::collection($this->whenLoaded('plans')),
+            'product_versions'=> ProductVersionResource::collection($this->whenLoaded('productVersions')),
             'created_at'     => $this->created_at?->toIso8601String(),
             'updated_at'     => $this->updated_at?->toIso8601String(),
         ];

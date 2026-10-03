@@ -14,6 +14,14 @@ class App extends Model
 
     protected $casts = ['is_active' => 'boolean'];
 
+    /**
+     * RELATIONSHIPS
+     */
+    public function productVersions(): HasMany
+    {
+        return $this->hasMany(ProductVersion::class);
+    }
+
     public function plans(): HasMany
     {
         return $this->hasMany(Plan::class);
@@ -29,11 +37,17 @@ class App extends Model
         return $this->belongsToMany(Client::class, 'licenses')->distinct();
     }
 
+    /**
+     * SCOPES
+     */
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
 
+    /**
+     * HELPERS
+     */
     public function trialPlan(): ?Plan
     {
         return $this->plans()->where('is_trial', true)->first();

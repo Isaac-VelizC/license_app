@@ -1,45 +1,81 @@
 import { useState } from "react";
 import { Head, Link, router } from "@inertiajs/react";
-import { ArrowLeft, KeyRound, Layers, PlusIcon } from "lucide-react";
+import { ArrowLeft, KeyRound, Layers, Package, PlusIcon } from "lucide-react";
 import { Badge, Button } from "@/components/ui";
 import PlanCard from "./components/plan-card";
-import PlanForm from "./components/plan-form";
-import { destroy } from "@/routes/admin/plans";
+import { destroy as destroyPlan, create, edit } from "@/routes/admin/plans";
+import { destroy as destroyProductVersion } from "@/routes/admin/product";
 import { index } from "@/routes/admin/apps";
 import { dashboard } from "@/routes/admin";
-import type { AppEntity, PlanEntity } from "@/types";
+import type { AppEntity, PlanEntity, ProductVersionEntity } from "@/types";
 import { useConfirmAction } from "@/hooks/use-confirm-action";
 import ConfirmModal from "@/components/confirm-modal";
+import ProductVersionCard from "./components/product-version-card";
+import ProductVersionForm from "./components/product-version-form";
 
 export default function AppDetails({ app }: { app: AppEntity }) {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [editingPlan, setEditingPlan] = useState<PlanEntity | null>(null);
+    // ---------------------------------------------------------
+    // PLANES
+    // ---------------------------------------------------------
 
     const {
         ask: askDeletePlan,
         pendingItem: deletingPlan,
         cancel: cancelDeletePlan,
         confirm: confirmDeletePlan,
-        processing: deleting,
+        processing: deletingPlanProcessing,
     } = useConfirmAction<PlanEntity>({
-        action: (plan) => destroy(plan.id).url,
+        action: (plan) => destroyPlan(plan.id).url,
         method: "delete",
     });
 
-    const handleOpenCreateModal = () => {
-        setEditingPlan(null);
-        setIsModalOpen(true);
+    const redirectToPlanForm = (planId?: number) => {
+        if (planId && app.id) {
+            router.visit(edit({ app: app.id, plan: planId }).url);
+        } else {
+            router.visit(create(app.id).url);
+        }
     };
 
-    const handleOpenEditModal = (plan: PlanEntity) => {
-        setEditingPlan(plan);
-        setIsModalOpen(true);
+    // ---------------------------------------------------------
+    // PRODUCT VERSIONS
+    // ---------------------------------------------------------
+
+    const [isVersionModalOpen, setIsVersionModalOpen] = useState(false);
+
+    const [editingVersion, setEditingVersion] =
+        useState<ProductVersionEntity | null>(null);
+
+    const {
+        ask: askDeleteVersion,
+        pendingItem: deletingVersion,
+        cancel: cancelDeleteVersion,
+        confirm: confirmDeleteVersion,
+        processing: deletingVersionProcessing,
+    } = useConfirmAction<ProductVersionEntity>({
+        action: (version) => destroyProductVersion(version.id).url,
+        method: "delete",
+    });
+
+    const handleOpenCreateVersionModal = () => {
+        setEditingVersion(null);
+        setIsVersionModalOpen(true);
+    };
+
+    const handleOpenEditVersionModal = (version: ProductVersionEntity) => {
+        setEditingVersion(version);
+        setIsVersionModalOpen(true);
     };
 
     return (
         <>
             <Head title={`Detalles - ${app.name}`} />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-6">
+
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-6">
+                {/* =====================================================
+                    HEADER
+                ====================================================== */}
+
                 <div>
                     <Link
                         href={index().url}
@@ -55,6 +91,7 @@ export default function AppDetails({ app }: { app: AppEntity }) {
                                 <h1 className="text-2xl font-bold tracking-tight text-foreground">
                                     {app.name}
                                 </h1>
+
                                 <Badge
                                     variant="soft"
                                     color={app.is_active ? "success" : "danger"}
@@ -62,6 +99,7 @@ export default function AppDetails({ app }: { app: AppEntity }) {
                                     {app.is_active ? "Activa" : "Inactiva"}
                                 </Badge>
                             </div>
+
                             <p className="text-sm text-muted-foreground">
                                 {app.description || "Sin descripción asignada."}
                             </p>
@@ -70,19 +108,27 @@ export default function AppDetails({ app }: { app: AppEntity }) {
                                 <span className="rounded bg-muted px-2 py-0.5 font-mono font-medium text-primary">
                                     slug: {app.slug}
                                 </span>
+
                                 <span className="flex items-center gap-1">
                                     <Layers className="size-3.5" />
-                                    {app.plans?.length ?? 0} Planes configurados
+                                    {app.plans?.length ?? 0} Planes
                                 </span>
+
+                                <span className="flex items-center gap-1">
+                                    <Package className="size-3.5" />
+                                    {app.product_versions?.length ?? 0}{" "}
+                                    Versiones
+                                </span>
+
                                 <span className="flex items-center gap-1">
                                     <KeyRound className="size-3.5" />
-                                    {app.licenses_count ?? 0} Licencias emitidas
+                                    {app.licenses_count ?? 0} Licencias
                                 </span>
                             </div>
                         </div>
 
                         <Button
-                            onClick={handleOpenCreateModal}
+                            onClick={() => redirectToPlanForm()}
                             className="shrink-0"
                         >
                             <PlusIcon className="size-4" />
@@ -91,11 +137,22 @@ export default function AppDetails({ app }: { app: AppEntity }) {
                     </div>
                 </div>
 
-                <div className="space-y-4">
+                {/* =====================================================
+                    PLANES
+                ====================================================== */}
+
+                <section className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-lg font-semibold text-foreground">
-                            Planes y Licencias Disponibles
-                        </h2>
+                        <div>
+                            <h2 className="text-lg font-semibold text-foreground">
+                                Planes
+                            </h2>
+
+                            <p className="text-sm text-muted-foreground">
+                                Configura las opciones comerciales de esta
+                                aplicación.
+                            </p>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -103,7 +160,7 @@ export default function AppDetails({ app }: { app: AppEntity }) {
                             <PlanCard
                                 key={plan.id}
                                 plan={plan}
-                                onEdit={handleOpenEditModal}
+                                onEdit={() => redirectToPlanForm(plan.id)}
                                 onDelete={askDeletePlan}
                             />
                         ))}
@@ -113,18 +170,20 @@ export default function AppDetails({ app }: { app: AppEntity }) {
                                 <div className="mb-3 rounded-full bg-muted p-3">
                                     <Layers className="size-6 text-muted-foreground" />
                                 </div>
+
                                 <h3 className="font-semibold text-foreground">
                                     Sin planes registrados
                                 </h3>
+
                                 <p className="mt-1 mb-4 max-w-sm text-sm text-muted-foreground">
                                     Esta aplicación aún no tiene planes de
-                                    precios asociados. Crea el primero para
-                                    poder emitir licencias.
+                                    precios asociados.
                                 </p>
+
                                 <Button
                                     variant="outline"
                                     color="neutral"
-                                    onClick={handleOpenCreateModal}
+                                    onClick={() => redirectToPlanForm()}
                                 >
                                     <PlusIcon className="size-4" />
                                     Crear primer plan
@@ -132,26 +191,113 @@ export default function AppDetails({ app }: { app: AppEntity }) {
                             </div>
                         )}
                     </div>
-                </div>
+                </section>
+
+                {/* =====================================================
+                    PRODUCT VERSIONS
+                ====================================================== */}
+
+                <section className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-lg font-semibold text-foreground">
+                                Versiones del producto
+                            </h2>
+
+                            <p className="text-sm text-muted-foreground">
+                                Administra las versiones e instaladores
+                                disponibles de esta aplicación.
+                            </p>
+                        </div>
+
+                        <Button
+                            variant="outline"
+                            onClick={handleOpenCreateVersionModal}
+                        >
+                            <PlusIcon className="size-4" />
+                            Nueva versión
+                        </Button>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                        {app.product_versions?.map((version) => (
+                            <ProductVersionCard
+                                key={version.id}
+                                version={version}
+                                onEdit={handleOpenEditVersionModal}
+                                onDelete={askDeleteVersion}
+                            />
+                        ))}
+
+                        {(!app.product_versions ||
+                            app.product_versions.length === 0) && (
+                            <div className="col-span-full flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 p-10 text-center">
+                                <div className="mb-3 rounded-full bg-muted p-3">
+                                    <Package className="size-6 text-muted-foreground" />
+                                </div>
+
+                                <h3 className="font-semibold text-foreground">
+                                    Sin versiones registradas
+                                </h3>
+
+                                <p className="mt-1 mb-4 max-w-md text-sm text-muted-foreground">
+                                    Registra la primera versión de
+                                    {` ${app.name}`} para comenzar a gestionar
+                                    sus instaladores.
+                                </p>
+
+                                <Button
+                                    variant="outline"
+                                    color="neutral"
+                                    onClick={handleOpenCreateVersionModal}
+                                >
+                                    <PlusIcon className="size-4" />
+                                    Registrar primera versión
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </section>
             </div>
+            {/* =========================================================
+                PRODUCT VERSION FORM
+            ========================================================== */}
 
             {app.id && (
-                <PlanForm
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
+                <ProductVersionForm
+                    isOpen={isVersionModalOpen}
+                    onClose={() => setIsVersionModalOpen(false)}
                     appId={app.id}
-                    editingPlan={editingPlan}
+                    editingVersion={editingVersion}
                 />
             )}
+
+            {/* =========================================================
+                DELETE PLAN
+            ========================================================== */}
 
             <ConfirmModal
                 isOpen={!!deletingPlan}
                 onClose={cancelDeletePlan}
                 onConfirm={confirmDeletePlan}
-                processing={deleting}
+                processing={deletingPlanProcessing}
                 type="deleted"
                 title={`¿Eliminar "${deletingPlan?.name}"?`}
                 descriptionText="Esta acción no se puede deshacer. Si el plan tiene licencias asociadas, el sistema rechazará la eliminación."
+            />
+
+            {/* =========================================================
+                DELETE PRODUCT VERSION
+            ========================================================== */}
+
+            <ConfirmModal
+                isOpen={!!deletingVersion}
+                onClose={cancelDeleteVersion}
+                onConfirm={confirmDeleteVersion}
+                processing={deletingVersionProcessing}
+                type="deleted"
+                title={`¿Eliminar versión ${deletingVersion?.version}?`}
+                descriptionText="Esta acción eliminará la versión y su instalador. Si existen licencias asociadas, el sistema rechazará la eliminación."
             />
         </>
     );

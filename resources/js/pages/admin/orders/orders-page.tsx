@@ -65,7 +65,7 @@ export default function OrdersPage({ orders, filters, statuses }: OrderProps) {
 
 OrdersPage.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
+        { title: "Panel Central", href: dashboard().url },
         { title: "Órdenes", href: index().url },
     ],
 };

@@ -33,7 +33,13 @@ class AppController extends Controller
 
     public function show(App $app): Response
     {
-        $app->load(['plans' => fn($query) => $query->latest(),])->loadCount('licenses');
+        $app->load([
+            'plans' => fn($query) => $query
+                ->with('productVersion')
+                ->latest(),
+
+            'productVersions',
+        ])->loadCount('licenses');
 
         return Inertia::render('admin/apps/app-details', [
             'app' => AppResource::make($app)
@@ -76,17 +82,17 @@ class AppController extends Controller
 
             return redirect()->back();
         }
-        
+
         $slug = $app->slug;
         $app->delete();
         Cache::forget("app:by-slug:{$slug}");
-        
+
         Inertia::flash('toast', ['type' => 'success', 'message' => __('La aplicación se elimino correctamente.')]);
 
         CacheHelper::clearAppsCache();
         return redirect()->back();
     }
-    
+
     private function forgetSlugCache(string $oldSlug, string $newSlug): void
     {
         Cache::forget("app:by-slug:{$oldSlug}");

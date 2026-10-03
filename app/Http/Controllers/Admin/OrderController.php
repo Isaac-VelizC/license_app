@@ -51,6 +51,7 @@ class OrderController extends Controller
                 $request->validated('payment_reference'),
             );
         } catch (\InvalidArgumentException $e) {
+            Inertia::flash('toast', ['type' => 'error', 'message' => __($e->getMessage())]);
             return back()->withErrors(['order' => $e->getMessage()]);
         }
 

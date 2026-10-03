@@ -12,15 +12,43 @@ use Inertia\Inertia;
 
 class PlanController extends Controller
 {
+    public function create(App $app)
+    {
+        $productVersions = $app->productVersions()
+            ->where('is_active', true)
+            ->get(['id', 'version']);
+
+        return Inertia::render('admin/apps/plan-form-page', [
+            'appId' => $app->id,
+            'editingPlan' => null,
+            'productVersions' => $productVersions
+        ]);
+    }
+
     public function store(PlanRequest $request, App $app): RedirectResponse
     {
-        $app->plans()->create($request->toPlanData());
+        $data = $request->toPlanData();
+
+        $app->plans()->create($data);
 
         CacheHelper::clearAppsCache();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Plan agregado correctamente.')]);
 
-        return redirect()->back();
+        return back();
+    }
+
+    public function edit(App $app, Plan $plan)
+    {
+        $productVersions = $app->productVersions()
+            ->where('is_active', true)
+            ->get(['id', 'version']);
+
+        return Inertia::render('admin/apps/plan-form-page', [
+            'appId' => $app->id,
+            'editingPlan' => $plan,
+            'productVersions' => $productVersions
+        ]);
     }
 
     public function update(PlanRequest $request, Plan $plan): RedirectResponse

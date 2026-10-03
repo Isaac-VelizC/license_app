@@ -5,6 +5,7 @@ namespace App\Http\Requests\Admin;
 use App\Models\Plan;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class PlanRequest extends FormRequest
@@ -16,9 +17,23 @@ class PlanRequest extends FormRequest
 
     public function rules(): array
     {
+        $app = $this->route('app');
+        $plan = $this->route('plan');
+
+        $appId = $app?->id ?? $plan?->app_id;
+
         return [
+            'product_version_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('product_versions', 'id')
+                    ->where(function ($query) use ($appId) {
+                        $query->where('app_id', $appId)
+                            ->where('is_active', true);
+                    }),
+            ],
+            'updates_until_version' => ['nullable', 'string', 'regex:/^(\d+|[xX])(\.(\d+|[xX])){1,2}$/'],
             'name'            => ['required', 'string', 'max:255'],
-            // El admin escribe en unidades normales (499.00); se convierte a centavos abajo.
             'qr_image'        => ['nullable', 'image', 'max:5120'],
             'price'           => ['required', 'numeric', 'min:0'],
             'currency'        => ['nullable', 'string', 'size:3'],
@@ -34,6 +49,8 @@ class PlanRequest extends FormRequest
     {
         return [
             'name'            => 'nombre',
+            'product_version_id' => 'versión del producto',
+            'updates_until_version' => 'actualizaciones incluidas hasta',
             'qr_image'        => 'imagen del QR',
             'price'           => 'precio',
             'currency'        => 'moneda',
@@ -52,15 +69,13 @@ class PlanRequest extends FormRequest
             $plan = $this->route('plan');      // presente al editar (update)
             $appId = $app?->id ?? $plan?->app_id;
 
-            if (! $appId) {
-                return;
-            }
+            if (! $appId) return;
 
             // Regla: solo un plan trial por app
             if ($this->boolean('is_trial')) {
                 $existingTrial = Plan::where('app_id', $appId)
                     ->where('is_trial', true)
-                    ->when($plan, fn ($q) => $q->whereKeyNot($plan->id))
+                    ->when($plan, fn($q) => $q->whereKeyNot($plan->id))
                     ->exists();
 
                 if ($existingTrial) {
@@ -76,6 +91,27 @@ class PlanRequest extends FormRequest
                         'duration_days',
                         __('Un plan de prueba necesita una duración en días.')
                     );
+                }
+                /*
+                * Si se selecciona una ProductVersion,
+                * verificamos nuevamente que pertenezca a la App.
+                *
+                * La regla exists() ya hace esta validación,
+                * pero esta comprobación permite dar un error más
+                * específico si posteriormente se agregan más reglas.
+                */
+                if ($this->filled('product_version_id')) {
+                    $versionBelongsToApp = $app->productVersions()
+                        ->whereKey($this->input('product_version_id'))
+                        ->where('is_active', true)
+                        ->exists();
+
+                    if (! $versionBelongsToApp) {
+                        $validator->errors()->add(
+                            'product_version_id',
+                            __('La versión seleccionada no pertenece a esta aplicación o no está activa.')
+                        );
+                    }
                 }
             }
         });
@@ -97,7 +133,7 @@ class PlanRequest extends FormRequest
 
         if ($this->hasFile('qr_image')) {
             $path = $this->file('qr_image')->store('plans/qr', 'public');
-            
+
             /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
             $disk = Storage::disk('public');
             $data['qr_image_url'] = $disk->url($path);

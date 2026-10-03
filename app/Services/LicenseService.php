@@ -71,10 +71,12 @@ class LicenseService
                 'client_id'   => $client->id,
                 'app_id'      => $app->id,
                 'plan_id'     => $plan->id,
+                'product_version_id' => $plan->product_version_id,
                 'status'      => LicenseStatusType::ACTIVE,
                 'starts_at'   => $startsAt,
                 'expires_at'  => $plan->duration_days ? $startsAt->copy()->addDays($plan->duration_days) : null,
                 'max_devices' => $plan->max_devices,
+                'updates_until_version' => $plan->productVersion?->version_number,
             ]);
 
             LicenseLog::record($license, 'issued', meta: array_filter([

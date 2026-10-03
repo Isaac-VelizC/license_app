@@ -9,9 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 
 #[Fillable([
-    'app_id', 'name', 'qr_image_url', 'price_cents',
-    'currency', 'duration_days', 'max_devices',
-    'is_trial', 'stripe_price_id', 'is_active'
+    'app_id',
+    'product_version_id',
+    
+    'name',
+    'qr_image_url',
+    'price_cents',
+    'currency',
+    'duration_days',
+    'max_devices',
+    'updates_until_version',
+    'is_trial',
+    'stripe_price_id',
+    'is_active'
 ])]
 class Plan extends Model
 {
@@ -25,16 +35,32 @@ class Plan extends Model
         'is_active'     => 'boolean',
     ];
 
+    /**
+     * RELATIONSHIPS
+     */
     public function app(): BelongsTo
     {
         return $this->belongsTo(App::class);
+    }
+
+    public function productVersion(): BelongsTo
+    {
+        return $this->belongsTo(ProductVersion::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function licenses(): HasMany
     {
         return $this->hasMany(License::class);
     }
-    
+
+    /**
+     * SCOPES
+     */
     public function scopeTrial(Builder $query): Builder
     {
         return $query->where('is_trial', true);
@@ -50,6 +76,9 @@ class Plan extends Model
         return $query->where('app_id', $appId);
     }
 
+    /**
+     * HELPERS
+     */
     public function isLifetime(): bool
     {
         return is_null($this->duration_days);

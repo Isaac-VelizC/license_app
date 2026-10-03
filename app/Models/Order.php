@@ -12,14 +12,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'order_number',
     'client_id',
     'plan_id',
+    'product_version_id',
+    'verified_by',
+    'license_id',
+
     'amount_cents',
     'currency',
     'status',
     'payment_reference',
     'payment_proof_path',
     'paid_at',
-    'verified_by',
-    'license_id',
     'expires_at',
 ])]
 class Order extends Model
@@ -32,6 +34,9 @@ class Order extends Model
         'expires_at' => 'datetime',
     ];
 
+    /**
+     * RELATIONSHIPS
+     */
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
@@ -42,9 +47,9 @@ class Order extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    public function license(): BelongsTo
+    public function productVersion(): BelongsTo
     {
-        return $this->belongsTo(License::class);
+        return $this->belongsTo(ProductVersion::class);
     }
 
     public function verifiedBy(): BelongsTo
@@ -52,15 +57,25 @@ class Order extends Model
         return $this->belongsTo(User::class, 'verified_by');
     }
 
-    public function isPaid(): bool
+    public function license(): BelongsTo
     {
-        return $this->status === OrderStatusType::PAID;
+        return $this->belongsTo(License::class);
     }
 
-    
+    /**
+     * ATTRIBUTES
+     */
     public function getFormattedAmountAttribute(): string
     {
         return number_format($this->amount_cents / 100, 2) . ' ' . $this->currency;
+    }
+
+    /**
+     * HELPERS
+     */
+    public function isPaid(): bool
+    {
+        return $this->status === OrderStatusType::PAID;
     }
 
     public function getWhatsappLinkAttribute(): string

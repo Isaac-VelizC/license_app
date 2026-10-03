@@ -1,0 +1,439 @@
+import { useEffect, useMemo } from "react";
+import {
+    Tag,
+    DollarSign,
+    Calendar,
+    Smartphone,
+    QrCode,
+    GitBranch,
+    Save,
+    ArrowLeft,
+} from "lucide-react";
+import { Head, Link, useForm } from "@inertiajs/react";
+import InputError from "@/components/input-error";
+import { Input, Label, Switch } from "@/components/ui";
+import { store, update } from "@/routes/admin/plans";
+import { show } from "@/routes/admin/apps";
+import type { PlanEntity, PlanFormData } from "@/types";
+import Heading from "@/components/heading";
+import { dashboard } from "@/routes/admin";
+import { Selectable } from "@/components/selectable";
+
+type ProductVersionOption = {
+    id: number;
+    version: string;
+};
+
+type PlanFormModalProps = {
+    appId: number;
+    editingPlan: PlanEntity | null;
+    productVersions: ProductVersionOption[];
+};
+export default function PlanFormPage({
+    appId,
+    editingPlan,
+    productVersions,
+}: PlanFormModalProps) {
+    const isEditing = Boolean(editingPlan);
+    
+    if (!appId) return null;
+
+    // 1. Inicializamos el useForm directamente con los valores de editingPlan si existen
+    const { data, setData, post, processing, errors, reset, clearErrors } =
+        useForm<PlanFormData>({
+            name: editingPlan?.name ?? "",
+            price: editingPlan
+                ? (editingPlan.price_cents / 100).toFixed(2)
+                : "",
+            duration_days: editingPlan?.duration_days ?? "",
+            max_devices: editingPlan?.max_devices ?? 1,
+            is_trial: editingPlan?.is_trial ?? false,
+            qr_image: null,
+            stripe_price_id: editingPlan?.stripe_price_id ?? "",
+            product_version_id: editingPlan?.product_version_id ?? null,
+            updates_until_version: editingPlan?.updates_until_version ?? "",
+        });
+
+    const isLifetime = data.duration_days === "" || data.duration_days === null;
+
+    // 2. Simplificamos el useEffect solo para limpiar errores si cambia el plan a editar
+    useEffect(() => {
+        clearErrors();
+    }, [editingPlan, clearErrors]);
+
+    const toggleLifetime = (checked: boolean) => {
+        setData("duration_days", checked ? "" : 30);
+    };
+
+    const toggleTrial = (checked: boolean) => {
+        setData((prev) => ({
+            ...prev,
+            is_trial: checked,
+            duration_days:
+                checked && !prev.duration_days ? 7 : prev.duration_days,
+        }));
+    };
+
+    const versionsOptions = useMemo(() => {
+        return [
+            { value: "", label: "Ninguna (Versión general)" },
+            ...productVersions.map((version) => ({
+                value: String(version.id),
+                label: version.version,
+            })),
+        ];
+    }, [productVersions]);
+
+    const handleSubmit = (e: React.SyntheticEvent) => {
+        e.preventDefault();
+
+        if (editingPlan) {
+            post(update(editingPlan.id).url);
+        } else {
+            post(store(appId).url, {
+                onSuccess: () => {
+                    reset();
+                },
+            });
+        }
+    };
+
+    return (
+        <>
+            <Head title={isEditing ? "Editar plan" : "Crear plan"} />
+
+            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+                {/* Cabecera */}
+                <div className="border-b pb-4">
+                    <Link
+                        href={show(appId).url}
+                        className="mb-4 inline-flex items-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                        <ArrowLeft className="mr-2 size-4" />
+                        Volver a detalles de la aplicación
+                    </Link>
+                    <Heading
+                        title={isEditing ? "Editar plan" : "Crear plan"}
+                        description={
+                            isEditing
+                                ? "Modifica los detalles de este plan de licenciamiento."
+                                : "Crea un nuevo plan comercial para esta aplicación."
+                        }
+                    />
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-6 pb-12">
+                    {/* GRID PRINCIPAL: 2 Columnas en pantallas lg */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                        {/* COLUMNA IZQUIERDA (7 columnas): Información General y Versiones */}
+                        <div className="lg:col-span-7 space-y-6">
+                            {/* SECCIÓN 1: INFORMACIÓN BÁSICA */}
+                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                                <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
+                                    <Tag className="w-5 h-5 text-primary" />
+                                    <h3>Información General</h3>
+                                </div>
+
+                                {/* Nombre */}
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="plan-name">
+                                        Nombre del Plan
+                                    </Label>
+                                    <Input
+                                        id="plan-name"
+                                        value={data.name}
+                                        disabled={processing}
+                                        onChange={(e) =>
+                                            setData("name", e.target.value)
+                                        }
+                                        placeholder="Ej: Licencia Anual Profesional"
+                                        required
+                                    />
+                                    <InputError message={errors.name} />
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {/* Precio */}
+                                    <div className="space-y-1.5">
+                                        <Label htmlFor="plan-price">
+                                            Precio (USD)
+                                        </Label>
+                                        <Input
+                                            id="plan-price"
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            leftIcon={DollarSign}
+                                            value={data.price}
+                                            disabled={
+                                                processing || data.is_trial
+                                            }
+                                            onChange={(e) =>
+                                                setData("price", e.target.value)
+                                            }
+                                            placeholder="0.00"
+                                            required={!data.is_trial}
+                                        />
+                                        {data.is_trial && (
+                                            <p className="text-xs text-muted-foreground">
+                                                Gratuito por ser trial.
+                                            </p>
+                                        )}
+                                        <InputError message={errors.price} />
+                                    </div>
+
+                                    {/* Máximo de dispositivos */}
+                                    <div className="space-y-1.5">
+                                        <Label htmlFor="plan-max-devices">
+                                            Máx. Dispositivos
+                                        </Label>
+                                        <Input
+                                            id="plan-max-devices"
+                                            type="number"
+                                            min="1"
+                                            value={data.max_devices}
+                                            disabled={processing}
+                                            leftIcon={Smartphone}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "max_devices",
+                                                    Number(e.target.value),
+                                                )
+                                            }
+                                            required
+                                        />
+                                        <InputError
+                                            message={errors.max_devices}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Switch de Trial */}
+                                <div className="flex items-center justify-between rounded-lg border p-4 bg-muted/40">
+                                    <div className="space-y-0.5">
+                                        <Label
+                                            htmlFor="plan-is-trial"
+                                            className="text-sm font-medium"
+                                        >
+                                            ¿Es un plan de prueba?
+                                        </Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Solo un trial activo por app.
+                                        </p>
+                                    </div>
+                                    <Switch
+                                        checked={data.is_trial}
+                                        disabled={processing}
+                                        onChange={toggleTrial}
+                                    />
+                                </div>
+                                <InputError message={errors.is_trial} />
+                            </div>
+
+                            {/* SECCIÓN 2: CONTROL DE VERSIONES */}
+                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                                <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
+                                    <GitBranch className="w-5 h-5 text-primary" />
+                                    <h3>Control de Versiones</h3>
+                                </div>
+
+                                {/* Versión del producto */}
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="plan-product-version">
+                                        Versión inicial del producto
+                                    </Label>
+                                    <Selectable
+                                        value={
+                                            data.product_version_id !== null &&
+                                            data.product_version_id !==
+                                                undefined
+                                                ? String(
+                                                      data.product_version_id,
+                                                  )
+                                                : ""
+                                        }
+                                        defaultValue=""
+                                        disabled={processing}
+                                        onValueChange={(e) =>
+                                            setData(
+                                                "product_version_id",
+                                                e ? Number(e) : null,
+                                            )
+                                        }
+                                        showAll={false}
+                                        options={versionsOptions}
+                                        placeholder="Seleccionar versión..."
+                                    />
+                                    <p className="text-xs text-muted-foreground">
+                                        Versión inicial entregada al adquirir el
+                                        plan.
+                                    </p>
+                                    <InputError
+                                        message={errors.product_version_id}
+                                    />
+                                </div>
+
+                                {/* Condicional: Mostrar solo si hay una versión de producto seleccionada */}
+                                {data.product_version_id !== null &&
+                                    data.product_version_id !== undefined && (
+                                        <div className="space-y-1.5 pt-2 animate-fadeIn">
+                                            <Label htmlFor="plan-updates-until-version">
+                                                Actualizaciones incluidas hasta
+                                                (Versión)
+                                            </Label>
+                                            <Input
+                                                id="plan-updates-until-version"
+                                                value={
+                                                    data.updates_until_version
+                                                }
+                                                disabled={processing}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "updates_until_version",
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="Ej: 2.5.0 o 2.x"
+                                                maxLength={50}
+                                            />
+                                            <p className="text-xs text-muted-foreground">
+                                                Límite de versión al que el
+                                                cliente podrá actualizar sin
+                                                coste.
+                                            </p>
+                                            <InputError
+                                                message={
+                                                    errors.updates_until_version
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                            </div>
+                        </div>
+
+                        {/* COLUMNA DERECHA (5 columnas): Vigencia, QR y Botón de Envío */}
+                        <div className="lg:col-span-5 space-y-6">
+                            {/* SECCIÓN 3: VIGENCIA Y DURACIÓN */}
+                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                                <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
+                                    <Calendar className="w-5 h-5 text-primary" />
+                                    <h3>Vigencia y Duración</h3>
+                                </div>
+
+                                <div className="flex items-center justify-between rounded-lg border p-4 bg-muted/40">
+                                    <div className="space-y-0.5">
+                                        <Label className="text-sm font-medium">
+                                            Licencia Vitalicia
+                                        </Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Sin fecha de caducidad.
+                                        </p>
+                                    </div>
+                                    <Switch
+                                        checked={isLifetime}
+                                        disabled={processing || data.is_trial}
+                                        onChange={toggleLifetime}
+                                    />
+                                </div>
+
+                                {!isLifetime && (
+                                    <div className="space-y-1.5">
+                                        <Label htmlFor="plan-duration">
+                                            Duración en días
+                                        </Label>
+                                        <Input
+                                            id="plan-duration"
+                                            type="number"
+                                            min="1"
+                                            value={data.duration_days ?? ""}
+                                            disabled={processing}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "duration_days",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            placeholder="Ej: 365"
+                                            required={!isLifetime}
+                                        />
+                                        <InputError
+                                            message={errors.duration_days}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* SECCIÓN 4: COMPROBANTE / QR DE PAGO */}
+                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                                <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
+                                    <QrCode className="w-5 h-5 text-primary" />
+                                    <h3>QR de Pago</h3>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    {(data.qr_image ||
+                                        editingPlan?.qr_image_url) && (
+                                        <div className="overflow-hidden rounded-lg border border-border w-20 bg-muted shrink-0">
+                                            <img
+                                                src={
+                                                    data.qr_image
+                                                        ? URL.createObjectURL(
+                                                              data.qr_image,
+                                                          )
+                                                        : editingPlan!
+                                                              .qr_image_url!
+                                                }
+                                                alt="QR"
+                                                className="aspect-square w-full object-cover"
+                                            />
+                                        </div>
+                                    )}
+                                    <div className="space-y-1.5 w-full">
+                                        <Label htmlFor="plan-qr-image">
+                                            Imagen QR
+                                        </Label>
+                                        <Input
+                                            id="plan-qr-image"
+                                            type="file"
+                                            accept="image/*"
+                                            disabled={processing}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "qr_image",
+                                                    e.target.files?.[0] ?? null,
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <InputError message={errors.qr_image} />
+                            </div>
+
+                            {/* BOTÓN DE ACCIÓN */}
+                            <div className="pt-2">
+                                <button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="w-full inline-flex items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 transition-all"
+                                >
+                                    <Save className="w-4 h-4 mr-2" />
+                                    {isEditing
+                                        ? "Guardar Cambios del Plan"
+                                        : "Crear Plan Comercial"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </>
+    );
+}
+
+PlanFormPage.layout = {
+    breadcrumbs: [
+        { title: "Panel central", href: dashboard() },
+        { title: "Aplicaciones", href: "/admin/apps" },
+        { title: "Nuevo plan" },
+    ],
+};

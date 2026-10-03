@@ -24,6 +24,16 @@ class PlanResource extends JsonResource
             'max_devices'     => $this->max_devices,
             'stripe_price_id' => $this->stripe_price_id,
             'is_active'       => $this->is_active,
+
+            'product_version_id'    => $this->product_version_id,
+            'product_version'       => $this->whenLoaded(
+                'productVersion',
+                fn () => $this->productVersion
+                    ? ProductVersionResource::make($this->productVersion)
+                    : null
+            ),
+            'updates_until_version' => $this->updates_until_version,
+
             'created_at'      => $this->created_at?->toIso8601String(),
             'updated_at'      => $this->updated_at?->toIso8601String(),
         ];
