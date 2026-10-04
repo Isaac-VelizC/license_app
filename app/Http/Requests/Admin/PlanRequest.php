@@ -100,7 +100,7 @@ class PlanRequest extends FormRequest
                 * pero esta comprobación permite dar un error más
                 * específico si posteriormente se agregan más reglas.
                 */
-                if ($this->filled('product_version_id')) {
+                /*if ($this->filled('product_version_id')) {
                     $versionBelongsToApp = $app->productVersions()
                         ->whereKey($this->input('product_version_id'))
                         ->where('is_active', true)
@@ -112,7 +112,7 @@ class PlanRequest extends FormRequest
                             __('La versión seleccionada no pertenece a esta aplicación o no está activa.')
                         );
                     }
-                }
+                }*/
             }
         });
     }

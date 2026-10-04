@@ -17,15 +17,21 @@ class LicenseService
             throw new \RuntimeException("La app '{$app->slug}' no tiene un plan trial configurado.");
         }
 
+        if (!$trialPlan->product_version_id) {
+            throw new \RuntimeException("El plan trial '{$trialPlan->name}' no tiene una versión de producto asociada.");
+        }
+
         return DB::transaction(function () use ($app, $trialPlan, $hwid, $deviceId, $deviceName) {
             $license = License::create([
                 'app_id'      => $app->id,
                 'plan_id'     => $trialPlan->id,
                 'client_id'   => null,
+                'product_version_id' => $trialPlan->product_version_id,
                 'status'      => LicenseStatusType::ACTIVE,
                 'starts_at'   => now(),
                 'expires_at'  => now()->addDays($trialPlan->duration_days),
                 'max_devices' => $trialPlan->max_devices,
+                'updates_until_version' => $trialPlan->productVersion?->version_number,
             ]);
 
             $activation = $license->activations()->create([
