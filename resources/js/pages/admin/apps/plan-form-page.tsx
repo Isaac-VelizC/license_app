@@ -35,7 +35,7 @@ export default function PlanFormPage({
     productVersions,
 }: PlanFormModalProps) {
     const isEditing = Boolean(editingPlan);
-    
+
     if (!appId) return null;
 
     // 1. Inicializamos el useForm directamente con los valores de editingPlan si existen
@@ -320,20 +320,37 @@ export default function PlanFormPage({
                                     <h3>Vigencia y Duración</h3>
                                 </div>
 
-                                <div className="flex items-center justify-between rounded-lg border p-4 bg-muted/40">
-                                    <div className="space-y-0.5">
-                                        <Label className="text-sm font-medium">
-                                            Licencia Vitalicia
-                                        </Label>
-                                        <p className="text-xs text-muted-foreground">
-                                            Sin fecha de caducidad.
-                                        </p>
+                                <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5 shadow-sm transition-all">
+                                    <div className="flex items-center justify-between">
+                                        <div className="space-y-1">
+                                            <Label className="text-sm font-bold text-foreground">
+                                                Licencia Vitalicia
+                                            </Label>
+                                            <p className="text-xs text-muted-foreground">
+                                                Acceso permanente al software
+                                                sin fecha de caducidad.
+                                            </p>
+                                        </div>
+
+                                        <Switch
+                                            checked={isLifetime}
+                                            disabled={
+                                                processing || data.is_trial
+                                            }
+                                            onChange={toggleLifetime}
+                                        />
                                     </div>
-                                    <Switch
-                                        checked={isLifetime}
-                                        disabled={processing || data.is_trial}
-                                        onChange={toggleLifetime}
-                                    />
+
+                                    {/* Mensaje de aviso cuando es un plan de prueba */}
+                                    {data.is_trial && (
+                                        <div className="flex items-center gap-2 rounded-xl bg-warning/10 border border-warning/20 px-3.5 py-2.5 text-xs font-semibold text-warning">
+                                            <span>⚠️</span>
+                                            <span>
+                                                No es posible aplicar la opción
+                                                vitalicia a un plan de prueba.
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {!isLifetime && (
