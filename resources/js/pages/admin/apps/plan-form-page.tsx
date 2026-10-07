@@ -18,6 +18,7 @@ import type { PlanEntity, PlanFormData } from "@/types";
 import Heading from "@/components/heading";
 import { dashboard } from "@/routes/admin";
 import { Selectable } from "@/components/selectable";
+import { toast } from "sonner";
 
 type ProductVersionOption = {
     id: number;
@@ -52,6 +53,7 @@ export default function PlanFormPage({
             stripe_price_id: editingPlan?.stripe_price_id ?? "",
             product_version_id: editingPlan?.product_version_id ?? null,
             updates_until_version: editingPlan?.updates_until_version ?? "",
+            is_active: editingPlan?.is_active ?? false,
         });
 
     const isLifetime = data.duration_days === "" || data.duration_days === null;
@@ -86,6 +88,23 @@ export default function PlanFormPage({
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
+
+        if (data.is_active) {
+            if (!data.product_version_id || !data.updates_until_version) {
+                toast.error(
+                    "Para activar el plan, son obligatorios: la versión de producto y las actualizaciones incluidas.",
+                );
+                return;
+            }
+
+            const hasExistingQr = editingPlan && editingPlan.qr_image_url;
+            if (!data.is_trial && !data.qr_image && !hasExistingQr) {
+                toast.error(
+                    "Para activar un plan de pago, es obligatoria la imagen del código QR.",
+                );
+                return;
+            }
+        }
 
         if (editingPlan) {
             post(update(editingPlan.id).url);
@@ -136,7 +155,7 @@ export default function PlanFormPage({
 
                                 {/* Nombre */}
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="plan-name">
+                                    <Label htmlFor="plan-name" required>
                                         Nombre del Plan
                                     </Label>
                                     <Input
@@ -232,14 +251,25 @@ export default function PlanFormPage({
 
                             {/* SECCIÓN 2: CONTROL DE VERSIONES */}
                             <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
-                                <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
-                                    <GitBranch className="w-5 h-5 text-primary" />
-                                    <h3>Control de Versiones</h3>
+                                <div className="border-b pb-3">
+                                    <div className="flex items-center gap-2  font-semibold text-foreground">
+                                        <GitBranch className="w-5 h-5 text-primary" />
+                                        <h3>Control de Versiones</h3>
+                                    </div>
+                                    {data.is_trial && (
+                                        <p className="text-xs text-warning">
+                                            Es necesario una version de producot
+                                            para una plan de prueba
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Versión del producto */}
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="plan-product-version">
+                                    <Label
+                                        htmlFor="plan-product-version"
+                                        required={data.is_trial}
+                                    >
                                         Versión inicial del producto
                                     </Label>
                                     <Selectable
@@ -254,6 +284,7 @@ export default function PlanFormPage({
                                         }
                                         defaultValue=""
                                         disabled={processing}
+                                        required={data.is_trial}
                                         onValueChange={(e) =>
                                             setData(
                                                 "product_version_id",
@@ -287,6 +318,7 @@ export default function PlanFormPage({
                                                     data.updates_until_version
                                                 }
                                                 disabled={processing}
+                                                required={data.is_trial}
                                                 onChange={(e) =>
                                                     setData(
                                                         "updates_until_version",
@@ -381,49 +413,73 @@ export default function PlanFormPage({
                             </div>
 
                             {/* SECCIÓN 4: COMPROBANTE / QR DE PAGO */}
-                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
-                                <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
-                                    <QrCode className="w-5 h-5 text-primary" />
-                                    <h3>QR de Pago</h3>
-                                </div>
+                            {!data.is_trial && (
+                                <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                                    <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
+                                        <QrCode className="w-5 h-5 text-primary" />
+                                        <h3>QR de Pago</h3>
+                                    </div>
 
-                                <div className="flex items-center gap-4">
-                                    {(data.qr_image ||
-                                        editingPlan?.qr_image_url) && (
-                                        <div className="overflow-hidden rounded-lg border border-border w-20 bg-muted shrink-0">
-                                            <img
-                                                src={
-                                                    data.qr_image
-                                                        ? URL.createObjectURL(
-                                                              data.qr_image,
-                                                          )
-                                                        : editingPlan!
-                                                              .qr_image_url!
+                                    <div className="flex items-center gap-4">
+                                        {(data.qr_image ||
+                                            editingPlan?.qr_image_url) && (
+                                            <div className="overflow-hidden rounded-lg border border-border w-20 bg-muted shrink-0">
+                                                <img
+                                                    src={
+                                                        data.qr_image
+                                                            ? URL.createObjectURL(
+                                                                  data.qr_image,
+                                                              )
+                                                            : editingPlan!
+                                                                  .qr_image_url!
+                                                    }
+                                                    alt="QR"
+                                                    className="aspect-square w-full object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="space-y-1.5 w-full">
+                                            <Label htmlFor="plan-qr-image">
+                                                Imagen QR
+                                            </Label>
+                                            <Input
+                                                id="plan-qr-image"
+                                                type="file"
+                                                accept="image/*"
+                                                disabled={processing}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "qr_image",
+                                                        e.target.files?.[0] ??
+                                                            null,
+                                                    )
                                                 }
-                                                alt="QR"
-                                                className="aspect-square w-full object-cover"
                                             />
                                         </div>
-                                    )}
-                                    <div className="space-y-1.5 w-full">
-                                        <Label htmlFor="plan-qr-image">
-                                            Imagen QR
-                                        </Label>
-                                        <Input
-                                            id="plan-qr-image"
-                                            type="file"
-                                            accept="image/*"
-                                            disabled={processing}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "qr_image",
-                                                    e.target.files?.[0] ?? null,
-                                                )
-                                            }
-                                        />
                                     </div>
+                                    <InputError message={errors.qr_image} />
                                 </div>
-                                <InputError message={errors.qr_image} />
+                            )}
+
+                            {/** SECCIÓN 5: ESTADO  */}
+                            <div className="flex items-center justify-between rounded-lg border border-border p-4 bg-card">
+                                <div className="space-y-0.5">
+                                    <p className="text-sm font-medium text-foreground">
+                                        Estado del Plan
+                                    </p>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                        Habilítalo solo cuando el plan esté
+                                        configurado por completo y listo para
+                                        ser adquirido por los clientes.
+                                    </p>
+                                </div>
+
+                                <Switch
+                                    checked={data.is_active}
+                                    onChange={(checked) =>
+                                        setData("is_active", checked)
+                                    }
+                                />
                             </div>
 
                             {/* BOTÓN DE ACCIÓN */}

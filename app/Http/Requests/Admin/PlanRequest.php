@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use App\Models\Plan;
+use App\Models\ProductVersion;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -113,6 +114,37 @@ class PlanRequest extends FormRequest
                         );
                     }
                 }*/
+                if ($this->boolean('is_active')) {
+                    if (empty($this->input('product_version_id'))) {
+                        $validator->errors()->add(
+                            'product_version_id',
+                            __('Es obligatorio seleccionar una versión de producto para los planes de prueba.')
+                        );
+                    } else {
+                        $versionBelongsToApp = ProductVersion::where('id', $this->input('product_version_id'))
+                            ->where('app_id', $appId)
+                            ->where('is_active', true)
+                            ->exists();
+
+                        if (!$versionBelongsToApp) {
+                            $validator->errors()->add(
+                                'product_version_id',
+                                __('La versión seleccionada no pertenece a esta aplicación o no está activa.')
+                            );
+                        }
+                    }
+
+                    if (! $this->boolean('is_trial')) {
+                        $hasExistingQr = $plan && ! empty($plan->qr_image_url);
+
+                        if (! $this->hasFile('qr_image') && ! $hasExistingQr) {
+                            $validator->errors()->add(
+                                'qr_image',
+                                __('La imagen del QR es obligatoria para activar planes de pago.')
+                            );
+                        }
+                    }
+                }
             }
         });
     }

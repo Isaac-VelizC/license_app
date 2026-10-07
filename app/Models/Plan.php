@@ -45,7 +45,7 @@ class Plan extends Model
 
     public function productVersion(): BelongsTo
     {
-        return $this->belongsTo(ProductVersion::class);
+        return $this->belongsTo(ProductVersion::class, 'product_version_id');
     }
 
     public function orders(): HasMany

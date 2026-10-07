@@ -51,7 +51,8 @@ export interface PlanFormData {
     max_devices: number;
     is_trial: boolean;
     qr_image: File | null;
-    stripe_price_id: string;
+    stripe_price_id: string | null;
     product_version_id: number | null;
     updates_until_version: string;
+    is_active: boolean;
 }

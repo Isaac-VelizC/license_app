@@ -35,7 +35,7 @@ class PlanController extends Controller
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Plan agregado correctamente.')]);
 
-        return back();
+        return redirect()->route('admin.apps.show', $app->id);
     }
 
     public function edit(App $app, Plan $plan)
@@ -66,7 +66,7 @@ class PlanController extends Controller
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Plan actualizado correctamente.')]);
 
-        return redirect()->back();
+        return redirect()->route('admin.apps.show', $plan->app->id);
     }
 
     public function destroy(Plan $plan)
