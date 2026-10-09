@@ -7,9 +7,10 @@ use App\Http\Requests\Api\OrderApiRequest;
 use App\Http\Resources\OrderApiResource;
 use App\Http\Resources\PlanResource;
 use App\Http\Resources\PublicPlanResource;
-use App\Models\{App, Order, Plan};
+use App\Models\{App, Order, Plan, ProductVersion};
 use App\Services\OrderService;
-use Symfony\Component\HttpFoundation\{Response};
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\{Response, StreamedResponse};
 
 class OrderApiController extends Controller
 {
@@ -53,5 +54,33 @@ class OrderApiController extends Controller
     public function getPlan(Plan $plan)
     {
         return new PlanResource($plan);
+    }
+
+    public function downloadTrial(App $app): StreamedResponse
+    {
+        $productVersion = ProductVersion::query()
+            ->where('app_id', $app->id)
+            ->where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('released_at')
+                    ->orWhere('released_at', '<=', now());
+            })
+            ->orderByDesc('released_at')
+            ->first();
+
+        if (! $productVersion || ! $productVersion->file_path) {
+            abort(404, 'No hay una versión disponible para descargar.');
+        }
+
+        $disk = Storage::disk('local');
+
+        if (! $disk->exists($productVersion->file_path)) {
+            abort(404, 'El archivo instalador no está disponible.');
+        }
+
+        return $disk->download(
+            $productVersion->file_path,
+            $productVersion->file_name ?: "{$app->slug}-Setup.exe"
+        );
     }
 }
