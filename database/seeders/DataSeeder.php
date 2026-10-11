@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\App;
-use App\Models\Client;
-use App\Models\Plan;
+use App\Models\{App, Client, Plan};
 use App\Models\ProductVersion;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -17,8 +14,6 @@ class DataSeeder extends Seeder
         $appsData = [
             ['name' => 'SaaSify Pro', 'description' => 'Plataforma de gestión empresarial todo en uno.'],
             ['name' => 'InvoiceMaster', 'description' => 'Generador de facturas y control de gastos.'],
-            ['name' => 'CodeShield License', 'description' => 'Sistema de control de licencias para software de escritorio.'],
-            ['name' => 'TaskFlow Desktop', 'description' => 'Gestor de tareas y proyectos fuera de línea.'],
         ];
 
         foreach ($appsData as $appInfo) {
@@ -40,21 +35,11 @@ class DataSeeder extends Seeder
                 'released_at' => now()->subMonths(6),
             ]);
 
-            $v2 = ProductVersion::create([
-                'app_id' => $app->id,
-                'version' => '2.0.0',
-                'file_name' => Str::slug($app->name) . '-v2.0.0.zip',
-                'file_path' => 'downloads/' . Str::slug($app->name) . '/v2.0.0.zip',
-                'release_notes' => 'Actualización mayor con mejoras de rendimiento y seguridad.',
-                'is_active' => true,
-                'released_at' => now()->subDays(10),
-            ]);
-
             // 3. Crear Planes asociados a la App y sus Versiones
             // Plan de Prueba (Trial)
             Plan::create([
                 'app_id' => $app->id,
-                'product_version_id' => $v2->id,
+                'product_version_id' => $v1->id,
                 'updates_until_version' => '2.0.0',
                 'name' => 'Plan de Prueba (14 días)',
                 'price_cents' => 0,
@@ -68,7 +53,7 @@ class DataSeeder extends Seeder
             // Plan Anual Estándar
             Plan::create([
                 'app_id' => $app->id,
-                'product_version_id' => $v2->id,
+                'product_version_id' => $v1->id,
                 'updates_until_version' => '2.x',
                 'name' => 'Licencia Anual Estándar',
                 'price_cents' => 4900, // $49.00
@@ -82,7 +67,7 @@ class DataSeeder extends Seeder
             // Plan Vitalicio (Lifetime - sin duración)
             Plan::create([
                 'app_id' => $app->id,
-                'product_version_id' => $v2->id,
+                'product_version_id' => $v1->id,
                 'updates_until_version' => 'lifetime',
                 'name' => 'Licencia Vitalicia (Lifetime)',
                 'price_cents' => 14900, // $149.00
@@ -96,12 +81,7 @@ class DataSeeder extends Seeder
 
         // 4. Crear 6 Clientes de prueba
         $clients = [
-            ['name' => 'Carlos Pérez', 'email' => 'carlos@example.com'],
-            ['name' => 'María Gómez', 'email' => 'maria@example.com'],
-            ['name' => 'Juan Rodríguez', 'email' => 'juan@example.com'],
-            ['name' => 'Ana Torres', 'email' => 'ana@example.com'],
-            ['name' => 'Luis Martínez', 'email' => 'luis@example.com'],
-            ['name' => 'Sofía Benítez', 'email' => 'sofia@example.com'],
+            ['name' => 'Rachel Starr', 'email' => 'rachel.starr.vc@gmail.com'],
         ];
 
         foreach ($clients as $clientData) {
