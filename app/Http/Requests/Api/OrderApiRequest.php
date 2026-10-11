@@ -29,7 +29,13 @@ class OrderApiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'plan_id'       => ['required', Rule::exists('plans', 'id')->where('is_active', true)],
+            'plan_id' => [
+                'required',
+                'integer',
+                Rule::exists('plans', 'id')
+                    ->where('is_active', true)
+                    ->where('is_trial', false),
+            ],
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['required', 'email', 'max:255'],
             'phone'         => ['required', 'string', 'max:30'],

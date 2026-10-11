@@ -15,9 +15,9 @@ class TrialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'app_slug' => ['required', 'string'],
-            'hwid' => ['required', 'string', 'max:255'],
-            'device_id' => ['nullable', 'string', 'max:255'],
+            'app_slug' => ['required', 'string', '191'],
+            'hwid' => ['required', 'string', 'max:191'],
+            'device_id' => ['nullable', 'string', 'max:191'],
             'device_name' => ['nullable', 'string', 'max:255'],
         ];
     }

@@ -22,14 +22,16 @@ class LicenseService
         }
 
         return DB::transaction(function () use ($app, $trialPlan, $hwid, $deviceId, $deviceName) {
+            $startsAt = now();
+
             $license = License::create([
                 'app_id'      => $app->id,
                 'plan_id'     => $trialPlan->id,
                 'client_id'   => null,
                 'product_version_id' => $trialPlan->product_version_id,
                 'status'      => LicenseStatusType::ACTIVE,
-                'starts_at'   => now(),
-                'expires_at'  => now()->addDays($trialPlan->duration_days),
+                'starts_at' => $startsAt,
+                'expires_at' => $startsAt->copy()->addDays($trialPlan->duration_days),
                 'max_devices' => $trialPlan->max_devices,
                 'updates_until_version' => $trialPlan->productVersion?->version_number,
             ]);
@@ -312,17 +314,20 @@ class LicenseService
      */
     public function startTrial(App $app, string $hwid, ?string $deviceId, ?string $deviceName, ?string $ip): array
     {
-        $license = $this->findExistingTrial($app, $hwid);
-        $alreadyUsed = (bool) $license;
+        return DB::transaction(function () use ($app, $hwid, $deviceId, $deviceName, $ip) {
+            App::query()->whereKey($app->id)->lockForUpdate()->firstOrFail();
+            $license = $this->findExistingTrial($app, $hwid);
+            $alreadyUsed = $license !== null;
 
-        if (!$license) {
-            $license = $this->createTrial($app, $hwid, $deviceId, $deviceName);
-        }
+            if (!$license) {
+                $license = $this->createTrial($app, $hwid, $deviceId, $deviceName);
+            }
 
-        $this->ensureUsable($license); // si el trial ya venció, esto lanza EXPIRED
+            $this->ensureUsable($license);
 
-        $activation = $this->activateDevice($license, $hwid, $deviceId, $deviceName, $ip, null);
+            $activation = $this->activateDevice($license, $hwid, $deviceId, $deviceName, $ip, null);
 
-        return [$license, $activation, $alreadyUsed];
+            return [$license, $activation, $alreadyUsed];
+        });
     }
 }

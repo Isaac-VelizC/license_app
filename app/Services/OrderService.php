@@ -18,6 +18,20 @@ class OrderService
         return DB::transaction(function () use ($plan, $customer) {
             $client = $this->resolveClient($customer);
 
+            $client = Client::query()->whereKey($client->id)->lockForUpdate()->firstOrFail();
+
+            $existingOrder = Order::query()
+                ->where('client_id', $client->id)
+                ->where('plan_id', $plan->id)
+                ->where('status', OrderStatusType::PENDING)
+                ->where('expires_at', '>', now())
+                ->orderByDesc('id')
+                ->first();
+                
+            if ($existingOrder) {
+                return $existingOrder;
+            }
+
             $order = Order::create([
                 'order_number' => $this->temporaryOrderNumber(),
                 'client_id'    => $client->id,

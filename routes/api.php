@@ -10,23 +10,28 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function () {
-    Route::prefix('licenses')->middleware(['throttle:license-per-ip', 'throttle:license-per-key'])->group(function () {
-        Route::post('activate', [LicenseActivationController::class, 'activate']);
-        Route::post('validate', [LicenseActivationController::class, 'validateLicense']);
-        Route::post('deactivate', [LicenseActivationController::class, 'deactivate']);
-        Route::post('trial', [LicenseActivationController::class, 'trial']);
-    });
 
-    Route::prefix('orders')->middleware('throttle:orders')->group(function () {
-        Route::post('/', [OrderApiController::class, 'store']);
-        Route::get('{order_number}', [OrderApiController::class, 'show']);
-    });
+    Route::prefix('licenses')
+        ->middleware('throttle:licenses')
+        ->group(function () {
+            Route::post('activate', [LicenseActivationController::class, 'activate']);
+            Route::post('validate', [LicenseActivationController::class, 'validateLicense']);
+            Route::post('trial', [LicenseActivationController::class, 'trial']);
+        });
+
+    Route::prefix('orders')
+        ->middleware('throttle:orders')
+        ->group(function () {
+            Route::post('/', [OrderApiController::class, 'store']);
+            Route::get('{order_number}', [OrderApiController::class, 'show']);
+        });
 
     Route::prefix('apps/{app:slug}')->group(function () {
         Route::get('plans', [OrderApiController::class, 'index']);
-        Route::get('download/trial', [OrderApiController::class, 'downloadTrial']);
-    });
-    
-    Route::get('plans/{plan}', [OrderApiController::class, 'getPlan']);
 
+        Route::get('download/trial', [OrderApiController::class, 'downloadTrial'])
+            ->middleware('throttle:downloads');
+    });
+
+    Route::get('plans/{plan}', [OrderApiController::class, 'getPlan']);
 });
