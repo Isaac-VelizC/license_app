@@ -32,9 +32,7 @@ class OrderApiRequest extends FormRequest
             'plan_id' => [
                 'required',
                 'integer',
-                Rule::exists('plans', 'id')
-                    ->where('is_active', true)
-                    ->where('is_trial', false),
+                Rule::exists('plans', 'id')->where('is_active', 1)->where('is_trial', 0),
             ],
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['required', 'email', 'max:255'],

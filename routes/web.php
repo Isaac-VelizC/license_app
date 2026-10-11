@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\{AppController, ClientController, LicenseController, LicenseLogController, OrderController, PlanController, ProductVersionController};
+use App\Http\Controllers\Admin\{AppController, ClientController, DashboardController, LicenseController, LicenseLogController, OrderController, PlanController, ProductVersionController};
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/admin/dashboard')->name('home');
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     // Apps
     Route::resource('apps', AppController::class)->except(['create', 'edit']);
