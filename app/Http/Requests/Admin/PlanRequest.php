@@ -33,7 +33,7 @@ class PlanRequest extends FormRequest
                             ->where('is_active', true);
                     }),
             ],
-            'updates_until_version' => ['nullable', 'string', 'regex:/^(\d+|[xX])(\.(\d+|[xX])){1,2}$/'],
+            'updates_until_version' => ['nullable', 'string', 'regex:/^(lifetime|(\d+|[xX])(\.(\d+|[xX])){1,2})$/'],
             'name'            => ['required', 'string', 'max:255'],
             'qr_image'        => ['nullable', 'image', 'max:5120'],
             'price'           => ['required', 'numeric', 'min:0'],

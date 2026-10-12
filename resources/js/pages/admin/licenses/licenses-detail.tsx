@@ -1,4 +1,4 @@
-import { Head, router } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import { CheckIcon, CopyIcon, KeyIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

@@ -23,12 +23,10 @@ class ProductVersionRequest extends FormRequest
             'version' => [
                 'required',
                 'string',
+                'regex:/^\d+\.\d+\.\d+$/',
                 'max:50',
                 Rule::unique('product_versions', 'version')
-                    ->where(
-                        fn($query) =>
-                        $query->where('app_id', $this->input('app_id'))
-                    )
+                    ->where('app_id', $this->input('app_id'))
                     ->ignore($productVersion?->id),
             ],
             'file' => [
@@ -38,7 +36,7 @@ class ProductVersionRequest extends FormRequest
                 'max:512000',
             ],
             'release_notes' => ['nullable', 'string', 'max:10000'],
-            'is_active' => ['boolean'],
+            'is_active' => ['sometimes', 'boolean'],
             'released_at' => ['nullable', 'date'],
         ];
     }

@@ -2,7 +2,7 @@ import {
     AppWindow,
     Building2,
     Calendar,
-    Infinity,
+    InfinityIcon,
     Laptop,
     Sparkles,
     User,
@@ -110,7 +110,7 @@ const LicensesGridMetrix = ({ license }: { license: LicenseEntity }) => {
             <div className="rounded-xl border bg-card p-4 shadow-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                     {license.is_lifetime ? (
-                        <Infinity className="size-4 text-primary" />
+                        <InfinityIcon className="size-4 text-primary" />
                     ) : (
                         <Calendar className="size-4 text-primary" />
                     )}

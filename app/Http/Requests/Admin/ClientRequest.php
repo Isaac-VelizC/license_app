@@ -25,7 +25,12 @@ class ClientRequest extends FormRequest
             'name'         => ['required', 'string', 'max:255'],
             'company_name' => ['nullable', 'string', 'max:255'],
             'email'        => ['required', 'email', 'max:255', Rule::unique('clients', 'email')->ignore($this->route('client'))],
-            'phone'        => ['nullable', 'string', 'max:50'],
+            'phone' => [
+                'nullable',
+                'string',
+                'max:30',
+                'phone:BO,INTERNATIONAL',
+            ],
             'notes'        => ['nullable', 'string'],
         ];
     }
