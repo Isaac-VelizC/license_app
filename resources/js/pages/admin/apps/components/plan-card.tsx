@@ -21,7 +21,7 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
     return (
         <div
             className={cn(
-                "space-y-4 rounded-lg border p-4",
+                "space-y-4 rounded-lg bg-card border p-4",
                 !plan.is_active && "opacity-60",
             )}
         >

@@ -64,7 +64,7 @@ export default function ClientsPage({ clients, filters }: Props) {
                     }
                 />
 
-                <div className="flex justify-between gap-4">
+                <div className="flex justify-between gap-4 rounded-xl border bg-card p-4 shadow-sm">
                     <InputSearch
                         search={searchValue}
                         onSearchChange={setSearchValue}

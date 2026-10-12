@@ -31,7 +31,7 @@ export default function OrdersPage({ orders, filters, statuses }: OrderProps) {
                     description="Revisa los pedidos de licencias y confirma los pagos recibidos."
                 />
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 rounded-xl border bg-card p-4 shadow-sm">
                     <Button
                         variant={!filters.status ? "default" : "outline"}
                         size="sm"
