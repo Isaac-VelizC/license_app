@@ -29,7 +29,7 @@ class ClientRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:30',
-                'phone:BO,INTERNATIONAL',
+                'phone:BO,PE,BR,CL,AR,PY',
             ],
             'notes'        => ['nullable', 'string'],
         ];
@@ -43,6 +43,13 @@ class ClientRequest extends FormRequest
             'email'        => 'correo electrónico',
             'phone'        => 'teléfono',
             'notes'        => 'notas',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'phone.phone' => 'Introduce un número de teléfono válido para el país seleccionado.',
         ];
     }
 }

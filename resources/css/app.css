@@ -189,3 +189,18 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* Selector de país del componente PhoneInput */
+
+.PhoneInputCountrySelect {
+    color-scheme: light;
+}
+
+.PhoneInputCountrySelect option {
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+.dark .PhoneInputCountrySelect {
+    color-scheme: dark;
+}

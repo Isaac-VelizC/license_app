@@ -6,6 +6,7 @@ import { Input, Label, Textarea } from "@/components/ui";
 import InputError from "@/components/input-error";
 import { store, update } from "@/routes/admin/clients";
 import type { ClientEntity, ClientFormData } from "@/types";
+import { isValidPhoneNumber, PhoneInput } from "@/components/ui/phone-input";
 
 interface ClientsFormModalProps {
     isOpen: boolean;
@@ -24,6 +25,7 @@ const ClientForm = memo(
             put,
             processing,
             errors,
+            setError,
             reset,
             clearErrors,
         } = useForm<ClientFormData>({
@@ -54,6 +56,11 @@ const ClientForm = memo(
 
         const handleSubmit = (e: React.SyntheticEvent) => {
             e.preventDefault();
+
+            if (data.phone && !isValidPhoneNumber(data.phone)) {
+                setError("phone", "Introduce un número de teléfono válido.");
+                return;
+            }
 
             if (isEditing && editingClient) {
                 put(update(editingClient.id).url, {
@@ -125,17 +132,17 @@ const ClientForm = memo(
                         </div>
                         <div className="space-y-1.5">
                             <Label htmlFor="phone">Teléfono / WhatsApp</Label>
-                            <Input
+                            <PhoneInput
                                 id="phone"
-                                type="tel"
-                                placeholder="+51 987 654 321"
+                                name="phone"
                                 value={data.phone}
-                                disabled={processing}
-                                onChange={(e) =>
-                                    setData("phone", e.target.value)
-                                }
+                                onChange={(value) => {
+                                    setData("phone", value);
+                                    clearErrors("phone");
+                                }}
+                                error={errors.phone}
+                                placeholder="Introduce el teléfono"
                             />
-                            <InputError message={errors.phone} />
                         </div>
                     </div>
                     {/* Nombre de la Empresa */}
