@@ -37,8 +37,12 @@ class OrderApiController extends Controller
     public function store(OrderApiRequest $request)
     {
         $plan = Plan::findOrFail($request->validated('plan_id'));
-        $order = $this->orderService->createFromPurchase($plan, $request->validated());
-        return new OrderApiResource($order->load('plan'));
+        $result = $this->orderService->createFromPurchase($plan, $request->validated());
+
+        return (new OrderApiResource($result['order']->load('plan')))
+            ->additional(['already_exists' => $result['already_exists']])
+            ->response()
+            ->setStatusCode($result['already_exists'] ? 200 : 201);
     }
 
     public function show(string $orderNumber)

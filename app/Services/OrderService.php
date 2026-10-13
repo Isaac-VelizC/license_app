@@ -27,9 +27,12 @@ class OrderService
                 ->where('expires_at', '>', now())
                 ->orderByDesc('id')
                 ->first();
-                
+
             if ($existingOrder) {
-                return $existingOrder;
+                return [
+                    'order' => $existingOrder,
+                    'already_exists' => true,
+                ];
             }
 
             $order = Order::create([
@@ -45,7 +48,10 @@ class OrderService
 
             $order->update(['order_number' => $this->generateOrderNumber($order)]);
 
-            return $order->fresh();
+            return [
+                'order' => $order->fresh(),
+                'already_exists' => false,
+            ];
         });
     }
 

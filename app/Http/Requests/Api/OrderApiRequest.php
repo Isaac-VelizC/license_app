@@ -36,7 +36,12 @@ class OrderApiRequest extends FormRequest
             ],
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['required', 'email', 'max:255'],
-            'phone'         => ['required', 'string', 'max:30'],
+            'phone' => [
+                'required',
+                'string',
+                'max:30',
+                'phone:BO,PE,BR,CL,AR,PY',
+            ],
             'business_name' => ['nullable', 'string', 'max:255'],
         ];
     }
