@@ -108,6 +108,10 @@ class License extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function legalAcceptances() : HasMany {
+        return $this->hasMany(LegalAcceptance::class);
+    }
     
     /**
      * ATTRIBUTES

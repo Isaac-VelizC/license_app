@@ -2,6 +2,8 @@ import { Link } from "@inertiajs/react";
 import {
     BookOpen,
     ChartPie,
+    ClipboardCheck,
+    FileText,
     KeyIcon,
     LayoutGrid,
     ListOrdered,
@@ -28,6 +30,8 @@ import { index as ordersIndex } from "@/routes/admin/order";
 import { index as clientIndex } from "@/routes/admin/clients";
 import { index as licensesIndex } from "@/routes/admin/licenses";
 import { index as licenseLogsIndex } from "@/routes/admin/license-logs";
+import { index as legalDocumentsIndex } from "@/routes/admin/legal-documents";
+import { index as legalAcceptancesIndex } from"@/routes/admin/legal-acceptances";
 
 const generalNavItems: NavItem[] = [
     {
@@ -42,6 +46,11 @@ const managementNavItems: NavItem[] = [
         title: "Aplicaciones",
         href: appIndex().url,
         icon: LayoutGrid,
+    },
+    {
+        title: "Documentos Legales",
+        href: legalDocumentsIndex().url,
+        icon: FileText
     },
     {
         title: "Clientes",
@@ -66,7 +75,13 @@ const systemNavItems: NavItem[] = [
         href: licenseLogsIndex().url,
         icon: ScrollText,
     },
+    {
+        title: "Aceptaciones legales",
+        href: legalAcceptancesIndex().url,
+        icon: ClipboardCheck,
+    },
 ];
+
 const footerNavItems: NavItem[] = [
     {
         title: "Documentation",

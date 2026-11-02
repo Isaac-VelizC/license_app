@@ -22,6 +22,11 @@ class Client extends Model
         return $this->belongsToMany(App::class, 'licenses')->distinct();
     }
 
+    public function legalAcceptances(): HasMany
+    {
+        return $this->hasMany(LegalAcceptance::class);
+    }
+
     public function scopeSearch(Builder $query, string $search): Builder
     {
         $pattern = "%{$search}%";

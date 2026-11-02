@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\V1\{OrderApiController, LicenseActivationController};
+use App\Http\Controllers\Api\V1\{LegalAcceptanceController, LegalDocumentApiController, OrderApiController, LicenseActivationController};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +33,15 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::get('plans/{plan}', [OrderApiController::class, 'getPlan']);
+
+    Route::prefix('legal')
+        ->middleware('throttle:10,1')
+        ->group(function () {
+            Route::post('acceptances', [LegalAcceptanceController::class, 'store']);
+        });
+
+    Route::get(
+        '/legal/documents/{appSlug}',
+        [LegalDocumentApiController::class, 'index']
+    )->middleware('throttle:60,1');
 });

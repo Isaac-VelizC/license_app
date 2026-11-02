@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AppController, ClientController, DashboardController, LicenseController, LicenseLogController, OrderController, PlanController, ProductVersionController};
+use App\Http\Controllers\Admin\{AppController, ClientController, DashboardController, LegalAcceptanceController, LegalDocumentController, LicenseController, LicenseLogController, OrderController, PlanController, ProductVersionController};
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/admin/dashboard')->name('home');
@@ -47,6 +47,19 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     });
 
     Route::get('license-logs', [LicenseLogController::class, 'index'])->name('license-logs.index');
+
+    Route::prefix('legal-documents')->name('legal-documents.')->group(function () {
+        Route::get('/', [LegalDocumentController::class, 'index'])->name('index');
+        Route::get('/create', [LegalDocumentController::class, 'create'])->name('create');
+        Route::post('/', [LegalDocumentController::class, 'store'])->name('store');
+        Route::get('/{legalDocument}', [LegalDocumentController::class, 'show'])->name('show');
+        Route::get('/{legalDocument}/edit', [LegalDocumentController::class, 'edit'])->name('edit');
+        Route::put('/{legalDocument}', [LegalDocumentController::class, 'update'])->name('update');
+        Route::delete('/{legalDocument}', [LegalDocumentController::class, 'destroy'])->name('destroy');
+        Route::patch('/{legalDocument}/publish', [LegalDocumentController::class, 'publish'])->name('publish');
+    });
+
+    Route::get('/legal-acceptances', [LegalAcceptanceController::class, 'index'])->name('legal-acceptances.index');
 });
 
 require __DIR__ . '/settings.php';

@@ -37,6 +37,11 @@ class App extends Model
         return $this->belongsToMany(Client::class, 'licenses')->distinct();
     }
 
+    public function legalDocuments(): HasMany
+    {
+        return $this->hasMany(LegalDocument::class);
+    }
+
     /**
      * SCOPES
      */
