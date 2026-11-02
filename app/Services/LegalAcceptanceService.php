@@ -47,7 +47,7 @@ class LegalAcceptanceService
         string $hwid,
         ?string $ipAddress = null,
         ?string $userAgent = null
-    ): LegalAcceptance {
+    ): array {
         $hwid = trim($hwid);
 
         if ($hwid === '') {
@@ -62,15 +62,16 @@ class LegalAcceptanceService
             $ipAddress,
             $userAgent
         ) {
-            $document = LegalDocument::query()->findOrFail($documentId);
+            $document = LegalDocument::query()
+                ->findOrFail($documentId);
 
             if (! $document->is_active || $document->published_at === null) {
                 throw ValidationException::withMessages([
-                    'document' => 'El documento legal no está vigente.',
+                    'legal_document_id' => 'El documento legal no está vigente.',
                 ]);
             }
 
-            return LegalAcceptance::firstOrCreate(
+            $acceptance = LegalAcceptance::firstOrCreate(
                 [
                     'legal_document_id' => $document->id,
                     'hwid' => $hwid,
@@ -81,6 +82,11 @@ class LegalAcceptanceService
                     'user_agent' => $userAgent,
                 ]
             );
+
+            return [
+                'acceptance' => $acceptance,
+                'already_accepted' => ! $acceptance->wasRecentlyCreated,
+            ];
         });
     }
 

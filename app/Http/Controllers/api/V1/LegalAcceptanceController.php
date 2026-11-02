@@ -38,17 +38,15 @@ class LegalAcceptanceController extends Controller
             ]);
         }
 
-        $alreadyAccepted = $this->legalAcceptances->hasAccepted(
-            $document->id,
-            $data['hwid']
-        );
-
-        $acceptance = $this->legalAcceptances->accept(
+        $result = $this->legalAcceptances->accept(
             documentId: $document->id,
             hwid: $data['hwid'],
             ipAddress: $request->ip(),
             userAgent: $request->userAgent()
         );
+
+        $acceptance = $result['acceptance'];
+        $alreadyAccepted = $result['already_accepted'];
 
         return response()->json([
             'success' => true,
