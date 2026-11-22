@@ -8,6 +8,7 @@ import { Badge, Button } from '@/components/ui';
 import { show, toggle } from '@/routes/admin/apps';
 import ConfirmModal from '@/components/confirm-modal';
 import { useConfirmAction } from '@/hooks/use-confirm-action';
+import { truncateValue } from '@/lib/utils';
 
 interface AppsTableProps {
     apps: AppEntity[];
@@ -47,7 +48,7 @@ const AppsTable = ({ apps, onEdit, onClearSearch }: AppsTableProps) => {
                             {app.name}
                         </span>
                         <span className="line-clamp-1 text-xs text-muted-foreground">
-                            {app.description || 'Sin descripción'}
+                            {truncateValue(app.description || 'Sin descripción', 30)}
                         </span>
                     </div>
                 ),

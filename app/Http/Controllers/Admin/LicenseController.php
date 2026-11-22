@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\ChangePlanRequest;
 use App\Http\Requests\Admin\LicenseRequest;
 use App\Http\Resources\{LicenseResource, PlanResource};
 use App\Models\{License, App, Client, Plan};
-use App\services\LicenseService;
+use App\Services\LicenseService;
 use Illuminate\Http\{RedirectResponse, Request};
 use Inertia\{Inertia, Response};
 

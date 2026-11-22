@@ -258,7 +258,7 @@ export default function PlanFormPage({
                                     </div>
                                     {data.is_trial && (
                                         <p className="text-xs text-warning">
-                                            Es necesario una version de producot
+                                            Es necesario una version de producto
                                             para una plan de prueba
                                         </p>
                                     )}

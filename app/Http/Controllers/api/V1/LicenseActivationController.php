@@ -6,7 +6,7 @@ use App\Exceptions\LicenseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\{TrialRequest, ActivateLicenseRequest, ValidateLicenseRequest, DeactivateLicenseRequest};
 use App\Models\{Activation, App, License};
-use App\services\{LicenseSignatureService, LicenseService};
+use App\Services\{LicenseSignatureService, LicenseService};
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
