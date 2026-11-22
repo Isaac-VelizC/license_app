@@ -1,10 +1,10 @@
-import { useEffect, useMemo } from "react";
-import { CheckIcon, ClockIcon, Sliders } from "lucide-react";
-import { useForm } from "@inertiajs/react";
-import FormModal from "@/components/form-modal";
-import InputError from "@/components/input-error";
+import { useEffect, useMemo } from 'react';
+import { CheckIcon, ClockIcon, Sliders } from 'lucide-react';
+import { useForm } from '@inertiajs/react';
+import FormModal from '@/components/form-modal';
+import InputError from '@/components/input-error';
 import { changePlan } from '@/routes/admin/licenses';
-import type { PlanEntity } from "@/types";
+import type { PlanEntity } from '@/types';
 
 interface ChangePlanModalProps {
     isOpen: boolean;
@@ -19,7 +19,7 @@ export function ChangePlanModal({
     onClose,
     licenseId,
     currentPlanId,
-    plans = [],
+    plans,
 }: ChangePlanModalProps) {
     const { data, setData, patch, processing, errors, reset } = useForm({
         plan_id: currentPlanId,
@@ -82,13 +82,16 @@ export function ChangePlanModal({
                             return (
                                 <div
                                     key={plan.id}
-                                    onClick={() => !isCurrent && setData('plan_id', plan.id)}
+                                    onClick={() =>
+                                        !isCurrent &&
+                                        setData('plan_id', plan.id)
+                                    }
                                     className={`relative flex cursor-pointer items-start justify-between rounded-xl border p-4 transition-all ${
                                         isCurrent
                                             ? 'cursor-not-allowed border-border bg-muted/50 opacity-70'
                                             : isSelected
-                                                ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                                                : 'border-border hover:border-muted-foreground/30 hover:bg-accent/30'
+                                              ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                                              : 'border-border hover:border-muted-foreground/30 hover:bg-accent/30'
                                     }`}
                                 >
                                     <div className="flex items-start gap-3">
@@ -99,7 +102,9 @@ export function ChangePlanModal({
                                                     : 'border-muted-foreground/40'
                                             }`}
                                         >
-                                            {isSelected && <CheckIcon className="h-3 w-3" />}
+                                            {isSelected && (
+                                                <CheckIcon className="h-3 w-3" />
+                                            )}
                                         </div>
 
                                         <div>
@@ -115,7 +120,8 @@ export function ChangePlanModal({
                                             </div>
 
                                             <p className="mt-1 text-[11px] font-medium text-muted-foreground">
-                                                Hasta {plan.max_devices} dispositivo(s)
+                                                Hasta {plan.max_devices}{' '}
+                                                dispositivo(s)
                                             </p>
                                         </div>
                                     </div>
@@ -123,12 +129,16 @@ export function ChangePlanModal({
                                     <div className="shrink-0 text-right">
                                         <div className="flex items-baseline justify-end gap-0.5">
                                             <span className="text-lg font-bold tracking-tight text-foreground">
-                                                {plan.is_free ? 'Gratis' : plan.formatted_price}
+                                                {plan.is_free
+                                                    ? 'Gratis'
+                                                    : plan.formatted_price}
                                             </span>
                                         </div>
                                         <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
                                             <ClockIcon className="h-3 w-3 text-muted-foreground/60" />
-                                            {plan.is_lifetime ? 'Vitalicio' : `${plan.duration_days} días`}
+                                            {plan.is_lifetime
+                                                ? 'Vitalicio'
+                                                : `${plan.duration_days} días`}
                                         </span>
                                     </div>
                                 </div>

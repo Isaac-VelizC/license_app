@@ -1,12 +1,12 @@
-import React, { memo, useEffect } from "react";
-import { useForm } from "@inertiajs/react";
-import { User2 } from "lucide-react";
-import FormModal from "@/components/form-modal";
-import { Input, Label, Textarea } from "@/components/ui";
-import InputError from "@/components/input-error";
-import { store, update } from "@/routes/admin/clients";
-import type { ClientEntity, ClientFormData } from "@/types";
-import { isValidPhoneNumber, PhoneInput } from "@/components/ui/phone-input";
+import React, { memo, useEffect } from 'react';
+import { useForm } from '@inertiajs/react';
+import { User2 } from 'lucide-react';
+import FormModal from '@/components/form-modal';
+import { Input, Label, Textarea } from '@/components/ui';
+import InputError from '@/components/input-error';
+import { store, update } from '@/routes/admin/clients';
+import type { ClientEntity, ClientFormData } from '@/types';
+import { isValidPhoneNumber, PhoneInput } from '@/components/ui/phone-input';
 
 interface ClientsFormModalProps {
     isOpen: boolean;
@@ -29,11 +29,11 @@ const ClientForm = memo(
             reset,
             clearErrors,
         } = useForm<ClientFormData>({
-            name: "",
-            email: "",
-            phone: "",
-            company_name: "",
-            notes: "",
+            name: '',
+            email: '',
+            phone: '',
+            company_name: '',
+            notes: '',
         });
 
         useEffect(() => {
@@ -43,11 +43,11 @@ const ClientForm = memo(
 
             if (editingClient) {
                 setData({
-                    name: editingClient.name || "",
-                    email: editingClient.email || "",
-                    phone: editingClient.phone || "",
-                    company_name: editingClient.company_name || "",
-                    notes: editingClient.notes || "",
+                    name: editingClient.name || '',
+                    email: editingClient.email || '',
+                    phone: editingClient.phone || '',
+                    company_name: editingClient.company_name || '',
+                    notes: editingClient.notes || '',
                 });
             } else {
                 reset();
@@ -58,7 +58,7 @@ const ClientForm = memo(
             e.preventDefault();
 
             if (data.phone && !isValidPhoneNumber(data.phone)) {
-                setError("phone", "Introduce un número de teléfono válido.");
+                setError('phone', 'Introduce un número de teléfono válido.');
                 return;
             }
 
@@ -83,16 +83,16 @@ const ClientForm = memo(
             <FormModal
                 open={isOpen}
                 onOpenChange={handleClose}
-                title={isEditing ? "Editar Cliente" : "Nuevo Cliente"}
+                title={isEditing ? 'Editar Cliente' : 'Nuevo Cliente'}
                 description={
                     isEditing
-                        ? "Actualiza los datos de contacto o la información general del cliente."
-                        : "Registra un nuevo cliente para asociarle licencias y aplicaciones."
+                        ? 'Actualiza los datos de contacto o la información general del cliente.'
+                        : 'Registra un nuevo cliente para asociarle licencias y aplicaciones.'
                 }
                 progress={processing}
                 icon={User2}
                 labelButton={
-                    isEditing ? "Actualizar Cliente" : "Guardar Cliente"
+                    isEditing ? 'Actualizar Cliente' : 'Guardar Cliente'
                 }
                 onSubmit={handleSubmit}
             >
@@ -108,7 +108,7 @@ const ClientForm = memo(
                             placeholder="Ej: John Doe / Empresa S.A."
                             value={data.name}
                             disabled={processing}
-                            onChange={(e) => setData("name", e.target.value)}
+                            onChange={(e) => setData('name', e.target.value)}
                             required
                         />
                         <InputError message={errors.name} />
@@ -124,7 +124,7 @@ const ClientForm = memo(
                                 value={data.email}
                                 disabled={processing}
                                 onChange={(e) =>
-                                    setData("email", e.target.value)
+                                    setData('email', e.target.value)
                                 }
                                 required
                             />
@@ -137,8 +137,8 @@ const ClientForm = memo(
                                 name="phone"
                                 value={data.phone}
                                 onChange={(value) => {
-                                    setData("phone", value);
-                                    clearErrors("phone");
+                                    setData('phone', value);
+                                    clearErrors('phone');
                                 }}
                                 error={errors.phone}
                                 placeholder="Introduce el teléfono"
@@ -148,7 +148,7 @@ const ClientForm = memo(
                     {/* Nombre de la Empresa */}
                     <div className="space-y-1.5">
                         <Label htmlFor="company">
-                            Empresa{" "}
+                            Empresa{' '}
                             <span className="text-xs font-normal text-muted-foreground">
                                 (Opcional)
                             </span>
@@ -160,7 +160,7 @@ const ClientForm = memo(
                             value={data.company_name}
                             disabled={processing}
                             onChange={(e) =>
-                                setData("company_name", e.target.value)
+                                setData('company_name', e.target.value)
                             }
                         />
                         <InputError message={errors.company_name} />
@@ -168,7 +168,7 @@ const ClientForm = memo(
                     {/* Notas internas */}
                     <div className="space-y-1.5">
                         <Label htmlFor="notes">
-                            Notas{" "}
+                            Notas{' '}
                             <span className="text-xs font-normal text-muted-foreground">
                                 (Opcional, solo visible en el panel admin)
                             </span>
@@ -178,7 +178,7 @@ const ClientForm = memo(
                             placeholder="Contexto de soporte, acuerdos especiales, historial de contacto..."
                             value={data.notes}
                             disabled={processing}
-                            onChange={(e) => setData("notes", e.target.value)}
+                            onChange={(e) => setData('notes', e.target.value)}
                             rows={3}
                             error={errors.notes}
                         />
@@ -190,5 +190,5 @@ const ClientForm = memo(
     },
 );
 
-ClientForm.displayName = "ClientForm";
+ClientForm.displayName = 'ClientForm';
 export default ClientForm;

@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { PlusIcon } from "lucide-react";
-import { Head, router } from "@inertiajs/react";
-import { destroy } from "@/routes/admin/clients";
-import type { ClientEntity, PaginatedData } from "@/types";
-import Heading from "@/components/heading";
-import { Button, InputSearch } from "@/components/ui";
-import ClientsTable from "./components/clients-table";
-import { dashboard } from "@/routes/admin";
-import { index } from "@/routes/admin/clients";
-import { useDebounceSearch } from "@/hooks/use-debounce-search";
-import ClientForm from "./components/client-form";
-import ConfirmModal from "@/components/confirm-modal";
-import { useConfirmAction } from "@/hooks/use-confirm-action";
+import { useState } from 'react';
+import { PlusIcon } from 'lucide-react';
+import { Head } from '@inertiajs/react';
+import { destroy } from '@/routes/admin/clients';
+import type { ClientEntity, PaginatedData } from '@/types';
+import Heading from '@/components/heading';
+import { Button, InputSearch } from '@/components/ui';
+import ClientsTable from './components/clients-table';
+import { dashboard } from '@/routes/admin';
+import { index } from '@/routes/admin/clients';
+import { useDebounceSearch } from '@/hooks/use-debounce-search';
+import ClientForm from './components/client-form';
+import ConfirmModal from '@/components/confirm-modal';
+import { useConfirmAction } from '@/hooks/use-confirm-action';
 
 interface Props {
     clients: PaginatedData<ClientEntity>;
@@ -20,11 +20,13 @@ interface Props {
 
 export default function ClientsPage({ clients, filters }: Props) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [editingClient, setEditingClient] = useState<ClientEntity | null>(null);
+    const [editingClient, setEditingClient] = useState<ClientEntity | null>(
+        null,
+    );
     const { searchValue, setSearchValue, clearSearch, isSearching } =
-        useDebounceSearch(filters.search || "", {
+        useDebounceSearch(filters.search || '', {
             delay: 500,
-            only: ["clients", "filters"],
+            only: ['clients', 'filters'],
             minChars: 2,
         });
 
@@ -75,7 +77,7 @@ export default function ClientsPage({ clients, filters }: Props) {
                 </div>
                 <ClientsTable
                     clients={clients.data}
-                    deletingId={deleting ? deletingClient?.id ?? null : null}
+                    deletingId={deleting ? (deletingClient?.id ?? null) : null}
                     onEdit={handleOpenEdit}
                     onDelete={askDeleteClient}
                     onClearSearch={clearSearch}
@@ -107,7 +109,7 @@ export default function ClientsPage({ clients, filters }: Props) {
 
 ClientsPage.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Clientes", href: index().url },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Clientes', href: index().url },
     ],
 };

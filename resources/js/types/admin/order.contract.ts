@@ -1,6 +1,6 @@
-import { BadgeColor } from "@/components/ui/badge";
+import { BadgeColor } from '@/components/ui/badge';
 
-type OrderStatus = "pending" | "paid" | "expired" | "refunded";
+type OrderStatus = 'pending' | 'paid' | 'expired' | 'refunded';
 
 export type ISODateString = string;
 

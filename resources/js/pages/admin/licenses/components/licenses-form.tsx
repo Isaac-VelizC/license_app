@@ -1,11 +1,11 @@
-import { FileChartLine } from "lucide-react";
-import { useForm } from "@inertiajs/react";
-import { useMemo } from "react";
-import FormModal from "@/components/form-modal";
-import { Selectable } from "@/components/selectable";
-import { Label } from "@/components/ui";
-import type { AppEntity, ClientEntity, LicenseFormData } from "@/types";
-import { store } from "@/routes/admin/licenses";
+import { FileChartLine } from 'lucide-react';
+import { useForm } from '@inertiajs/react';
+import { useMemo } from 'react';
+import FormModal from '@/components/form-modal';
+import { Selectable } from '@/components/selectable';
+import { Label } from '@/components/ui';
+import type { AppEntity, ClientEntity, LicenseFormData } from '@/types';
+import { store } from '@/routes/admin/licenses';
 
 interface LicensesFormModalProps {
     isOpen: boolean;
@@ -15,9 +15,9 @@ interface LicensesFormModalProps {
 }
 
 const INITIAL_FORM_STATE: LicenseFormData = {
-    client_id: "",
-    app_id: "",
-    plan_id: "",
+    client_id: '',
+    app_id: '',
+    plan_id: '',
 };
 
 const LicensesForm = ({
@@ -72,7 +72,7 @@ const LicensesForm = ({
         setData((prev) => ({
             ...prev,
             app_id: val,
-            plan_id: "", // limpia el plan previo para evitar inconsistencias
+            plan_id: '', // limpia el plan previo para evitar inconsistencias
         }));
     };
 
@@ -109,7 +109,7 @@ const LicensesForm = ({
                         <Label htmlFor="client_id">Cliente</Label>
                         <Selectable
                             value={data.client_id}
-                            onValueChange={(val) => setData("client_id", val)}
+                            onValueChange={(val) => setData('client_id', val)}
                             placeholder="Seleccionar cliente"
                             error={errors.client_id}
                             showAll={false}
@@ -133,15 +133,15 @@ const LicensesForm = ({
                     <Label htmlFor="plan_id">Plan de Licenciamiento</Label>
                     <Selectable
                         value={data.plan_id}
-                        onValueChange={(val) => setData("plan_id", val)}
+                        onValueChange={(val) => setData('plan_id', val)}
                         disabled={!data.app_id || availablePlans.length === 0}
                         showAll={false}
                         placeholder={
                             !data.app_id
-                                ? "Selecciona una app primero"
+                                ? 'Selecciona una app primero'
                                 : availablePlans.length === 0
-                                  ? "Esta app no tiene planes disponibles para venta"
-                                  : "Seleccionar plan"
+                                  ? 'Esta app no tiene planes disponibles para venta'
+                                  : 'Seleccionar plan'
                         }
                         options={availablePlans}
                         error={errors.plan_id}
@@ -156,7 +156,7 @@ const LicensesForm = ({
                                 </span>
                                 <p className="font-medium">
                                     {selectedPlan.is_free
-                                        ? "Gratis"
+                                        ? 'Gratis'
                                         : selectedPlan.formatted_price}
                                 </p>
                             </div>
@@ -167,7 +167,7 @@ const LicensesForm = ({
                                 </span>
                                 <p className="font-medium">
                                     {selectedPlan.is_lifetime
-                                        ? "Vitalicio"
+                                        ? 'Vitalicio'
                                         : `${selectedPlan.duration_days} días`}
                                 </p>
                             </div>

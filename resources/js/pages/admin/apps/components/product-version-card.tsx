@@ -1,7 +1,7 @@
-import { memo } from "react";
-import { Package, Pencil, Trash2 } from "lucide-react";
-import { Badge, Button } from "@/components/ui";
-import type { ProductVersionEntity } from "@/types";
+import { memo } from 'react';
+import { Package, Pencil, Trash2 } from 'lucide-react';
+import { Badge, Button } from '@/components/ui';
+import type { ProductVersionEntity } from '@/types';
 
 interface Props {
     version: ProductVersionEntity;
@@ -24,12 +24,12 @@ const ProductVersionCard = memo(({ version, onEdit, onDelete }: Props) => {
                                 v{version.version}
                             </h3>
                             <Badge
-                                variant={"soft"}
+                                variant={'soft'}
                                 color={
-                                    version.is_active ? "success" : "neutral"
+                                    version.is_active ? 'success' : 'neutral'
                                 }
                             >
-                                {version.is_active ? "Activa" : "Inactiva"}
+                                {version.is_active ? 'Activa' : 'Inactiva'}
                             </Badge>
                         </div>
                         <p
@@ -63,7 +63,7 @@ const ProductVersionCard = memo(({ version, onEdit, onDelete }: Props) => {
                         {version.release_notes}
                     </p>
                 ) : (
-                    <p className="text-sm italic text-muted-foreground">
+                    <p className="text-sm text-muted-foreground italic">
                         Sin notas de versión.
                     </p>
                 )}
@@ -71,13 +71,13 @@ const ProductVersionCard = memo(({ version, onEdit, onDelete }: Props) => {
                     {version.released_at
                         ? `Publicada: ${new Date(
                               version.released_at,
-                          ).toLocaleDateString("es-BO")}`
-                        : "Aún no publicada"}
+                          ).toLocaleDateString('es-BO')}`
+                        : 'Aún no publicada'}
                 </div>
             </div>
         </div>
     );
 });
 
-ProductVersionCard.displayName = "ProductVersionCard";
+ProductVersionCard.displayName = 'ProductVersionCard';
 export default ProductVersionCard;

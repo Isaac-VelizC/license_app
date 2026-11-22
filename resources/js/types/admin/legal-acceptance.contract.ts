@@ -1,4 +1,4 @@
-import type { LegalDocumentType } from "./legal-document.contract";
+import type { LegalDocumentType } from './legal-document.contract';
 
 export interface LegalAcceptanceEntity {
     id: number;
@@ -24,5 +24,5 @@ export interface LegalAcceptanceEntity {
 
 export interface LegalAcceptanceFilters {
     app_id?: string;
-    type?: LegalDocumentType | "";
+    type?: LegalDocumentType | '';
 }

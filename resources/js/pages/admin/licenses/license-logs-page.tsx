@@ -1,15 +1,15 @@
-import { Head, Link, router } from "@inertiajs/react";
-import { useMemo } from "react";
-import { Column, DataTable } from "@/components/datatable";
-import Heading from "@/components/heading";
-import { Selectable } from "@/components/selectable";
-import { Badge, InputSearch } from "@/components/ui";
-import { useDebounceSearch } from "@/hooks/use-debounce-search";
-import { formatDateTime } from "@/lib/utils";
-import { dashboard } from "@/routes/admin";
-import { index as licenseLogsIndex } from "@/routes/admin/license-logs";
-import { show as licenseShow } from "@/routes/admin/licenses";
-import type { LicenseLogEntity, PaginatedData } from "@/types";
+import { Head, Link, router } from '@inertiajs/react';
+import { useMemo } from 'react';
+import { Column, DataTable } from '@/components/datatable';
+import Heading from '@/components/heading';
+import { Selectable } from '@/components/selectable';
+import { Badge, InputSearch } from '@/components/ui';
+import { useDebounceSearch } from '@/hooks/use-debounce-search';
+import { formatDateTime } from '@/lib/utils';
+import { dashboard } from '@/routes/admin';
+import { index as licenseLogsIndex } from '@/routes/admin/license-logs';
+import { show as licenseShow } from '@/routes/admin/licenses';
+import type { LicenseLogEntity, PaginatedData } from '@/types';
 
 interface Props {
     logs: PaginatedData<LicenseLogEntity>;
@@ -18,35 +18,35 @@ interface Props {
 }
 
 const EVENT_LABELS: Record<string, string> = {
-    issued: "Emitida",
-    renewed: "Renovada",
-    plan_changed: "Cambio de plan",
-    suspended: "Suspendida",
-    revoked: "Revocada",
-    reactivated: "Reactivada",
-    trial_started: "Prueba iniciada",
-    deactivated: "Dispositivo desconectado",
+    issued: 'Emitida',
+    renewed: 'Renovada',
+    plan_changed: 'Cambio de plan',
+    suspended: 'Suspendida',
+    revoked: 'Revocada',
+    reactivated: 'Reactivada',
+    trial_started: 'Prueba iniciada',
+    deactivated: 'Dispositivo desconectado',
 };
 
 const EVENT_COLORS: Record<
     string,
-    "success" | "warning" | "danger" | "info" | "neutral"
+    'success' | 'warning' | 'danger' | 'info' | 'neutral'
 > = {
-    issued: "success",
-    renewed: "success",
-    plan_changed: "info",
-    suspended: "warning",
-    revoked: "danger",
-    reactivated: "success",
-    trial_started: "info",
-    deactivated: "neutral",
+    issued: 'success',
+    renewed: 'success',
+    plan_changed: 'info',
+    suspended: 'warning',
+    revoked: 'danger',
+    reactivated: 'success',
+    trial_started: 'info',
+    deactivated: 'neutral',
 };
 
 export default function LicenseLogsPage({ logs, filters, events }: Props) {
     const { searchValue, setSearchValue, clearSearch, isSearching } =
-        useDebounceSearch(filters.search || "", {
+        useDebounceSearch(filters.search || '', {
             delay: 500,
-            only: ["logs", "filters"],
+            only: ['logs', 'filters'],
             minChars: 2,
         });
 
@@ -58,11 +58,11 @@ export default function LicenseLogsPage({ logs, filters, events }: Props) {
     const handleEventChange = (value: string) => {
         router.get(
             licenseLogsIndex().url,
-            { search: filters.search, event: value === "all" ? "" : value },
+            { search: filters.search, event: value === 'all' ? '' : value },
             {
                 preserveState: true,
                 preserveScroll: true,
-                only: ["logs", "filters"],
+                only: ['logs', 'filters'],
             },
         );
     };
@@ -70,20 +70,20 @@ export default function LicenseLogsPage({ logs, filters, events }: Props) {
     const columns = useMemo<Column<LicenseLogEntity>[]>(
         () => [
             {
-                id: "event",
-                header: "Evento",
+                id: 'event',
+                header: 'Evento',
                 cell: (log) => (
                     <Badge
                         variant="soft"
-                        color={EVENT_COLORS[log.event] ?? "neutral"}
+                        color={EVENT_COLORS[log.event] ?? 'neutral'}
                     >
                         {EVENT_LABELS[log.event] ?? log.event}
                     </Badge>
                 ),
             },
             {
-                id: "license",
-                header: "Licencia",
+                id: 'license',
+                header: 'Licencia',
                 cell: (log) => (
                     <div className="flex flex-col gap-0.5 text-xs">
                         <Link
@@ -93,36 +93,36 @@ export default function LicenseLogsPage({ logs, filters, events }: Props) {
                             {log.license.license_key}
                         </Link>
                         <span className="text-muted-foreground">
-                            {log.license.client_name ?? "Sin cliente"} ·{" "}
-                            {log.license.app_name ?? "App"}
+                            {log.license.client_name ?? 'Sin cliente'} ·{' '}
+                            {log.license.app_name ?? 'App'}
                         </span>
                     </div>
                 ),
             },
             {
-                id: "meta",
-                header: "Detalle",
+                id: 'meta',
+                header: 'Detalle',
                 cell: (log) => {
                     const reason = log.meta?.reason;
                     return (
                         <span className="text-xs text-muted-foreground">
-                            {typeof reason === "string" ? reason : "—"}
+                            {typeof reason === 'string' ? reason : '—'}
                         </span>
                     );
                 },
             },
             {
-                id: "ip_address",
-                header: "IP",
+                id: 'ip_address',
+                header: 'IP',
                 cell: (log) => (
                     <span className="font-mono text-xs text-muted-foreground">
-                        {log.ip_address ?? "—"}
+                        {log.ip_address ?? '—'}
                     </span>
                 ),
             },
             {
-                id: "created_at",
-                header: "Fecha",
+                id: 'created_at',
+                header: 'Fecha',
                 cell: (log) => (
                     <span className="text-xs">
                         {formatDateTime(log.created_at)}
@@ -153,7 +153,7 @@ export default function LicenseLogsPage({ logs, filters, events }: Props) {
                         className="w-full sm:max-w-sm"
                     />
                     <Selectable
-                        value={filters.event || ""}
+                        value={filters.event || ''}
                         onValueChange={handleEventChange}
                         placeholder="Filtrar por evento"
                         labelAll="Todos los eventos"
@@ -177,7 +177,7 @@ export default function LicenseLogsPage({ logs, filters, events }: Props) {
 
 LicenseLogsPage.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Auditoría", href: "#" },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Auditoría', href: '#' },
     ],
 };

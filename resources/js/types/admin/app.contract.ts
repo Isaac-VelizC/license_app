@@ -1,4 +1,4 @@
-import { ProductVersionEntity } from "./product-version.contract";
+import { ProductVersionEntity } from './product-version.contract';
 
 export interface PlanEntity {
     id: number;

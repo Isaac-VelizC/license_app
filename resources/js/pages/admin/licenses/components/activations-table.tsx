@@ -1,10 +1,10 @@
-import { memo, useMemo } from "react";
-import type { ActivationEntity } from "@/types";
-import { Clock, Laptop, Trash2, Wifi, WifiOff } from "lucide-react";
-import { formatDate, formatDateTime, truncateValue } from "@/lib/utils";
-import { Badge, Button } from "@/components/ui";
-import { DataTable } from "@/components/datatable";
-import { ClientOnly } from "@/components/client-only";
+import { memo, useMemo } from 'react';
+import type { ActivationEntity } from '@/types';
+import { Clock, Laptop, Trash2, Wifi, WifiOff } from 'lucide-react';
+import { formatDate, formatDateTime, truncateValue } from '@/lib/utils';
+import { Badge, Button } from '@/components/ui';
+import { DataTable } from '@/components/datatable';
+import { ClientOnly } from '@/components/client-only';
 
 type ActivationsTableProps = {
     activations: ActivationEntity[];
@@ -16,20 +16,20 @@ const ActivationsTable = memo(
         const columns = useMemo(
             () => [
                 {
-                    id: "device",
-                    header: "Dispositivo",
+                    id: 'device',
+                    header: 'Dispositivo',
                     cell: (activation: ActivationEntity) => (
                         <div className="flex items-center gap-2">
                             <Laptop className="size-4 shrink-0 text-muted-foreground" />
                             <span className="font-medium text-foreground">
-                                {activation.device_name || "Sin nombre"}
+                                {activation.device_name || 'Sin nombre'}
                             </span>
                         </div>
                     ),
                 },
                 {
-                    id: "hwid",
-                    header: "Identificador HWID",
+                    id: 'hwid',
+                    header: 'Identificador HWID',
                     cell: (activation: ActivationEntity) => (
                         <span
                             className="font-mono text-xs text-muted-foreground"
@@ -43,17 +43,17 @@ const ActivationsTable = memo(
                     ),
                 },
                 {
-                    id: "ip_address",
-                    header: "Dirección IP",
+                    id: 'ip_address',
+                    header: 'Dirección IP',
                     cell: (activation: ActivationEntity) => (
                         <span className="text-xs">
-                            {activation.ip_address || "—"}
+                            {activation.ip_address || '—'}
                         </span>
                     ),
                 },
                 {
-                    id: "activated_at",
-                    header: "Fecha de activación",
+                    id: 'activated_at',
+                    header: 'Fecha de activación',
                     cell: (activation: ActivationEntity) => (
                         <ClientOnly
                             fallback={
@@ -69,8 +69,8 @@ const ActivationsTable = memo(
                     ),
                 },
                 {
-                    id: "last_seen_at",
-                    header: "Última conexión",
+                    id: 'last_seen_at',
+                    header: 'Última conexión',
                     cell: (activation: ActivationEntity) => (
                         <ClientOnly
                             fallback={
@@ -87,8 +87,8 @@ const ActivationsTable = memo(
                     ),
                 },
                 {
-                    id: "status",
-                    header: "Estado",
+                    id: 'status',
+                    header: 'Estado',
                     cell: (activation: ActivationEntity) => (
                         <ActivationStatusBadge
                             isActive={activation.is_active}
@@ -96,10 +96,10 @@ const ActivationsTable = memo(
                     ),
                 },
                 {
-                    id: "actions",
-                    header: "Acción",
-                    headerClassName: "text-right",
-                    className: "text-right",
+                    id: 'actions',
+                    header: 'Acción',
+                    headerClassName: 'text-right',
+                    className: 'text-right',
                     cell: (activation: ActivationEntity) =>
                         activation.is_active ? (
                             <div className="flex justify-end">
@@ -114,7 +114,7 @@ const ActivationsTable = memo(
                                     }
                                     className="text-destructive hover:bg-destructive/10"
                                     title="Desconectar dispositivo"
-                                    aria-label={`Desconectar ${activation.device_name || "dispositivo"}`}
+                                    aria-label={`Desconectar ${activation.device_name || 'dispositivo'}`}
                                 >
                                     <Trash2 className="size-4" />
                                 </Button>
@@ -142,7 +142,7 @@ const ActivationsTable = memo(
     },
 );
 
-ActivationsTable.displayName = "ActivationsTable";
+ActivationsTable.displayName = 'ActivationsTable';
 export default ActivationsTable;
 
 function ActivationStatusBadge({ isActive }: { isActive: boolean }) {

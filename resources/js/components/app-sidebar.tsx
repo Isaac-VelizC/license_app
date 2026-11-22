@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link } from '@inertiajs/react';
 import {
     BookOpen,
     ChartPie,
@@ -9,11 +9,11 @@ import {
     ListOrdered,
     ScrollText,
     Users2,
-} from "lucide-react";
-import AppLogo from "@/components/app-logo";
-import { NavFooter } from "@/components/nav-footer";
-import { NavMain } from "@/components/nav-main";
-import { NavUser } from "@/components/nav-user";
+} from 'lucide-react';
+import AppLogo from '@/components/app-logo';
+import { NavFooter } from '@/components/nav-footer';
+import { NavMain } from '@/components/nav-main';
+import { NavUser } from '@/components/nav-user';
 import {
     Sidebar,
     SidebarContent,
@@ -22,20 +22,20 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import type { NavItem } from "@/types";
-import { dashboard } from "@/routes/admin";
-import { index as appIndex } from "@/routes/admin/apps";
-import { index as ordersIndex } from "@/routes/admin/order";
-import { index as clientIndex } from "@/routes/admin/clients";
-import { index as licensesIndex } from "@/routes/admin/licenses";
-import { index as licenseLogsIndex } from "@/routes/admin/license-logs";
-import { index as legalDocumentsIndex } from "@/routes/admin/legal-documents";
-import { index as legalAcceptancesIndex } from"@/routes/admin/legal-acceptances";
+} from '@/components/ui/sidebar';
+import type { NavItem } from '@/types';
+import { dashboard } from '@/routes/admin';
+import { index as appIndex } from '@/routes/admin/apps';
+import { index as ordersIndex } from '@/routes/admin/order';
+import { index as clientIndex } from '@/routes/admin/clients';
+import { index as licensesIndex } from '@/routes/admin/licenses';
+import { index as licenseLogsIndex } from '@/routes/admin/license-logs';
+import { index as legalDocumentsIndex } from '@/routes/admin/legal-documents';
+import { index as legalAcceptancesIndex } from '@/routes/admin/legal-acceptances';
 
 const generalNavItems: NavItem[] = [
     {
-        title: "Panel Central",
+        title: 'Panel Central',
         href: dashboard(),
         icon: ChartPie,
     },
@@ -43,27 +43,27 @@ const generalNavItems: NavItem[] = [
 
 const managementNavItems: NavItem[] = [
     {
-        title: "Aplicaciones",
+        title: 'Aplicaciones',
         href: appIndex().url,
         icon: LayoutGrid,
     },
     {
-        title: "Documentos Legales",
+        title: 'Documentos Legales',
         href: legalDocumentsIndex().url,
-        icon: FileText
+        icon: FileText,
     },
     {
-        title: "Clientes",
+        title: 'Clientes',
         href: clientIndex().url,
         icon: Users2,
     },
     {
-        title: "Licencias",
+        title: 'Licencias',
         href: licensesIndex().url,
         icon: KeyIcon,
     },
     {
-        title: "Pedidos",
+        title: 'Pedidos',
         href: ordersIndex().url,
         icon: ListOrdered,
     },
@@ -71,12 +71,12 @@ const managementNavItems: NavItem[] = [
 
 const systemNavItems: NavItem[] = [
     {
-        title: "Auditoría",
+        title: 'Auditoría',
         href: licenseLogsIndex().url,
         icon: ScrollText,
     },
     {
-        title: "Aceptaciones legales",
+        title: 'Aceptaciones legales',
         href: legalAcceptancesIndex().url,
         icon: ClipboardCheck,
     },
@@ -84,8 +84,8 @@ const systemNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: "Documentation",
-        href: "https://laravel.com/docs/starter-kits#react",
+        title: 'Documentation',
+        href: 'https://laravel.com/docs/starter-kits#react',
         icon: BookOpen,
     },
 ];

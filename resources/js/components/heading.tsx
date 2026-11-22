@@ -16,9 +16,17 @@ export default function Heading({
     const isSmall = variant === 'small';
 
     return (
-        <header className={`flex flex-col gap-4 ${isSmall ? '' : 'mb-8'} md:flex-row md:items-center md:justify-between`}>
+        <header
+            className={`flex flex-col gap-4 ${isSmall ? '' : 'mb-8'} md:flex-row md:items-center md:justify-between`}
+        >
             <div className="min-w-0">
-                <h2 className={isSmall ? 'text-base font-medium' : 'text-xl font-semibold tracking-tight'}>
+                <h2
+                    className={
+                        isSmall
+                            ? 'text-base font-medium'
+                            : 'text-xl font-semibold tracking-tight'
+                    }
+                >
                     {title}
                 </h2>
 

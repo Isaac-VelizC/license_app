@@ -6,10 +6,10 @@ import {
     Laptop,
     Sparkles,
     User,
-} from "lucide-react";
-import { Badge } from "@/components/ui";
-import { formatDate } from "@/lib/utils";
-import type { LicenseEntity } from "@/types";
+} from 'lucide-react';
+import { Badge } from '@/components/ui';
+import { formatDate } from '@/lib/utils';
+import type { LicenseEntity } from '@/types';
 
 const LicensesGridMetrix = ({ license }: { license: LicenseEntity }) => {
     const activeDevicesCount =
@@ -36,7 +36,7 @@ const LicensesGridMetrix = ({ license }: { license: LicenseEntity }) => {
                             {license.client.name}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                            {license.client.email ?? "—"}
+                            {license.client.email ?? '—'}
                         </p>
                         {license.client.company_name && (
                             <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
@@ -60,11 +60,11 @@ const LicensesGridMetrix = ({ license }: { license: LicenseEntity }) => {
                     <span className="text-xs font-medium">Software & Plan</span>
                 </div>
                 <p className="mt-2 font-semibold text-foreground">
-                    {license.app?.name ?? "App"}
+                    {license.app?.name ?? 'App'}
                 </p>
                 <div className="mt-1 flex items-center gap-2">
                     <Badge variant="outline" className="text-xs">
-                        {license.plan?.name ?? "Plan Genérico"}
+                        {license.plan?.name ?? 'Plan Genérico'}
                     </Badge>
                     {license.is_trial && (
                         <Badge
@@ -115,18 +115,18 @@ const LicensesGridMetrix = ({ license }: { license: LicenseEntity }) => {
                         <Calendar className="size-4 text-primary" />
                     )}
                     <span className="text-xs font-medium">
-                        {license.is_lifetime ? "Vigencia" : "Expiración"}
+                        {license.is_lifetime ? 'Vigencia' : 'Expiración'}
                     </span>
                 </div>
                 <p
                     className={`mt-2 font-semibold ${
                         license.is_lifetime
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-foreground"
+                            ? 'text-emerald-600 dark:text-emerald-400'
+                            : 'text-foreground'
                     }`}
                 >
                     {license.is_lifetime
-                        ? "Vitalicio"
+                        ? 'Vitalicio'
                         : formatDate(license.expires_at)}
                 </p>
                 {license.starts_at && (

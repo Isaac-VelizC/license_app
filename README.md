@@ -88,12 +88,12 @@ Un mismo `Client` puede tener licencias de distintas `App` sin duplicarse — el
 
 Base: `/api/v1/licenses`
 
-| Método | Endpoint | Descripción |
-|---|---|---|
-| `POST` | `/activate` | Activa una licencia en un dispositivo (`app_slug`, `license_key`, `hwid`) |
-| `POST` | `/validate` | Valida una activación existente |
-| `POST` | `/deactivate` | Libera un dispositivo |
-| `POST` | `/trial` | Registra o recupera el trial de 7 días para un `hwid` |
+| Método | Endpoint      | Descripción                                                               |
+| ------ | ------------- | ------------------------------------------------------------------------- |
+| `POST` | `/activate`   | Activa una licencia en un dispositivo (`app_slug`, `license_key`, `hwid`) |
+| `POST` | `/validate`   | Valida una activación existente                                           |
+| `POST` | `/deactivate` | Libera un dispositivo                                                     |
+| `POST` | `/trial`      | Registra o recupera el trial de 7 días para un `hwid`                     |
 
 `app_slug` identifica a qué aplicación pertenece la petición — cualquier app registrada en `apps` puede consumir estos mismos endpoints sin cambios en el backend. Todos están protegidos por rate limiting (por IP y por `license_key`).
 

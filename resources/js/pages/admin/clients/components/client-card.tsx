@@ -1,6 +1,6 @@
-import { memo } from "react";
-import { Building2, FileText, Mail, Phone, User } from "lucide-react";
-import type { ClientEntity } from "@/types";
+import { memo } from 'react';
+import { Building2, FileText, Mail, Phone, User } from 'lucide-react';
+import type { ClientEntity } from '@/types';
 
 const ClientCard = memo(({ client }: { client: ClientEntity }) => {
     return (
@@ -23,12 +23,12 @@ const ClientCard = memo(({ client }: { client: ClientEntity }) => {
 
                 <div className="flex items-center gap-2.5 text-muted-foreground">
                     <Phone className="size-4 shrink-0" />
-                    <span>{client.phone || "Sin teléfono registrado"}</span>
+                    <span>{client.phone || 'Sin teléfono registrado'}</span>
                 </div>
 
                 <div className="flex items-center gap-2.5 text-muted-foreground">
                     <Building2 className="size-4 shrink-0" />
-                    <span>{client.company_name || "Sin empresa"}</span>
+                    <span>{client.company_name || 'Sin empresa'}</span>
                 </div>
 
                 {client.notes && (
@@ -47,5 +47,5 @@ const ClientCard = memo(({ client }: { client: ClientEntity }) => {
     );
 });
 
-ClientCard.displayName = "ClientCard";
+ClientCard.displayName = 'ClientCard';
 export default ClientCard;

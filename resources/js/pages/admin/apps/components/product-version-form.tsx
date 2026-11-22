@@ -1,11 +1,11 @@
-import FormModal from "@/components/form-modal";
-import InputError from "@/components/input-error";
-import { Button, Input, Label, Switch, Textarea } from "@/components/ui";
-import { store, update } from "@/routes/admin/product";
-import type { ProductVersionEntity, ProductVersionForm } from "@/types";
-import { useForm } from "@inertiajs/react";
-import { DownloadCloud } from "lucide-react";
-import { useEffect } from "react";
+import FormModal from '@/components/form-modal';
+import InputError from '@/components/input-error';
+import { Input, Label, Switch, Textarea } from '@/components/ui';
+import { store, update } from '@/routes/admin/product';
+import type { ProductVersionEntity, ProductVersionForm } from '@/types';
+import { useForm } from '@inertiajs/react';
+import { DownloadCloud } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface Props {
     isOpen: boolean;
@@ -24,11 +24,11 @@ export default function ProductVersionForm({
 
     const form = useForm<ProductVersionForm>({
         app_id: appId,
-        version: "",
+        version: '',
         file: null,
-        release_notes: "",
+        release_notes: '',
         is_active: false,
-        released_at: "",
+        released_at: '',
     });
 
     useEffect(() => {
@@ -39,22 +39,22 @@ export default function ProductVersionForm({
                 app_id: appId,
                 version: editingVersion.version,
                 file: null,
-                release_notes: editingVersion.release_notes ?? "",
+                release_notes: editingVersion.release_notes ?? '',
                 is_active: editingVersion.is_active,
                 released_at: editingVersion.released_at
                     ? editingVersion.released_at.slice(0, 10)
-                    : "",
+                    : '',
             });
         } else {
             form.reset();
 
             form.setData({
                 app_id: appId,
-                version: "",
+                version: '',
                 file: null,
-                release_notes: "",
+                release_notes: '',
                 is_active: false,
-                released_at: "",
+                released_at: '',
             });
         }
 
@@ -91,22 +91,22 @@ export default function ProductVersionForm({
         <FormModal
             open={isOpen}
             onOpenChange={onClose}
-            title={isEditing ? "Editar versión" : "Registrar versión"}
+            title={isEditing ? 'Editar versión' : 'Registrar versión'}
             description={
                 isEditing
-                    ? "Actualiza la información de la versión."
-                    : "Registra una nueva versión del producto."
+                    ? 'Actualiza la información de la versión.'
+                    : 'Registra una nueva versión del producto.'
             }
             icon={DownloadCloud}
             progress={form.processing}
             isEdit={isEditing}
-            labelButton={isEditing ? "Guardar Cambios" : "Registrar versión"}
+            labelButton={isEditing ? 'Guardar Cambios' : 'Registrar versión'}
             onSubmit={handleSubmit}
         >
             <div className="relative">
                 {/**  LOADER / BARRA DE PROGRESO SE SUBIDA */}
                 {form.processing && (
-                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background/80 backdrop-blur-xs p-6 text-center">
+                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background/80 p-6 text-center backdrop-blur-xs">
                         <div className="w-full max-w-sm space-y-3 rounded-xl border border-border bg-card p-6 shadow-lg">
                             <div className="flex items-center justify-center">
                                 <span className="relative flex h-4 w-4">
@@ -119,7 +119,7 @@ export default function ProductVersionForm({
                                 <p className="text-sm font-semibold">
                                     {form.progress
                                         ? `Subiendo instalador (${form.progress.percentage}%)`
-                                        : "Procesando solicitud..."}
+                                        : 'Procesando solicitud...'}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
                                     Esto puede tardar unos segundos dependiendo
@@ -153,7 +153,7 @@ export default function ProductVersionForm({
                             disabled={isEditing}
                             placeholder="Ej. 1.2.0"
                             onChange={(e) =>
-                                form.setData("version", e.target.value)
+                                form.setData('version', e.target.value)
                             }
                             required
                         />
@@ -174,7 +174,7 @@ export default function ProductVersionForm({
                             accept=".exe,.zip"
                             onChange={(event) =>
                                 form.setData(
-                                    "file",
+                                    'file',
                                     event.target.files?.[0] ?? null,
                                 )
                             }
@@ -203,7 +203,7 @@ export default function ProductVersionForm({
                             rows={3}
                             onChange={(event) =>
                                 form.setData(
-                                    "release_notes",
+                                    'release_notes',
                                     event.target.value,
                                 )
                             }
@@ -220,7 +220,7 @@ export default function ProductVersionForm({
                             type="date"
                             value={form.data.released_at}
                             onChange={(event) =>
-                                form.setData("released_at", event.target.value)
+                                form.setData('released_at', event.target.value)
                             }
                         />
                         <InputError message={form.errors.released_at} />
@@ -241,7 +241,7 @@ export default function ProductVersionForm({
                         <Switch
                             checked={form.data.is_active}
                             onChange={(checked) =>
-                                form.setData("is_active", checked)
+                                form.setData('is_active', checked)
                             }
                         />
                     </div>

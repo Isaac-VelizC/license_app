@@ -26,7 +26,7 @@ type ModalProps = {
         | 'neutral';
     isCancelButton?: boolean;
     isDisabled?: boolean;
-    onSubmit: (e: React.SyntheticEvent) => void;   
+    onSubmit: (e: React.SyntheticEvent) => void;
 };
 
 const FormModal = ({
@@ -47,7 +47,7 @@ const FormModal = ({
 }: ModalProps) => {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="md:max-w-lg p-0 gap-0 overflow-hidden">
+            <DialogContent className="gap-0 overflow-hidden p-0 md:max-w-lg">
                 <form onSubmit={onSubmit}>
                     <div className="border-b border-border/60 bg-muted/30 px-6 py-5">
                         <DialogHeader>
@@ -61,7 +61,9 @@ const FormModal = ({
                                             className={`size-4 text-${color}-600`}
                                         />
                                     ) : (
-                                        <Icon className={`size-4 text-${color}-600`} />
+                                        <Icon
+                                            className={`size-4 text-${color}-600`}
+                                        />
                                     )}
                                 </div>
                                 <div>

@@ -1,16 +1,16 @@
-import { Head } from "@inertiajs/react";
-import { CheckIcon, CopyIcon, KeyIcon } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import { Button, Badge } from "@/components/ui";
-import type { LicenseEntity, PlanEntity } from "@/types";
-import LicensesHeader from "./components/licenses-header";
-import { dashboard } from "@/routes/admin";
-import { index as licenseIndex } from "@/routes/admin/licenses";
-import ActivationsTable from "./components/activations-table";
-import LicensesGridMetrix from "./components/licenses-grid-metrix";
-import { useConfirmAction } from "@/hooks/use-confirm-action";
-import ConfirmModal from "@/components/confirm-modal";
+import { Head } from '@inertiajs/react';
+import { CheckIcon, CopyIcon, KeyIcon } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { Button, Badge } from '@/components/ui';
+import type { LicenseEntity, PlanEntity } from '@/types';
+import LicensesHeader from './components/licenses-header';
+import { dashboard } from '@/routes/admin';
+import { index as licenseIndex } from '@/routes/admin/licenses';
+import ActivationsTable from './components/activations-table';
+import LicensesGridMetrix from './components/licenses-grid-metrix';
+import { useConfirmAction } from '@/hooks/use-confirm-action';
+import ConfirmModal from '@/components/confirm-modal';
 
 interface Props {
     license: LicenseEntity;
@@ -27,8 +27,8 @@ export default function LicensesDetail({ license, plans }: Props) {
         confirm: confirmDeactivateDevice,
         processing: deactivating,
     } = useConfirmAction<{ id: number; deviceName?: string | null }>({
-        action: (activation) => '', //destroyActivation(activation.id).url,
-        method: "delete",
+        action: (activation) => `/${activation.id}`, //destroyActivation(activation.id).url,
+        method: 'delete',
     });
 
     const handleCopyKey = async () => {
@@ -37,8 +37,8 @@ export default function LicensesDetail({ license, plans }: Props) {
             setCopiedKey(true);
             setTimeout(() => setCopiedKey(false), 2000);
         } catch (err) {
-            console.error("Error al copiar al portapapeles:", err);
-            toast.error("No se pudo copiar la clave.");
+            console.error('Error al copiar al portapapeles:', err);
+            toast.error('No se pudo copiar la clave.');
         }
     };
 
@@ -98,7 +98,9 @@ export default function LicensesDetail({ license, plans }: Props) {
 
                     <ActivationsTable
                         activations={license.activations ?? []}
-                        onDeactivate={(id, deviceName) => askDeactivate({ id, deviceName })}
+                        onDeactivate={(id, deviceName) =>
+                            askDeactivate({ id, deviceName })
+                        }
                     />
                 </div>
             </div>
@@ -109,7 +111,7 @@ export default function LicensesDetail({ license, plans }: Props) {
                 onConfirm={confirmDeactivateDevice}
                 processing={deactivating}
                 type="warning"
-                title={`¿Desconectar "${deactivatingActivation?.deviceName ?? "este dispositivo"}"?`}
+                title={`¿Desconectar "${deactivatingActivation?.deviceName ?? 'este dispositivo'}"?`}
                 descriptionText="Este dispositivo dejará de tener acceso con esta licencia. El cupo quedará libre para activar uno nuevo."
                 confirmText="Desconectar"
             />
@@ -119,8 +121,8 @@ export default function LicensesDetail({ license, plans }: Props) {
 
 LicensesDetail.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Listados de licencias", href: licenseIndex() },
-        { title: "Detalle", href: "#" },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Listados de licencias', href: licenseIndex() },
+        { title: 'Detalle', href: '#' },
     ],
 };

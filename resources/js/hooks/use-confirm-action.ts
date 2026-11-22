@@ -1,10 +1,10 @@
-import { useState, useCallback } from "react";
-import { router } from "@inertiajs/react";
+import { useState, useCallback } from 'react';
+import { router } from '@inertiajs/react';
 
 interface UseConfirmActionOptions<T> {
     /** Construye la URL a partir del item que se está confirmando */
     action: (item: T) => string;
-    method?: "delete" | "patch" | "put" | "post";
+    method?: 'delete' | 'patch' | 'put' | 'post';
     onSuccess?: () => void;
 }
 
@@ -15,7 +15,7 @@ interface UseConfirmActionOptions<T> {
  */
 export function useConfirmAction<T>({
     action,
-    method = "patch",
+    method = 'patch',
     onSuccess,
 }: UseConfirmActionOptions<T>) {
     const [pendingItem, setPendingItem] = useState<T | null>(null);
@@ -33,9 +33,9 @@ export function useConfirmAction<T>({
                 onSuccess,
             };
 
-            if (method === "delete") router.delete(url, options);
-            else if (method === "put") router.put(url, {}, options);
-            else if (method === "post") router.post(url, {}, options);
+            if (method === 'delete') router.delete(url, options);
+            else if (method === 'put') router.put(url, {}, options);
+            else if (method === 'post') router.post(url, {}, options);
             else router.patch(url, {}, options);
         },
         [method, onSuccess],

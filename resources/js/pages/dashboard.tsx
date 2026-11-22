@@ -1,16 +1,16 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link } from '@inertiajs/react';
 import {
     AppWindow,
     ArrowRight,
     Clock3,
     KeyRound,
     MonitorCheck,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { dashboard } from "@/routes/admin";
-import { formatDate } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { dashboard } from '@/routes/admin';
+import { formatDate } from '@/lib/utils';
 import {
     Table,
     TableBody,
@@ -18,8 +18,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { show } from "@/routes/admin/order";
+} from '@/components/ui/table';
+import { show } from '@/routes/admin/order';
 
 interface Stats {
     apps: number;
@@ -45,31 +45,31 @@ interface DashboardProps {
 }
 
 const statusLabels: Record<string, string> = {
-    pending: "Pendiente",
-    paid: "Pagado",
-    cancelled: "Cancelado",
-    expired: "Vencido",
+    pending: 'Pendiente',
+    paid: 'Pagado',
+    cancelled: 'Cancelado',
+    expired: 'Vencido',
 };
 
 export default function Dashboard({ stats, recentOrders }: DashboardProps) {
     const summary = [
         {
-            title: "Licencias activas",
+            title: 'Licencias activas',
             value: stats.activeLicenses,
             icon: KeyRound,
         },
         {
-            title: "Pedidos pendientes",
+            title: 'Pedidos pendientes',
             value: stats.pendingOrders,
             icon: Clock3,
         },
         {
-            title: "Aplicaciones",
+            title: 'Aplicaciones',
             value: stats.apps,
             icon: AppWindow,
         },
         {
-            title: "Pruebas activas",
+            title: 'Pruebas activas',
             value: stats.activeTrials,
             icon: MonitorCheck,
         },
@@ -148,11 +148,16 @@ export default function Dashboard({ stats, recentOrders }: DashboardProps) {
                                     {recentOrders.map((order) => (
                                         <TableRow key={order.id}>
                                             <TableCell className="font-medium">
-                                                <Link href={show(order.id).url} className="text-primary underline">
+                                                <Link
+                                                    href={show(order.id).url}
+                                                    className="text-primary underline"
+                                                >
                                                     {order.number}
                                                 </Link>
                                             </TableCell>
-                                            <TableCell>{order.client}</TableCell>
+                                            <TableCell>
+                                                {order.client}
+                                            </TableCell>
                                             <TableCell>{order.plan}</TableCell>
                                             <TableCell>
                                                 {formatDate(order.created_at)}
@@ -184,14 +189,14 @@ export default function Dashboard({ stats, recentOrders }: DashboardProps) {
                     <CardContent className="grid gap-3 sm:grid-cols-3">
                         {[
                             {
-                                label: "Gestionar pedidos",
-                                href: "/admin/orders",
+                                label: 'Gestionar pedidos',
+                                href: '/admin/orders',
                             },
                             {
-                                label: "Gestionar licencias",
-                                href: "/admin/licenses",
+                                label: 'Gestionar licencias',
+                                href: '/admin/licenses',
                             },
-                            { label: "Aplicaciones", href: "/admin/apps" },
+                            { label: 'Aplicaciones', href: '/admin/apps' },
                         ].map((item) => (
                             <Link
                                 key={item.href}
@@ -212,7 +217,7 @@ export default function Dashboard({ stats, recentOrders }: DashboardProps) {
 Dashboard.layout = {
     breadcrumbs: [
         {
-            title: "Panel Central",
+            title: 'Panel Central',
             href: dashboard(),
         },
     ],

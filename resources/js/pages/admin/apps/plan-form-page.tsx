@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from 'react';
 import {
     Tag,
     DollarSign,
@@ -8,17 +8,17 @@ import {
     GitBranch,
     Save,
     ArrowLeft,
-} from "lucide-react";
-import { Head, Link, useForm } from "@inertiajs/react";
-import InputError from "@/components/input-error";
-import { Input, Label, Switch } from "@/components/ui";
-import { store, update } from "@/routes/admin/plans";
-import { show } from "@/routes/admin/apps";
-import type { PlanEntity, PlanFormData } from "@/types";
-import Heading from "@/components/heading";
-import { dashboard } from "@/routes/admin";
-import { Selectable } from "@/components/selectable";
-import { toast } from "sonner";
+} from 'lucide-react';
+import { Head, Link, useForm } from '@inertiajs/react';
+import InputError from '@/components/input-error';
+import { Input, Label, Switch } from '@/components/ui';
+import { store, update } from '@/routes/admin/plans';
+import { show } from '@/routes/admin/apps';
+import type { PlanEntity, PlanFormData } from '@/types';
+import Heading from '@/components/heading';
+import { dashboard } from '@/routes/admin';
+import { Selectable } from '@/components/selectable';
+import { toast } from 'sonner';
 
 type ProductVersionOption = {
     id: number;
@@ -42,21 +42,21 @@ export default function PlanFormPage({
     // 1. Inicializamos el useForm directamente con los valores de editingPlan si existen
     const { data, setData, post, processing, errors, reset, clearErrors } =
         useForm<PlanFormData>({
-            name: editingPlan?.name ?? "",
+            name: editingPlan?.name ?? '',
             price: editingPlan
                 ? (editingPlan.price_cents / 100).toFixed(2)
-                : "",
-            duration_days: editingPlan?.duration_days ?? "",
+                : '',
+            duration_days: editingPlan?.duration_days ?? '',
             max_devices: editingPlan?.max_devices ?? 1,
             is_trial: editingPlan?.is_trial ?? false,
             qr_image: null,
-            stripe_price_id: editingPlan?.stripe_price_id ?? "",
+            stripe_price_id: editingPlan?.stripe_price_id ?? '',
             product_version_id: editingPlan?.product_version_id ?? null,
-            updates_until_version: editingPlan?.updates_until_version ?? "",
+            updates_until_version: editingPlan?.updates_until_version ?? '',
             is_active: editingPlan?.is_active ?? false,
         });
 
-    const isLifetime = data.duration_days === "" || data.duration_days === null;
+    const isLifetime = data.duration_days === '' || data.duration_days === null;
 
     // 2. Simplificamos el useEffect solo para limpiar errores si cambia el plan a editar
     useEffect(() => {
@@ -64,7 +64,7 @@ export default function PlanFormPage({
     }, [editingPlan, clearErrors]);
 
     const toggleLifetime = (checked: boolean) => {
-        setData("duration_days", checked ? "" : 30);
+        setData('duration_days', checked ? '' : 30);
     };
 
     const toggleTrial = (checked: boolean) => {
@@ -78,7 +78,7 @@ export default function PlanFormPage({
 
     const versionsOptions = useMemo(() => {
         return [
-            { value: "", label: "Ninguna (Versión general)" },
+            { value: '', label: 'Ninguna (Versión general)' },
             ...productVersions.map((version) => ({
                 value: String(version.id),
                 label: version.version,
@@ -92,7 +92,7 @@ export default function PlanFormPage({
         if (data.is_active) {
             if (!data.product_version_id || !data.updates_until_version) {
                 toast.error(
-                    "Para activar el plan, son obligatorios: la versión de producto y las actualizaciones incluidas.",
+                    'Para activar el plan, son obligatorios: la versión de producto y las actualizaciones incluidas.',
                 );
                 return;
             }
@@ -100,7 +100,7 @@ export default function PlanFormPage({
             const hasExistingQr = editingPlan && editingPlan.qr_image_url;
             if (!data.is_trial && !data.qr_image && !hasExistingQr) {
                 toast.error(
-                    "Para activar un plan de pago, es obligatoria la imagen del código QR.",
+                    'Para activar un plan de pago, es obligatoria la imagen del código QR.',
                 );
                 return;
             }
@@ -119,7 +119,7 @@ export default function PlanFormPage({
 
     return (
         <>
-            <Head title={isEditing ? "Editar plan" : "Crear plan"} />
+            <Head title={isEditing ? 'Editar plan' : 'Crear plan'} />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 {/* Cabecera */}
@@ -132,24 +132,24 @@ export default function PlanFormPage({
                         Volver a detalles de la aplicación
                     </Link>
                     <Heading
-                        title={isEditing ? "Editar plan" : "Crear plan"}
+                        title={isEditing ? 'Editar plan' : 'Crear plan'}
                         description={
                             isEditing
-                                ? "Modifica los detalles de este plan de licenciamiento."
-                                : "Crea un nuevo plan comercial para esta aplicación."
+                                ? 'Modifica los detalles de este plan de licenciamiento.'
+                                : 'Crea un nuevo plan comercial para esta aplicación.'
                         }
                     />
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6 pb-12">
                     {/* GRID PRINCIPAL: 2 Columnas en pantallas lg */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
                         {/* COLUMNA IZQUIERDA (7 columnas): Información General y Versiones */}
-                        <div className="lg:col-span-7 space-y-6">
+                        <div className="space-y-6 lg:col-span-7">
                             {/* SECCIÓN 1: INFORMACIÓN BÁSICA */}
-                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                            <div className="space-y-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
                                 <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
-                                    <Tag className="w-5 h-5 text-primary" />
+                                    <Tag className="h-5 w-5 text-primary" />
                                     <h3>Información General</h3>
                                 </div>
 
@@ -163,7 +163,7 @@ export default function PlanFormPage({
                                         value={data.name}
                                         disabled={processing}
                                         onChange={(e) =>
-                                            setData("name", e.target.value)
+                                            setData('name', e.target.value)
                                         }
                                         placeholder="Ej: Licencia Anual Profesional"
                                         required
@@ -171,7 +171,7 @@ export default function PlanFormPage({
                                     <InputError message={errors.name} />
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     {/* Precio */}
                                     <div className="space-y-1.5">
                                         <Label htmlFor="plan-price">
@@ -188,7 +188,7 @@ export default function PlanFormPage({
                                                 processing || data.is_trial
                                             }
                                             onChange={(e) =>
-                                                setData("price", e.target.value)
+                                                setData('price', e.target.value)
                                             }
                                             placeholder="0.00"
                                             required={!data.is_trial}
@@ -215,7 +215,7 @@ export default function PlanFormPage({
                                             leftIcon={Smartphone}
                                             onChange={(e) =>
                                                 setData(
-                                                    "max_devices",
+                                                    'max_devices',
                                                     Number(e.target.value),
                                                 )
                                             }
@@ -228,7 +228,7 @@ export default function PlanFormPage({
                                 </div>
 
                                 {/* Switch de Trial */}
-                                <div className="flex items-center justify-between rounded-lg border p-4 bg-muted/40">
+                                <div className="flex items-center justify-between rounded-lg border bg-muted/40 p-4">
                                     <div className="space-y-0.5">
                                         <Label
                                             htmlFor="plan-is-trial"
@@ -250,10 +250,10 @@ export default function PlanFormPage({
                             </div>
 
                             {/* SECCIÓN 2: CONTROL DE VERSIONES */}
-                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                            <div className="space-y-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
                                 <div className="border-b pb-3">
-                                    <div className="flex items-center gap-2  font-semibold text-foreground">
-                                        <GitBranch className="w-5 h-5 text-primary" />
+                                    <div className="flex items-center gap-2 font-semibold text-foreground">
+                                        <GitBranch className="h-5 w-5 text-primary" />
                                         <h3>Control de Versiones</h3>
                                     </div>
                                     {data.is_trial && (
@@ -280,14 +280,14 @@ export default function PlanFormPage({
                                                 ? String(
                                                       data.product_version_id,
                                                   )
-                                                : ""
+                                                : ''
                                         }
                                         defaultValue=""
                                         disabled={processing}
                                         required={data.is_trial}
                                         onValueChange={(e) =>
                                             setData(
-                                                "product_version_id",
+                                                'product_version_id',
                                                 e ? Number(e) : null,
                                             )
                                         }
@@ -307,7 +307,7 @@ export default function PlanFormPage({
                                 {/* Condicional: Mostrar solo si hay una versión de producto seleccionada */}
                                 {data.product_version_id !== null &&
                                     data.product_version_id !== undefined && (
-                                        <div className="space-y-1.5 pt-2 animate-fadeIn">
+                                        <div className="animate-fadeIn space-y-1.5 pt-2">
                                             <Label htmlFor="plan-updates-until-version">
                                                 Actualizaciones incluidas hasta
                                                 (Versión)
@@ -321,7 +321,7 @@ export default function PlanFormPage({
                                                 required={data.is_trial}
                                                 onChange={(e) =>
                                                     setData(
-                                                        "updates_until_version",
+                                                        'updates_until_version',
                                                         e.target.value,
                                                     )
                                                 }
@@ -344,15 +344,15 @@ export default function PlanFormPage({
                         </div>
 
                         {/* COLUMNA DERECHA (5 columnas): Vigencia, QR y Botón de Envío */}
-                        <div className="lg:col-span-5 space-y-6">
+                        <div className="space-y-6 lg:col-span-5">
                             {/* SECCIÓN 3: VIGENCIA Y DURACIÓN */}
-                            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                            <div className="space-y-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
                                 <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
-                                    <Calendar className="w-5 h-5 text-primary" />
+                                    <Calendar className="h-5 w-5 text-primary" />
                                     <h3>Vigencia y Duración</h3>
                                 </div>
 
-                                <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5 shadow-sm transition-all">
+                                <div className="bg-surface flex flex-col gap-3 rounded-2xl border border-border p-5 shadow-sm transition-all">
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-1">
                                             <Label className="text-sm font-bold text-foreground">
@@ -375,7 +375,7 @@ export default function PlanFormPage({
 
                                     {/* Mensaje de aviso cuando es un plan de prueba */}
                                     {data.is_trial && (
-                                        <div className="flex items-center gap-2 rounded-xl bg-warning/10 border border-warning/20 px-3.5 py-2.5 text-xs font-semibold text-warning">
+                                        <div className="flex items-center gap-2 rounded-xl border border-warning/20 bg-warning/10 px-3.5 py-2.5 text-xs font-semibold text-warning">
                                             <span>⚠️</span>
                                             <span>
                                                 No es posible aplicar la opción
@@ -394,11 +394,11 @@ export default function PlanFormPage({
                                             id="plan-duration"
                                             type="number"
                                             min="1"
-                                            value={data.duration_days ?? ""}
+                                            value={data.duration_days ?? ''}
                                             disabled={processing}
                                             onChange={(e) =>
                                                 setData(
-                                                    "duration_days",
+                                                    'duration_days',
                                                     e.target.value,
                                                 )
                                             }
@@ -414,16 +414,16 @@ export default function PlanFormPage({
 
                             {/* SECCIÓN 4: COMPROBANTE / QR DE PAGO */}
                             {!data.is_trial && (
-                                <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+                                <div className="space-y-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
                                     <div className="flex items-center gap-2 border-b pb-3 font-semibold text-foreground">
-                                        <QrCode className="w-5 h-5 text-primary" />
+                                        <QrCode className="h-5 w-5 text-primary" />
                                         <h3>QR de Pago</h3>
                                     </div>
 
                                     <div className="flex items-center gap-4">
                                         {(data.qr_image ||
                                             editingPlan?.qr_image_url) && (
-                                            <div className="overflow-hidden rounded-lg border border-border w-20 bg-muted shrink-0">
+                                            <div className="w-20 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
                                                 <img
                                                     src={
                                                         data.qr_image
@@ -438,7 +438,7 @@ export default function PlanFormPage({
                                                 />
                                             </div>
                                         )}
-                                        <div className="space-y-1.5 w-full">
+                                        <div className="w-full space-y-1.5">
                                             <Label htmlFor="plan-qr-image">
                                                 Imagen QR
                                             </Label>
@@ -449,7 +449,7 @@ export default function PlanFormPage({
                                                 disabled={processing}
                                                 onChange={(e) =>
                                                     setData(
-                                                        "qr_image",
+                                                        'qr_image',
                                                         e.target.files?.[0] ??
                                                             null,
                                                     )
@@ -462,12 +462,12 @@ export default function PlanFormPage({
                             )}
 
                             {/** SECCIÓN 5: ESTADO  */}
-                            <div className="flex items-center justify-between rounded-lg border border-border p-4 bg-card">
+                            <div className="flex items-center justify-between rounded-lg border border-border bg-card p-4">
                                 <div className="space-y-0.5">
                                     <p className="text-sm font-medium text-foreground">
                                         Estado del Plan
                                     </p>
-                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                    <p className="text-xs leading-relaxed text-muted-foreground">
                                         Habilítalo solo cuando el plan esté
                                         configurado por completo y listo para
                                         ser adquirido por los clientes.
@@ -477,7 +477,7 @@ export default function PlanFormPage({
                                 <Switch
                                     checked={data.is_active}
                                     onChange={(checked) =>
-                                        setData("is_active", checked)
+                                        setData('is_active', checked)
                                     }
                                 />
                             </div>
@@ -487,12 +487,12 @@ export default function PlanFormPage({
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full inline-flex items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 transition-all"
+                                    className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                                 >
-                                    <Save className="w-4 h-4 mr-2" />
+                                    <Save className="mr-2 h-4 w-4" />
                                     {isEditing
-                                        ? "Guardar Cambios del Plan"
-                                        : "Crear Plan Comercial"}
+                                        ? 'Guardar Cambios del Plan'
+                                        : 'Crear Plan Comercial'}
                                 </button>
                             </div>
                         </div>
@@ -505,8 +505,8 @@ export default function PlanFormPage({
 
 PlanFormPage.layout = {
     breadcrumbs: [
-        { title: "Panel central", href: dashboard() },
-        { title: "Aplicaciones", href: "/admin/apps" },
-        { title: "Nuevo plan" },
+        { title: 'Panel central', href: dashboard() },
+        { title: 'Aplicaciones', href: '/admin/apps' },
+        { title: 'Nuevo plan' },
     ],
 };

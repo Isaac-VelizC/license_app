@@ -1,10 +1,9 @@
-
-export type LegalDocumentType = 'terms' | 'privacy' | 'eula'
+export type LegalDocumentType = 'terms' | 'privacy' | 'eula';
 
 export interface LegalDocumentApp {
-  id: number
-  name: string
-  slug: string
+    id: number;
+    name: string;
+    slug: string;
 }
 
 export interface LegalDocumentEntity {
@@ -32,7 +31,7 @@ export interface LegalDocumentFormData {
 }
 
 export const LEGAL_DOCUMENT_TYPES: Record<LegalDocumentType, string> = {
-    terms: "Términos y condiciones",
-    privacy: "Política de privacidad",
-    eula: "Acuerdo de licencia",
+    terms: 'Términos y condiciones',
+    privacy: 'Política de privacidad',
+    eula: 'Acuerdo de licencia',
 };

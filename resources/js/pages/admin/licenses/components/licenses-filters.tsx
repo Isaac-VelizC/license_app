@@ -1,9 +1,9 @@
-import { Selectable } from "@/components/selectable";
-import { Button, InputSearch } from "@/components/ui";
-import { useDebounceSearch } from "@/hooks/use-debounce-search";
-import { AppEntity, ClientEntity, LicenseFilters } from "@/types";
-import { Filter, RotateCcw } from "lucide-react";
-import { useCallback, useMemo } from "react";
+import { Selectable } from '@/components/selectable';
+import { Button, InputSearch } from '@/components/ui';
+import { useDebounceSearch } from '@/hooks/use-debounce-search';
+import { AppEntity, ClientEntity, LicenseFilters } from '@/types';
+import { Filter, RotateCcw } from 'lucide-react';
+import { useCallback, useMemo } from 'react';
 
 interface LicensesFiltersProps {
     filters: LicenseFilters;
@@ -16,22 +16,22 @@ interface LicensesFiltersProps {
 }
 
 const STATUS_OPTIONS = [
-    { label: "Activa", value: "active" },
-    { label: "Suspendida", value: "suspended" },
-    { label: "Revocada", value: "revoked" },
+    { label: 'Activa', value: 'active' },
+    { label: 'Suspendida', value: 'suspended' },
+    { label: 'Revocada', value: 'revoked' },
 ];
 
 const LicensesFilters = ({
     filters,
-    apps = [],
-    clients = [],
+    apps,
+    clients,
     onFilterChange,
     onClearAll,
 }: LicensesFiltersProps) => {
     const { searchValue, setSearchValue, clearSearch, isSearching } =
-        useDebounceSearch(filters.search || "", {
+        useDebounceSearch(filters.search || '', {
             delay: 500,
-            only: ["licenses", "filters"],
+            only: ['licenses', 'filters'],
             minChars: 2,
         });
 
@@ -77,17 +77,17 @@ const LicensesFilters = ({
                 />
 
                 <Selectable
-                    value={String(filters.app_id || "")}
-                    onValueChange={(val) => handleSelectChange("app_id", val)}
+                    value={String(filters.app_id || '')}
+                    onValueChange={(val) => handleSelectChange('app_id', val)}
                     placeholder="Filtrar por App"
                     options={appsOptions}
                     labelAll="Todas las aplicaciones"
                 />
 
                 <Selectable
-                    value={String(filters.client_id || "")}
+                    value={String(filters.client_id || '')}
                     onValueChange={(val) =>
-                        handleSelectChange("client_id", val)
+                        handleSelectChange('client_id', val)
                     }
                     placeholder="Filtrar por Cliente"
                     options={clientsOptions}
@@ -95,8 +95,8 @@ const LicensesFilters = ({
                 />
 
                 <Selectable
-                    value={filters.status || ""}
-                    onValueChange={(val) => handleSelectChange("status", val)}
+                    value={filters.status || ''}
+                    onValueChange={(val) => handleSelectChange('status', val)}
                     placeholder="Filtrar por Estado"
                     labelAll="Todos los estados"
                     options={STATUS_OPTIONS}

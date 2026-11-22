@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { useForm } from "@inertiajs/react";
-import { Grid3x3 } from "lucide-react";
-import FormModal from "@/components/form-modal";
-import { store, update } from "@/routes/admin/apps";
-import type { AppEntity, AppFormData } from "@/types";
-import { Input, Label, Textarea } from "@/components/ui";
-import InputError from "@/components/input-error";
+import React, { useEffect, useRef } from 'react';
+import { useForm } from '@inertiajs/react';
+import { Grid3x3 } from 'lucide-react';
+import FormModal from '@/components/form-modal';
+import { store, update } from '@/routes/admin/apps';
+import type { AppEntity, AppFormData } from '@/types';
+import { Input, Label, Textarea } from '@/components/ui';
+import InputError from '@/components/input-error';
 
 type AppFormModalProps = {
     editingApp: AppEntity | null;
@@ -18,9 +18,9 @@ const AppsForm = ({ editingApp, isOpen, onClose }: AppFormModalProps) => {
 
     const { data, setData, post, put, processing, errors, reset, clearErrors } =
         useForm<AppFormData>({
-            name: "",
-            slug: "",
-            description: "",
+            name: '',
+            slug: '',
+            description: '',
         });
 
     const slugTouchedManually = useRef(false);
@@ -34,7 +34,7 @@ const AppsForm = ({ editingApp, isOpen, onClose }: AppFormModalProps) => {
                 setData({
                     name: editingApp.name,
                     slug: editingApp.slug,
-                    description: editingApp.description || "",
+                    description: editingApp.description || '',
                 });
             } else {
                 reset();
@@ -44,13 +44,13 @@ const AppsForm = ({ editingApp, isOpen, onClose }: AppFormModalProps) => {
 
     const slugify = (value: string): string =>
         value
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "") // quita tildes/diacríticos (á → a, ñ → n)
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // quita tildes/diacríticos (á → a, ñ → n)
             .toLowerCase()
             .trim()
-            .replace(/[^\w\s-]/g, "")
-            .replace(/[\s_-]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const name = e.target.value;
@@ -67,7 +67,7 @@ const AppsForm = ({ editingApp, isOpen, onClose }: AppFormModalProps) => {
 
     const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         slugTouchedManually.current = true;
-        setData("slug", e.target.value);
+        setData('slug', e.target.value);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -91,12 +91,12 @@ const AppsForm = ({ editingApp, isOpen, onClose }: AppFormModalProps) => {
         <FormModal
             open={isOpen}
             onOpenChange={onClose}
-            title={isEditing ? "Editar Aplicación" : "Nueva Aplicación"}
+            title={isEditing ? 'Editar Aplicación' : 'Nueva Aplicación'}
             description=""
             icon={Grid3x3}
             progress={processing}
             isEdit={isEditing}
-            labelButton={editingApp ? "Guardar Cambios" : "Crear Aplicación"}
+            labelButton={editingApp ? 'Guardar Cambios' : 'Crear Aplicación'}
             onSubmit={handleSubmit}
         >
             <div className="max-h-[70vh] space-y-5 overflow-y-auto px-6 py-5">
@@ -140,7 +140,7 @@ const AppsForm = ({ editingApp, isOpen, onClose }: AppFormModalProps) => {
                         id="app-description"
                         value={data.description}
                         disabled={processing}
-                        onChange={(e) => setData("description", e.target.value)}
+                        onChange={(e) => setData('description', e.target.value)}
                         placeholder="Breve descripción del software..."
                         rows={3}
                         error={errors.description}

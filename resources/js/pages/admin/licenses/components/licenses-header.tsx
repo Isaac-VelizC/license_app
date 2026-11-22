@@ -1,5 +1,5 @@
-import { Link, router } from "@inertiajs/react";
-import { memo, useState } from "react";
+import { Link, router } from '@inertiajs/react';
+import { memo, useState } from 'react';
 import {
     ArrowLeft,
     PauseCircle,
@@ -7,21 +7,21 @@ import {
     RefreshCw,
     Sliders,
     XCircle,
-} from "lucide-react";
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui";
+} from 'lucide-react';
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui';
 import {
     index as licenseIndex,
     reactivate,
     renew,
     revoke,
     suspend,
-} from "@/routes/admin/licenses";
-import type { LicenseEntity, PlanEntity } from "@/types";
-import ConfirmModal, { ModalVariant } from "@/components/confirm-modal";
-import ChangePlanModal from "./change-plan";
+} from '@/routes/admin/licenses';
+import type { LicenseEntity, PlanEntity } from '@/types';
+import ConfirmModal, { ModalVariant } from '@/components/confirm-modal';
+import ChangePlanModal from './change-plan';
 
-type ActionType = "renew" | "suspend" | "reactivate" | "revoke";
+type ActionType = 'renew' | 'suspend' | 'reactivate' | 'revoke';
 
 interface Props {
     license: LicenseEntity;
@@ -45,41 +45,41 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
         }
     > = {
         renew: {
-            title: "Renovar Licencia",
-            type: "info",
-            descriptionText: "¿Deseas renovar la vigencia de esta licencia?",
-            confirmText: "Sí, renovar",
+            title: 'Renovar Licencia',
+            type: 'info',
+            descriptionText: '¿Deseas renovar la vigencia de esta licencia?',
+            confirmText: 'Sí, renovar',
             url: renew(license.id).url,
             alertText:
-                "Se actualizará la fecha de expiración según los términos del plan.",
+                'Se actualizará la fecha de expiración según los términos del plan.',
         },
         suspend: {
-            title: "Suspender Licencia",
-            type: "warning",
+            title: 'Suspender Licencia',
+            type: 'warning',
             descriptionText:
-                "¿Deseas suspender esta licencia temporalmente? Se pausará el acceso a los dispositivos.",
-            confirmText: "Sí, suspender",
+                '¿Deseas suspender esta licencia temporalmente? Se pausará el acceso a los dispositivos.',
+            confirmText: 'Sí, suspender',
             url: suspend(license.id).url,
             alertText:
-                "Los dispositivos sincronizados perderán el acceso hasta que la licencia sea reactivada.",
+                'Los dispositivos sincronizados perderán el acceso hasta que la licencia sea reactivada.',
         },
         reactivate: {
-            title: "Reactivar Licencia",
-            type: "success",
+            title: 'Reactivar Licencia',
+            type: 'success',
             descriptionText:
-                "¿Deseas reactivar esta licencia para restaurar el acceso?",
-            confirmText: "Sí, reactivar",
+                '¿Deseas reactivar esta licencia para restaurar el acceso?',
+            confirmText: 'Sí, reactivar',
             url: reactivate(license.id).url,
             alertText: null,
         },
         revoke: {
-            title: "Revocar Licencia",
-            type: "danger",
+            title: 'Revocar Licencia',
+            type: 'danger',
             descriptionText:
-                "¿Estás seguro de revocar esta licencia? Se denegará de forma permanente el acceso a todos los dispositivos registrados.",
-            confirmText: "Sí, revocar licencia",
+                '¿Estás seguro de revocar esta licencia? Se denegará de forma permanente el acceso a todos los dispositivos registrados.',
+            confirmText: 'Sí, revocar licencia',
             url: revoke(license.id).url,
-            alertText: "Esta acción es permanente y no se podrá deshacer.",
+            alertText: 'Esta acción es permanente y no se podrá deshacer.',
         },
     };
 
@@ -104,8 +104,8 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
 
     const currentConfig = confirmAction ? ACTION_CONFIG[confirmAction] : null;
 
-    const isRevoked = license.status === "revoked";
-    const isSuspended = license.status === "suspended";
+    const isRevoked = license.status === 'revoked';
+    const isSuspended = license.status === 'suspended';
 
     return (
         <div>
@@ -127,7 +127,7 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => setConfirmAction("renew")}
+                                onClick={() => setConfirmAction('renew')}
                             >
                                 <RefreshCw className="mr-1.5 size-4 text-emerald-500" />
                                 Renovar
@@ -152,7 +152,7 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => setConfirmAction("reactivate")}
+                                onClick={() => setConfirmAction('reactivate')}
                             >
                                 <PlayCircle className="mr-1.5 size-4 text-emerald-500" />
                                 Reactivar
@@ -161,7 +161,7 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => setConfirmAction("suspend")}
+                                onClick={() => setConfirmAction('suspend')}
                             >
                                 <PauseCircle className="mr-1.5 size-4 text-amber-500" />
                                 Suspender
@@ -173,7 +173,7 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
                             <Button
                                 variant="destructive"
                                 size="sm"
-                                onClick={() => setConfirmAction("revoke")}
+                                onClick={() => setConfirmAction('revoke')}
                             >
                                 <XCircle className="mr-1.5 size-4" />
                                 Revocar
@@ -188,7 +188,7 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
                 onClose={() => setConfirmAction(null)}
                 onConfirm={handleExecuteAction}
                 processing={processing}
-                type={currentConfig?.type ?? "info"}
+                type={currentConfig?.type ?? 'info'}
                 title={currentConfig?.title}
                 itemName={`Licencia (${license.license_key})`}
                 confirmText={currentConfig?.confirmText}
@@ -207,5 +207,5 @@ const LicensesHeader = memo(({ license, plans = [] }: Props) => {
     );
 });
 
-LicensesHeader.displayName = "LicensesHeader";
+LicensesHeader.displayName = 'LicensesHeader';
 export default LicensesHeader;

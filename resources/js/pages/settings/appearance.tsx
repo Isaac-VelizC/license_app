@@ -8,9 +8,7 @@ export default function Appearance() {
         <>
             <Head title="Configuración de apariencia" />
 
-
             <h1 className="sr-only">Configuración de apariencia</h1>
-
 
             <div className="space-y-6">
                 <Heading
@@ -23,7 +21,6 @@ export default function Appearance() {
         </>
     );
 }
-
 
 Appearance.layout = {
     breadcrumbs: [

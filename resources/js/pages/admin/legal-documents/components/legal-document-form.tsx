@@ -4,22 +4,21 @@ import {
     useRef,
     useState,
     type ChangeEvent,
-    type FormEvent,
-} from "react";
-import { useForm } from "@inertiajs/react";
-import { Eye, FileText, Loader2, Pencil, Save, Upload, X } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+} from 'react';
+import { useForm } from '@inertiajs/react';
+import { Eye, FileText, Loader2, Pencil, Upload, X } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
-import { Button, Input, Label } from "@/components/ui";
-import InputError from "@/components/input-error";
+import { Button, Input, Label } from '@/components/ui';
+import InputError from '@/components/input-error';
 
 import type {
     LegalDocumentApp,
     LegalDocumentEntity,
     LegalDocumentFormData,
-} from "@/types";
-import { Selectable } from "@/components/selectable";
+} from '@/types';
+import { Selectable } from '@/components/selectable';
 
 interface Props {
     apps: LegalDocumentApp[];
@@ -29,14 +28,14 @@ interface Props {
 }
 
 const TYPES_OPTIONS = [
-    { label: "Términos y condiciones", value: "terms" },
-    { label: "Política de privacidad", value: "privacy" },
-    { label: "Acuerdo de licencia", value: "eula" },
+    { label: 'Términos y condiciones', value: 'terms' },
+    { label: 'Política de privacidad', value: 'privacy' },
+    { label: 'Acuerdo de licencia', value: 'eula' },
 ];
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 
-type EditorTab = "edit" | "preview";
+type EditorTab = 'edit' | 'preview';
 
 export default function LegalDocumentForm({
     apps,
@@ -48,14 +47,14 @@ export default function LegalDocumentForm({
 
     const { data, setData, post, put, processing, errors } =
         useForm<LegalDocumentFormData>({
-            app_id: document ? String(document.app_id) : "",
-            type: document?.type ?? "terms",
-            version: document?.version ?? "",
-            title: document?.title ?? "",
-            content: document?.content ?? "",
+            app_id: document ? String(document.app_id) : '',
+            type: document?.type ?? 'terms',
+            version: document?.version ?? '',
+            title: document?.title ?? '',
+            content: document?.content ?? '',
         });
 
-    const [activeTab, setActiveTab] = useState<EditorTab>("edit");
+    const [activeTab, setActiveTab] = useState<EditorTab>('edit');
     const [fileName, setFileName] = useState<string | null>(null);
     const [fileError, setFileError] = useState<string | null>(null);
     const [readingFile, setReadingFile] = useState(false);
@@ -79,24 +78,24 @@ export default function LegalDocumentForm({
         setFileError(null);
 
         if (!/\.md$/i.test(file.name)) {
-            setFileError("Selecciona un archivo Markdown (.md).");
-            event.target.value = "";
+            setFileError('Selecciona un archivo Markdown (.md).');
+            event.target.value = '';
             return;
         }
 
         if (file.size > MAX_FILE_SIZE) {
-            setFileError("El archivo no debe superar 1 MB.");
-            event.target.value = "";
+            setFileError('El archivo no debe superar 1 MB.');
+            event.target.value = '';
             return;
         }
 
         if (data.content.trim()) {
             const confirmed = window.confirm(
-                "Importar el archivo reemplazará el contenido actual. ¿Deseas continuar?",
+                'Importar el archivo reemplazará el contenido actual. ¿Deseas continuar?',
             );
 
             if (!confirmed) {
-                event.target.value = "";
+                event.target.value = '';
                 return;
             }
         }
@@ -107,25 +106,25 @@ export default function LegalDocumentForm({
             const content = await file.text();
 
             if (!content.trim()) {
-                setFileError("El archivo Markdown está vacío.");
+                setFileError('El archivo Markdown está vacío.');
                 return;
             }
 
-            if (content.includes("\uFFFD")) {
+            if (content.includes('\uFFFD')) {
                 setFileError(
-                    "El archivo contiene caracteres no válidos. Verifica que esté guardado en UTF-8.",
+                    'El archivo contiene caracteres no válidos. Verifica que esté guardado en UTF-8.',
                 );
                 return;
             }
 
-            setData("content", content);
+            setData('content', content);
             setFileName(file.name);
-            setActiveTab("preview");
+            setActiveTab('preview');
         } catch {
-            setFileError("No se pudo leer el archivo seleccionado.");
+            setFileError('No se pudo leer el archivo seleccionado.');
         } finally {
             setReadingFile(false);
-            event.target.value = "";
+            event.target.value = '';
         }
     };
 
@@ -156,7 +155,7 @@ export default function LegalDocumentForm({
 
     return (
         <form onSubmit={submit} className="space-y-6 pb-12">
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+            <div className="space-y-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
                 <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <div className="space-y-1.5">
                         <Label htmlFor="app_id" required>
@@ -165,7 +164,7 @@ export default function LegalDocumentForm({
 
                         <Selectable
                             value={data.app_id}
-                            onValueChange={(value) => setData("app_id", value)}
+                            onValueChange={(value) => setData('app_id', value)}
                             placeholder="Seleccionar aplicación"
                             showAll={false}
                             options={appsOptions}
@@ -184,8 +183,8 @@ export default function LegalDocumentForm({
                             value={data.type}
                             onValueChange={(value) =>
                                 setData(
-                                    "type",
-                                    value as LegalDocumentFormData["type"],
+                                    'type',
+                                    value as LegalDocumentFormData['type'],
                                 )
                             }
                             showAll={false}
@@ -205,7 +204,7 @@ export default function LegalDocumentForm({
                             id="version"
                             value={data.version}
                             onChange={(event) =>
-                                setData("version", event.target.value)
+                                setData('version', event.target.value)
                             }
                             placeholder="Ej. 1.0.0"
                             maxLength={20}
@@ -224,7 +223,7 @@ export default function LegalDocumentForm({
                             id="title"
                             value={data.title}
                             onChange={(event) =>
-                                setData("title", event.target.value)
+                                setData('title', event.target.value)
                             }
                             placeholder="Título del documento"
                             maxLength={255}
@@ -236,7 +235,7 @@ export default function LegalDocumentForm({
                 </div>
             </div>
 
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-4">
+            <div className="space-y-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
                 <div className="space-y-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="space-y-1">
@@ -316,13 +315,13 @@ export default function LegalDocumentForm({
                                 <Button
                                     type="button"
                                     variant={
-                                        activeTab === "edit"
-                                            ? "secondary"
-                                            : "ghost"
+                                        activeTab === 'edit'
+                                            ? 'secondary'
+                                            : 'ghost'
                                     }
                                     size="sm"
                                     color="neutral"
-                                    onClick={() => setActiveTab("edit")}
+                                    onClick={() => setActiveTab('edit')}
                                 >
                                     <Pencil className="size-4" />
                                     Editar
@@ -331,13 +330,13 @@ export default function LegalDocumentForm({
                                 <Button
                                     type="button"
                                     variant={
-                                        activeTab === "preview"
-                                            ? "secondary"
-                                            : "ghost"
+                                        activeTab === 'preview'
+                                            ? 'secondary'
+                                            : 'ghost'
                                     }
                                     size="sm"
                                     color="neutral"
-                                    onClick={() => setActiveTab("preview")}
+                                    onClick={() => setActiveTab('preview')}
                                 >
                                     <Eye className="size-4" />
                                     Vista previa
@@ -351,20 +350,20 @@ export default function LegalDocumentForm({
 
                         <div
                             className={
-                                activeTab === "edit" ? "block" : "hidden"
+                                activeTab === 'edit' ? 'block' : 'hidden'
                             }
                         >
                             <textarea
                                 id="content"
                                 value={data.content}
                                 onChange={(event) => {
-                                    setData("content", event.target.value);
+                                    setData('content', event.target.value);
                                     setFileName(null);
                                 }}
                                 placeholder={
-                                    "# Términos y condiciones\n\n" +
-                                    "## 1. Introducción\n\n" +
-                                    "Escribe aquí el contenido..."
+                                    '# Términos y condiciones\n\n' +
+                                    '## 1. Introducción\n\n' +
+                                    'Escribe aquí el contenido...'
                                 }
                                 rows={22}
                                 maxLength={500000}
@@ -374,10 +373,10 @@ export default function LegalDocumentForm({
                             />
                         </div>
 
-                        {activeTab === "preview" && (
-                            <div className="min-h-120 max-h-180 overflow-y-auto bg-background p-6">
+                        {activeTab === 'preview' && (
+                            <div className="max-h-180 min-h-120 overflow-y-auto bg-background p-6">
                                 {data.content.trim() ? (
-                                    <article className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-foreground prose-h1:text-3xl prose-h2:text-2xl">
+                                    <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-foreground prose-h1:text-3xl prose-h2:text-2xl">
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm]}
                                             skipHtml
@@ -400,14 +399,14 @@ export default function LegalDocumentForm({
 
                         <div className="flex items-center justify-between border-t bg-muted/20 px-4 py-2 text-xs text-muted-foreground">
                             <span>
-                                {data.content.length.toLocaleString("es-BO")}{" "}
+                                {data.content.length.toLocaleString('es-BO')}{' '}
                                 caracteres
                             </span>
 
                             <span>
                                 {data.content.trim()
                                     ? data.content.trim().split(/\s+/).length
-                                    : 0}{" "}
+                                    : 0}{' '}
                                 palabras
                             </span>
                         </div>
@@ -430,10 +429,10 @@ export default function LegalDocumentForm({
                     }
                 >
                     {processing
-                        ? "Guardando..."
+                        ? 'Guardando...'
                         : isEditing
-                          ? "Guardar cambios"
-                          : "Guardar borrador"}
+                          ? 'Guardar cambios'
+                          : 'Guardar borrador'}
                 </Button>
             </div>
         </form>

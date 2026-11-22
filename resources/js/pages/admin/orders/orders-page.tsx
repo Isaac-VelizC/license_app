@@ -1,11 +1,11 @@
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui";
-import { dashboard } from "@/routes/admin";
-import { index } from "@/routes/admin/order";
-import type { PaginatedData } from "@/types";
-import type { OrderEntity, StatusOptions } from "@/types/admin/order.contract";
-import { Head, router } from "@inertiajs/react";
-import OrdersTable from "./components/order-table";
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui';
+import { dashboard } from '@/routes/admin';
+import { index } from '@/routes/admin/order';
+import type { PaginatedData } from '@/types';
+import type { OrderEntity, StatusOptions } from '@/types/admin/order.contract';
+import { Head, router } from '@inertiajs/react';
+import OrdersTable from './components/order-table';
 
 type OrderProps = {
     orders: PaginatedData<OrderEntity>;
@@ -33,7 +33,7 @@ export default function OrdersPage({ orders, filters, statuses }: OrderProps) {
 
                 <div className="flex flex-wrap gap-2 rounded-xl border bg-card p-4 shadow-sm">
                     <Button
-                        variant={!filters.status ? "default" : "outline"}
+                        variant={!filters.status ? 'default' : 'outline'}
                         size="sm"
                         onClick={() => setStatusFilter(null)}
                     >
@@ -44,8 +44,8 @@ export default function OrdersPage({ orders, filters, statuses }: OrderProps) {
                             key={index}
                             variant={
                                 filters.status === status.value
-                                    ? "default"
-                                    : "outline"
+                                    ? 'default'
+                                    : 'outline'
                             }
                             size="sm"
                             onClick={() => setStatusFilter(status.value)}
@@ -65,7 +65,7 @@ export default function OrdersPage({ orders, filters, statuses }: OrderProps) {
 
 OrdersPage.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard().url },
-        { title: "Órdenes", href: index().url },
+        { title: 'Panel Central', href: dashboard().url },
+        { title: 'Órdenes', href: index().url },
     ],
 };

@@ -1,5 +1,12 @@
 import React from 'react';
-import { AlertTriangle, Info, CheckCircle2, Loader2, Trash2, XIcon } from 'lucide-react';
+import {
+    AlertTriangle,
+    Info,
+    CheckCircle2,
+    Loader2,
+    Trash2,
+    XIcon,
+} from 'lucide-react';
 import { Button, Spinner } from '@/components/ui';
 import {
     Dialog,
@@ -12,7 +19,12 @@ import {
 import { Alert, AlertTitle } from './ui/alert';
 
 export type ModalVariant =
-    'danger' | 'warning' | 'info' | 'success' | 'deleted' | 'cancelled';
+    | 'danger'
+    | 'warning'
+    | 'info'
+    | 'success'
+    | 'deleted'
+    | 'cancelled';
 
 interface Props {
     isOpen: boolean;

@@ -1,7 +1,7 @@
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui";
-import type { ClientEntity } from "@/types";
-import { Head, Link, router } from "@inertiajs/react";
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui';
+import type { ClientEntity } from '@/types';
+import { Head, Link, router } from '@inertiajs/react';
 import {
     ArrowLeft,
     CheckCircle2,
@@ -9,15 +9,15 @@ import {
     Pencil,
     PlusIcon,
     XCircle,
-} from "lucide-react";
-import { useState } from "react";
-import ClientForm from "./components/client-form";
-import MetricCard from "@/components/metric-card";
-import { dashboard } from "@/routes/admin";
-import { index as indexClient } from "@/routes/admin/clients";
-import { index as indexLicense } from "@/routes/admin/licenses";
-import ClientCard from "./components/client-card";
-import LicenseTable from "./components/license-table";
+} from 'lucide-react';
+import { useState } from 'react';
+import ClientForm from './components/client-form';
+import MetricCard from '@/components/metric-card';
+import { dashboard } from '@/routes/admin';
+import { index as indexClient } from '@/routes/admin/clients';
+import { index as indexLicense } from '@/routes/admin/licenses';
+import ClientCard from './components/client-card';
+import LicenseTable from './components/license-table';
 
 export default function ClientDetail({ client }: { client: ClientEntity }) {
     const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
@@ -35,27 +35,27 @@ export default function ClientDetail({ client }: { client: ClientEntity }) {
 
     const licenseMetrics = [
         {
-            label: "Total licencias",
+            label: 'Total licencias',
             value: licenses.length,
-            description: "Emitidas históricamente",
+            description: 'Emitidas históricamente',
             icon: KeyIcon,
-            valueClassName: "text-foreground",
+            valueClassName: 'text-foreground',
         },
         {
-            label: "Activas",
+            label: 'Activas',
             value: activeLicensesCount,
-            description: "Operativas actualmente",
+            description: 'Operativas actualmente',
             icon: CheckCircle2,
-            iconClassName: "text-emerald-500",
-            valueClassName: "text-emerald-600",
+            iconClassName: 'text-emerald-500',
+            valueClassName: 'text-emerald-600',
         },
         {
-            label: "Necesitan atención",
+            label: 'Necesitan atención',
             value: needsAttentionCount,
-            description: "Revocadas, suspendidas o vencidas",
+            description: 'Revocadas, suspendidas o vencidas',
             icon: XCircle,
-            iconClassName: "text-destructive",
-            valueClassName: "text-destructive",
+            iconClassName: 'text-destructive',
+            valueClassName: 'text-destructive',
         },
     ];
 
@@ -77,7 +77,7 @@ export default function ClientDetail({ client }: { client: ClientEntity }) {
                         description={
                             client.company_name
                                 ? `Empresa: ${client.company_name}`
-                                : "Ficha detallada e historial de software asignado."
+                                : 'Ficha detallada e historial de software asignado.'
                         }
                         actions={
                             <div className="flex items-center gap-2">
@@ -137,8 +137,8 @@ export default function ClientDetail({ client }: { client: ClientEntity }) {
 
 ClientDetail.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Clientes", href: indexClient().url },
-        { title: "Detalle", href: "#" },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Clientes', href: indexClient().url },
+        { title: 'Detalle', href: '#' },
     ],
 };

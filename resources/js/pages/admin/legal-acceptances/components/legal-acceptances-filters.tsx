@@ -1,17 +1,17 @@
-import { router } from "@inertiajs/react";
-import { useState } from "react";
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
 
-import { Button } from "@/components/ui/button";
-import { Selectable } from "@/components/selectable";
+import { Button } from '@/components/ui/button';
+import { Selectable } from '@/components/selectable';
 
-import { index } from "@/actions/App/Http/Controllers/Admin/LegalAcceptanceController";
+import { index } from '@/actions/App/Http/Controllers/Admin/LegalAcceptanceController';
 
 import {
     type LegalDocumentApp,
     type LegalDocumentType,
     type LegalAcceptanceFilters,
-} from "@/types";
-import { LEGAL_DOCUMENT_TYPES } from "@/types/admin/legal-document.contract";
+} from '@/types';
+import { LEGAL_DOCUMENT_TYPES } from '@/types/admin/legal-document.contract';
 
 interface Props {
     apps: LegalDocumentApp[];
@@ -19,8 +19,8 @@ interface Props {
 }
 
 export default function LegalAcceptancesFilters({ apps, filters }: Props) {
-    const [appId, setAppId] = useState(filters.app_id ?? "");
-    const [type, setType] = useState(filters.type ?? "");
+    const [appId, setAppId] = useState(filters.app_id ?? '');
+    const [type, setType] = useState(filters.type ?? '');
 
     const applyFilters = (nextAppId: string, nextType: string) => {
         const params: Record<string, string> = {};
@@ -36,9 +36,9 @@ export default function LegalAcceptancesFilters({ apps, filters }: Props) {
     };
 
     const clearFilters = () => {
-        setAppId("");
-        setType("");
-        applyFilters("", "");
+        setAppId('');
+        setType('');
+        applyFilters('', '');
     };
 
     const appOptions = apps.map((app) => ({
@@ -72,7 +72,7 @@ export default function LegalAcceptancesFilters({ apps, filters }: Props) {
                     <Selectable
                         value={type}
                         onValueChange={(value) => {
-                            const nextType = value as LegalDocumentType | "";
+                            const nextType = value as LegalDocumentType | '';
 
                             setType(nextType);
                             applyFilters(appId, nextType);

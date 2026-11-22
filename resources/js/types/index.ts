@@ -1,12 +1,12 @@
-export type * from "./auth";
-export type * from "./navigation";
-export type * from "./ui";
-export type * from "./admin/app.contract";
-export type * from "./admin/client.contract";
-export type * from "./admin/license.contract";
-export type * from "./admin/legal-document.contract";
-export type * from "./admin/product-version.contract";
-export type * from "./admin/legal-acceptance.contract";
+export type * from './auth';
+export type * from './navigation';
+export type * from './ui';
+export type * from './admin/app.contract';
+export type * from './admin/client.contract';
+export type * from './admin/license.contract';
+export type * from './admin/legal-document.contract';
+export type * from './admin/product-version.contract';
+export type * from './admin/legal-acceptance.contract';
 
 export interface PaginatedData<T> {
     data: T[];

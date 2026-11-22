@@ -1,17 +1,17 @@
-import { useMemo } from "react";
-import { Building2, KeyIcon, Mail, Pencil, Phone, Trash2 } from "lucide-react";
-import { Link } from "@inertiajs/react";
-import { Column, DataTable } from "@/components/datatable";
-import { Button } from "@/components/ui";
-import { show } from "@/routes/admin/clients";
-import type { ClientEntity } from "@/types";
+import { useMemo } from 'react';
+import { Building2, KeyIcon, Mail, Pencil, Phone, Trash2 } from 'lucide-react';
+import { Link } from '@inertiajs/react';
+import { Column, DataTable } from '@/components/datatable';
+import { Button } from '@/components/ui';
+import { show } from '@/routes/admin/clients';
+import type { ClientEntity } from '@/types';
 
 interface ClientsTableProps {
     clients: ClientEntity[];
     deletingId: number | null;
-    onEdit(client: ClientEntity): void;
-    onDelete(client: ClientEntity): void;
-    onClearSearch?(): void;
+    onEdit: (client: ClientEntity) => void;
+    onDelete: (client: ClientEntity) => void;
+    onClearSearch?: () => void;
 }
 
 const ClientsTable = ({
@@ -24,8 +24,8 @@ const ClientsTable = ({
     const columns = useMemo<Column<ClientEntity>[]>(
         () => [
             {
-                id: "name",
-                header: "Cliente",
+                id: 'name',
+                header: 'Cliente',
                 cell: (client) => (
                     <span className="font-semibold text-foreground">
                         {client.name}
@@ -33,8 +33,8 @@ const ClientsTable = ({
                 ),
             },
             {
-                id: "contact",
-                header: "Contacto",
+                id: 'contact',
+                header: 'Contacto',
                 cell: (client) => (
                     <div className="flex flex-col gap-0.5 text-xs">
                         <span className="flex items-center gap-1 font-medium text-foreground">
@@ -51,8 +51,8 @@ const ClientsTable = ({
                 ),
             },
             {
-                id: "company_name",
-                header: "Empresa/Negocio",
+                id: 'company_name',
+                header: 'Empresa/Negocio',
                 cell: (client) => {
                     const companyName = client.company_name;
 
@@ -61,8 +61,8 @@ const ClientsTable = ({
                             <Building2
                                 className={`size-4 shrink-0 ${
                                     companyName
-                                        ? "text-primary"
-                                        : "text-muted-foreground"
+                                        ? 'text-primary'
+                                        : 'text-muted-foreground'
                                 }`}
                             />
                             {companyName ? (
@@ -82,8 +82,8 @@ const ClientsTable = ({
                 },
             },
             {
-                id: "licenses_count",
-                header: "Licencias",
+                id: 'licenses_count',
+                header: 'Licencias',
                 cell: (client) => (
                     <div className="flex items-center gap-1.5 text-sm font-medium">
                         <KeyIcon className="size-3.5 text-muted-foreground" />
@@ -92,10 +92,10 @@ const ClientsTable = ({
                 ),
             },
             {
-                id: "actions",
-                header: "Acciones",
-                headerClassName: "text-right",
-                className: "text-right",
+                id: 'actions',
+                header: 'Acciones',
+                headerClassName: 'text-right',
+                className: 'text-right',
                 cell: (client) => {
                     const isDeleting = deletingId === client.id;
                     return (

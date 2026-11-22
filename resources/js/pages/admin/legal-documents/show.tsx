@@ -1,4 +1,4 @@
-import { Head, router } from "@inertiajs/react";
+import { Head, router } from '@inertiajs/react';
 import {
     ArrowLeft,
     CalendarDays,
@@ -7,21 +7,21 @@ import {
     Pencil,
     Send,
     Trash2,
-} from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+} from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
-import Heading from "@/components/heading";
-import { Button, Badge } from "@/components/ui";
+import Heading from '@/components/heading';
+import { Button, Badge } from '@/components/ui';
 
-import { dashboard } from "@/routes/admin";
-import { index, publish, edit, destroy } from "@/routes/admin/legal-documents";
+import { dashboard } from '@/routes/admin';
+import { index, publish, edit, destroy } from '@/routes/admin/legal-documents';
 
-import { LEGAL_DOCUMENT_TYPES } from "@/types/admin/legal-document.contract";
-import type { LegalDocumentEntity } from "@/types";
-import { toast } from "sonner";
-import { useConfirmAction } from "@/hooks/use-confirm-action";
-import ConfirmModal from "@/components/confirm-modal";
+import { LEGAL_DOCUMENT_TYPES } from '@/types/admin/legal-document.contract';
+import type { LegalDocumentEntity } from '@/types';
+import { toast } from 'sonner';
+import { useConfirmAction } from '@/hooks/use-confirm-action';
+import ConfirmModal from '@/components/confirm-modal';
 
 interface Props {
     document: LegalDocumentEntity;
@@ -39,7 +39,7 @@ export default function Show({ document }: Props) {
     } = useConfirmAction<LegalDocumentEntity>({
         action: (item) => publish(item.id).url,
         onSuccess: () => {
-            toast.success("Documento publicado correctamente.");
+            toast.success('Documento publicado correctamente.');
         },
     });
 
@@ -51,19 +51,19 @@ export default function Show({ document }: Props) {
         processing: deleting,
     } = useConfirmAction<LegalDocumentEntity>({
         action: (item) => destroy(item.id).url,
-        method: "delete"
+        method: 'delete',
     });
 
     const status = document.is_active
-        ? { label: "Vigente", color: "success" as const }
+        ? { label: 'Vigente', color: 'success' as const }
         : isDraft
-          ? { label: "Borrador", color: "warning" as const }
-          : { label: "Versión anterior", color: "neutral" as const };
+          ? { label: 'Borrador', color: 'warning' as const }
+          : { label: 'Versión anterior', color: 'neutral' as const };
 
     const publishedDate = document.published_at
-        ? new Intl.DateTimeFormat("es-BO", {
-              dateStyle: "long",
-              timeStyle: "short",
+        ? new Intl.DateTimeFormat('es-BO', {
+              dateStyle: 'long',
+              timeStyle: 'short',
           }).format(new Date(document.published_at))
         : null;
 
@@ -132,7 +132,7 @@ export default function Show({ document }: Props) {
                         </div>
 
                         <p className="mt-2 font-semibold">
-                            {document.app?.name ?? "No disponible"}
+                            {document.app?.name ?? 'No disponible'}
                         </p>
                     </div>
 
@@ -186,24 +186,12 @@ export default function Show({ document }: Props) {
                     </div>
 
                     <div className="p-6">
-                        <article
-                            className="
-                                prose prose-sm dark:prose-invert
-                                max-w-none wrap-break-words
-                                prose-headings:text-foreground
-                                prose-h1:text-3xl
-                                prose-h2:text-2xl
-                                prose-h3:text-xl
-                                prose-a:text-primary
-                                prose-strong:text-foreground
-                                prose-pre:overflow-x-auto
-                            "
-                        >
+                        <article className="wrap-break-words prose prose-sm max-w-none dark:prose-invert prose-headings:text-foreground prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary prose-strong:text-foreground prose-pre:overflow-x-auto">
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 skipHtml
                                 urlTransform={(url) =>
-                                    /^(https?:|mailto:)/i.test(url) ? url : ""
+                                    /^(https?:|mailto:)/i.test(url) ? url : ''
                                 }
                             >
                                 {document.content}
@@ -232,9 +220,9 @@ export default function Show({ document }: Props) {
                 descriptionText={
                     `Estás a punto de publicar "${pendingPublication?.title}" ` +
                     `(versión ${pendingPublication?.version}). ` +
-                    "Una vez publicado, su contenido no podrá modificarse. " +
-                    "Si existe otra versión vigente para esta aplicación y tipo, " +
-                    "será reemplazada automáticamente."
+                    'Una vez publicado, su contenido no podrá modificarse. ' +
+                    'Si existe otra versión vigente para esta aplicación y tipo, ' +
+                    'será reemplazada automáticamente.'
                 }
                 confirmText="Publicar documento"
             />
@@ -255,8 +243,8 @@ export default function Show({ document }: Props) {
 
 Show.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Documentos Legales", href: index().url },
-        { title: "Detalle", href: "#" },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Documentos Legales', href: index().url },
+        { title: 'Detalle', href: '#' },
     ],
 };

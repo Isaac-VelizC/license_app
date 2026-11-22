@@ -1,19 +1,19 @@
-import { Head, router } from "@inertiajs/react";
+import { Head, router } from '@inertiajs/react';
 
-import Heading from "@/components/heading";
+import Heading from '@/components/heading';
 
-import { dashboard } from "@/routes/admin";
-import { index } from "@/routes/admin/legal-acceptances";
+import { dashboard } from '@/routes/admin';
+import { index } from '@/routes/admin/legal-acceptances';
 
-import { LEGAL_DOCUMENT_TYPES } from "@/types/admin/legal-document.contract";
+import { LEGAL_DOCUMENT_TYPES } from '@/types/admin/legal-document.contract';
 import {
     LegalAcceptanceEntity,
     PaginatedData,
     LegalDocumentApp,
     LegalAcceptanceFilters,
-} from "@/types";
-import { type Column, DataTable } from "@/components/datatable";
-import LegalAcceptancesFilters from "./components/legal-acceptances-filters";
+} from '@/types';
+import { type Column, DataTable } from '@/components/datatable';
+import LegalAcceptancesFilters from './components/legal-acceptances-filters';
 
 interface Props {
     acceptances: PaginatedData<LegalAcceptanceEntity>;
@@ -24,8 +24,8 @@ interface Props {
 export default function Index({ acceptances, apps, filters }: Props) {
     const columns: Column<LegalAcceptanceEntity>[] = [
         {
-            id: "document",
-            header: "Documento",
+            id: 'document',
+            header: 'Documento',
             cell: (item) => (
                 <div>
                     <p className="font-medium">{item.legal_document.title}</p>
@@ -36,13 +36,13 @@ export default function Index({ acceptances, apps, filters }: Props) {
             ),
         },
         {
-            id: "app",
-            header: "Aplicación",
+            id: 'app',
+            header: 'Aplicación',
             cell: (item) => item.legal_document.app.name,
         },
         {
-            id: "version",
-            header: "Versión",
+            id: 'version',
+            header: 'Versión',
             cell: (item) => (
                 <span className="font-mono text-sm">
                     {item.legal_document.version}
@@ -50,8 +50,8 @@ export default function Index({ acceptances, apps, filters }: Props) {
             ),
         },
         {
-            id: "hwid",
-            header: "Dispositivo",
+            id: 'hwid',
+            header: 'Dispositivo',
             cell: (item) => (
                 <span className="font-mono text-xs" title={item.hwid}>
                     {item.hwid.length > 12
@@ -61,12 +61,12 @@ export default function Index({ acceptances, apps, filters }: Props) {
             ),
         },
         {
-            id: "accepted_at",
-            header: "Aceptado el",
+            id: 'accepted_at',
+            header: 'Aceptado el',
             cell: (item) =>
-                new Intl.DateTimeFormat("es-BO", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
+                new Intl.DateTimeFormat('es-BO', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
                 }).format(new Date(item.accepted_at)),
         },
     ];
@@ -104,15 +104,15 @@ export default function Index({ acceptances, apps, filters }: Props) {
                                     }
                                 }}
                                 className={
-                                    "rounded-md border px-3 py-1.5 text-sm " +
+                                    'rounded-md border px-3 py-1.5 text-sm ' +
                                     (link.active
-                                        ? "bg-primary text-primary-foreground"
-                                        : "hover:bg-muted")
+                                        ? 'bg-primary text-primary-foreground'
+                                        : 'hover:bg-muted')
                                 }
                             >
                                 {link.label
-                                    .replace("&laquo;", "«")
-                                    .replace("&raquo;", "»")}
+                                    .replace('&laquo;', '«')
+                                    .replace('&raquo;', '»')}
                             </button>
                         ))}
                     </div>
@@ -124,7 +124,7 @@ export default function Index({ acceptances, apps, filters }: Props) {
 
 Index.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Aceptaciones legales", href: index().url },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Aceptaciones legales', href: index().url },
     ],
 };

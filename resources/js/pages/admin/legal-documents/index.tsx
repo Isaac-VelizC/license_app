@@ -1,23 +1,23 @@
-import { Head, router } from "@inertiajs/react";
-import { PlusIcon } from "lucide-react";
+import { Head, router } from '@inertiajs/react';
+import { PlusIcon } from 'lucide-react';
 
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui/button";
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui/button';
 
 import {
     create,
     index,
-} from "@/actions/App/Http/Controllers/Admin/LegalDocumentController";
+} from '@/actions/App/Http/Controllers/Admin/LegalDocumentController';
 import type {
     LegalDocumentApp,
     LegalDocumentEntity,
     PaginatedData,
-} from "@/types";
-import { dashboard } from "@/routes/admin";
-import LegalDocumentsTable from "./components/legal-documents-table";
+} from '@/types';
+import { dashboard } from '@/routes/admin';
+import LegalDocumentsTable from './components/legal-documents-table';
 import LegalDocumentsFilters, {
     LegalDocumentFilters,
-} from "./components/legal-documents-filters";
+} from './components/legal-documents-filters';
 
 interface Props {
     documents: PaginatedData<LegalDocumentEntity>;
@@ -52,7 +52,6 @@ export default function LegalDocumentsPage({
                 <LegalDocumentsFilters apps={apps} filters={filters} />
 
                 <LegalDocumentsTable documents={documents.data} />
-
             </div>
         </>
     );
@@ -60,7 +59,7 @@ export default function LegalDocumentsPage({
 
 LegalDocumentsPage.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Documentos Legales", href: index().url },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Documentos Legales', href: index().url },
     ],
 };

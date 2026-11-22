@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo } from 'react';
 import {
     PackageCheck,
     Pencil,
@@ -6,10 +6,10 @@ import {
     Smartphone,
     TimerReset,
     Trash2,
-} from "lucide-react";
-import { Badge, Button } from "@/components/ui";
-import { cn } from "@/lib/utils";
-import type { PlanEntity } from "@/types";
+} from 'lucide-react';
+import { Badge, Button } from '@/components/ui';
+import { cn } from '@/lib/utils';
+import type { PlanEntity } from '@/types';
 
 type PlanCardProps = {
     plan: PlanEntity;
@@ -21,8 +21,8 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
     return (
         <div
             className={cn(
-                "space-y-4 rounded-lg bg-card border p-4",
-                !plan.is_active && "opacity-60",
+                'space-y-4 rounded-lg border bg-card p-4',
+                !plan.is_active && 'opacity-60',
             )}
         >
             <div>
@@ -43,15 +43,15 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
 
                         <Badge variant="outline" color="info">
                             {plan.is_lifetime
-                                ? "Vitalicio"
+                                ? 'Vitalicio'
                                 : `${plan.duration_days} días`}
                         </Badge>
 
                         <Badge
                             variant="outline"
-                            color={plan.qr_image_url ? "success" : "neutral"}
+                            color={plan.qr_image_url ? 'success' : 'neutral'}
                         >
-                            {plan.qr_image_url ? "QR configurado" : "Sin QR"}
+                            {plan.qr_image_url ? 'QR configurado' : 'Sin QR'}
                         </Badge>
                     </div>
                 </div>
@@ -81,22 +81,22 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
                 <div className="flex items-center text-muted-foreground">
                     <Smartphone className="mr-2.5 size-4 shrink-0 text-primary" />
                     <span>
-                        Hasta{" "}
+                        Hasta{' '}
                         <strong className="text-foreground">
                             {plan.max_devices}
-                        </strong>{" "}
+                        </strong>{' '}
                         {plan.max_devices === 1
-                            ? "dispositivo"
-                            : "dispositivos"}
+                            ? 'dispositivo'
+                            : 'dispositivos'}
                     </span>
                 </div>
 
                 <div className="flex items-center text-muted-foreground">
                     <PackageCheck className="mr-2.5 size-4 shrink-0 text-primary" />
                     <span>
-                        Versión incluida:{" "}
+                        Versión incluida:{' '}
                         <strong className="text-foreground">
-                            {plan.product_version?.version ?? "Sin asignar"}
+                            {plan.product_version?.version ?? 'Sin asignar'}
                         </strong>
                     </span>
                 </div>
@@ -104,10 +104,10 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
                 <div className="flex items-center text-muted-foreground">
                     <RefreshCw className="mr-2.5 size-4 shrink-0 text-primary" />
                     <span>
-                        Actualizaciones hasta:{" "}
+                        Actualizaciones hasta:{' '}
                         <strong className="text-foreground">
                             {plan.updates_until_version ??
-                                "Sin límite definido"}
+                                'Sin límite definido'}
                         </strong>
                     </span>
                 </div>
@@ -115,13 +115,13 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
                 <div className="flex items-center text-muted-foreground">
                     <TimerReset className="mr-2.5 size-4 shrink-0 text-primary" />
                     <span>
-                        Modalidad:{" "}
+                        Modalidad:{' '}
                         <strong className="text-foreground">
                             {plan.is_trial
-                                ? "Periodo de prueba"
+                                ? 'Periodo de prueba'
                                 : plan.is_lifetime
-                                  ? "Licencia permanente"
-                                  : "Suscripción por tiempo"}
+                                  ? 'Licencia permanente'
+                                  : 'Suscripción por tiempo'}
                         </strong>
                     </span>
                 </div>
@@ -150,5 +150,5 @@ const PlanCard = memo(({ plan, onDelete, onEdit }: PlanCardProps) => {
     );
 });
 
-PlanCard.displayName = "PlanCard";
+PlanCard.displayName = 'PlanCard';
 export default PlanCard;

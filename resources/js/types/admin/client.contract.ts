@@ -1,4 +1,4 @@
-import { LicenseEntity } from "./license.contract";
+import { LicenseEntity } from './license.contract';
 
 export interface ClientEntity {
     id: number;
@@ -17,5 +17,5 @@ export interface ClientFormData {
     email: string;
     phone: string;
     company_name: string;
-    notes: string
+    notes: string;
 }

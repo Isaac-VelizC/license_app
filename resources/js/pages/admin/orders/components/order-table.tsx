@@ -1,24 +1,24 @@
-import { CalendarDays, Hash, Mail, PackageCheck } from "lucide-react";
-import { useMemo } from "react";
-import { Column, DataTable } from "@/components/datatable";
-import { Badge, Button } from "@/components/ui";
-import { formatDateTime } from "@/lib/utils";
-import { show } from "@/routes/admin/order";
-import type { OrderEntity } from "@/types/admin/order.contract";
-import { Link } from "@inertiajs/react";
-import clients from "@/routes/admin/clients";
+import { CalendarDays, Hash, Mail, PackageCheck } from 'lucide-react';
+import { useMemo } from 'react';
+import { Column, DataTable } from '@/components/datatable';
+import { Badge, Button } from '@/components/ui';
+import { formatDateTime } from '@/lib/utils';
+import { show } from '@/routes/admin/order';
+import type { OrderEntity } from '@/types/admin/order.contract';
+import { Link } from '@inertiajs/react';
+import clients from '@/routes/admin/clients';
 
 interface OrdersTableProps {
     orders: OrderEntity[];
-    onClearFilter?(): void;
+    onClearFilter?: () => void;
 }
 
 const OrdersTable = ({ orders, onClearFilter }: OrdersTableProps) => {
     const columns = useMemo<Column<OrderEntity>[]>(
         () => [
             {
-                id: "order_number",
-                header: "Orden",
+                id: 'order_number',
+                header: 'Orden',
                 cell: (order) => (
                     <span className="flex items-center gap-1.5 font-mono text-xs font-medium text-foreground">
                         <Hash className="size-3 shrink-0 text-muted-foreground" />
@@ -27,8 +27,8 @@ const OrdersTable = ({ orders, onClearFilter }: OrdersTableProps) => {
                 ),
             },
             {
-                id: "client",
-                header: "Cliente",
+                id: 'client',
+                header: 'Cliente',
                 cell: (order) => (
                     <div className="flex flex-col gap-0.5 text-xs">
                         <Link
@@ -45,8 +45,8 @@ const OrdersTable = ({ orders, onClearFilter }: OrdersTableProps) => {
                 ),
             },
             {
-                id: "plan",
-                header: "Plan",
+                id: 'plan',
+                header: 'Plan',
                 cell: (order) => (
                     <div className="flex items-center gap-1.5 text-sm">
                         <PackageCheck className="size-3.5 shrink-0 text-muted-foreground" />
@@ -55,8 +55,8 @@ const OrdersTable = ({ orders, onClearFilter }: OrdersTableProps) => {
                 ),
             },
             {
-                id: "amount",
-                header: "Monto",
+                id: 'amount',
+                header: 'Monto',
                 cell: (order) => (
                     <span className="font-mono text-sm font-medium text-foreground">
                         {order.amount}
@@ -64,29 +64,29 @@ const OrdersTable = ({ orders, onClearFilter }: OrdersTableProps) => {
                 ),
             },
             {
-                id: "status",
-                header: "Estado",
+                id: 'status',
+                header: 'Estado',
                 cell: (order) => (
-                    <Badge variant={"soft"} color={order.status_color}>
+                    <Badge variant={'soft'} color={order.status_color}>
                         {order.status_label}
                     </Badge>
                 ),
             },
             {
-                id: "created_at",
-                header: "Fecha",
+                id: 'created_at',
+                header: 'Fecha',
                 cell: (order) => (
-                    <span className="flex items-center gap-1.5 whitespace-nowrap text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground">
                         <CalendarDays className="size-3.5 shrink-0" />
                         {formatDateTime(order.created_at)}
                     </span>
                 ),
             },
             {
-                id: "actions",
-                header: "Acciones",
-                headerClassName: "text-right",
-                className: "text-right",
+                id: 'actions',
+                header: 'Acciones',
+                headerClassName: 'text-right',
+                className: 'text-right',
                 cell: (order) => (
                     <a href={show(order.id).url}>
                         <Button variant="ghost" size="sm" color="info">

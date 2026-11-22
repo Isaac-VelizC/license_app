@@ -1,19 +1,19 @@
-import { Head, router } from "@inertiajs/react";
-import { ArrowLeft } from "lucide-react";
+import { Head, router } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
 
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui/button";
-import LegalDocumentForm from "./components/legal-document-form";
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui/button';
+import LegalDocumentForm from './components/legal-document-form';
 
-import { dashboard } from "@/routes/admin";
+import { dashboard } from '@/routes/admin';
 import {
     index,
     show,
     store,
     update,
-} from "@/actions/App/Http/Controllers/Admin/LegalDocumentController";
+} from '@/actions/App/Http/Controllers/Admin/LegalDocumentController';
 
-import type { LegalDocumentApp, LegalDocumentEntity } from "@/types";
+import type { LegalDocumentApp, LegalDocumentEntity } from '@/types';
 
 interface Props {
     document: LegalDocumentEntity;
@@ -55,8 +55,8 @@ export default function Edit({ document, apps }: Props) {
 
 Edit.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Documentos Legales", href: index().url },
-        { title: "Editar", href: "#" },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Documentos Legales', href: index().url },
+        { title: 'Editar', href: '#' },
     ],
 };

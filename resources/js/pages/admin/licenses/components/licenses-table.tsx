@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Link } from "@inertiajs/react";
+import { useMemo, useState } from 'react';
+import { Link } from '@inertiajs/react';
 import {
     AppWindow,
     Building2,
@@ -9,12 +9,12 @@ import {
     EyeIcon,
     Laptop,
     User,
-} from "lucide-react";
-import { DataTable } from "@/components/datatable";
-import { Badge, Button } from "@/components/ui";
-import { formatDate } from "@/lib/utils";
-import { show } from "@/routes/admin/licenses";
-import type { LicenseEntity } from "@/types";
+} from 'lucide-react';
+import { DataTable } from '@/components/datatable';
+import { Badge, Button } from '@/components/ui';
+import { formatDate } from '@/lib/utils';
+import { show } from '@/routes/admin/licenses';
+import type { LicenseEntity } from '@/types';
 
 interface LicensesTableProps {
     licenses: LicenseEntity[];
@@ -24,17 +24,27 @@ interface LicensesTableProps {
 const LicensesTable = ({ licenses, onClearSearch }: LicensesTableProps) => {
     const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-    const handleCopyKey = (key: string) => {
-        navigator.clipboard.writeText(key);
-        setCopiedKey(key);
-        setTimeout(() => setCopiedKey(null), 2000);
+    const handleCopyKey = async (license: LicenseEntity) => {
+        try {
+            await navigator.clipboard.writeText(license.license_key);
+
+            // Confirmar que se copió correctamente
+            setCopiedKey(license.license_key);
+
+            // Restablecer estado después de 1.5 segundos
+            setTimeout(() => {
+                setCopiedKey(null);
+            }, 1500);
+        } catch (error) {
+            console.error('Error al copiar la licencia:', error);
+        }
     };
 
     const columns = useMemo(
         () => [
             {
-                id: "license_key",
-                header: "Clave de Licencia",
+                id: 'license_key',
+                header: 'Clave de Licencia',
                 cell: (license: LicenseEntity) => (
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
@@ -54,22 +64,22 @@ const LicensesTable = ({ licenses, onClearSearch }: LicensesTableProps) => {
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <AppWindow className="size-3 shrink-0" />
                             <span className="font-medium text-foreground">
-                                {license.app?.name ?? "App"}
+                                {license.app?.name ?? 'App'}
                             </span>
                             <span>•</span>
-                            <span>{license.plan?.name ?? "Plan"}</span>
+                            <span>{license.plan?.name ?? 'Plan'}</span>
                         </div>
                     </div>
                 ),
             },
             {
-                id: "client",
-                header: "Cliente / Empresa",
+                id: 'client',
+                header: 'Cliente / Empresa',
                 cell: (license: LicenseEntity) => (
                     <div className="flex flex-col gap-0.5 text-xs">
                         <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
                             <User className="size-3.5 shrink-0 text-muted-foreground" />
-                            {license.client?.name ?? "Cliente Desconocido"}
+                            {license.client?.name ?? 'Cliente Desconocido'}
                         </span>
                         {license.client?.company_name ? (
                             <span className="flex items-center gap-1 text-muted-foreground">
@@ -85,8 +95,8 @@ const LicensesTable = ({ licenses, onClearSearch }: LicensesTableProps) => {
                 ),
             },
             {
-                id: "status",
-                header: "Estado",
+                id: 'status',
+                header: 'Estado',
                 // Un mismo componente decide "¿qué se considera vencida?" en toda
                 // la app (acá y en ClientLicensesTable) — status_color/status_label
                 // por sí solos no reflejan vencimiento por tiempo (is_valid).
@@ -97,8 +107,8 @@ const LicensesTable = ({ licenses, onClearSearch }: LicensesTableProps) => {
                 ),
             },
             {
-                id: "expiration",
-                header: "Vigencia",
+                id: 'expiration',
+                header: 'Vigencia',
                 cell: (license: LicenseEntity) => (
                     <div className="flex items-center gap-1.5 text-xs font-medium">
                         <Calendar className="size-3.5 shrink-0 text-muted-foreground" />
@@ -115,8 +125,8 @@ const LicensesTable = ({ licenses, onClearSearch }: LicensesTableProps) => {
                 ),
             },
             {
-                id: "max_devices",
-                header: "Dispositivos",
+                id: 'max_devices',
+                header: 'Dispositivos',
                 cell: (license: LicenseEntity) => (
                     <div className="flex items-center gap-1.5 text-sm font-medium">
                         <Laptop className="size-3.5 shrink-0 text-muted-foreground" />
@@ -127,10 +137,10 @@ const LicensesTable = ({ licenses, onClearSearch }: LicensesTableProps) => {
                 ),
             },
             {
-                id: "actions",
-                header: "Acciones",
-                headerClassName: "text-right",
-                className: "text-right",
+                id: 'actions',
+                header: 'Acciones',
+                headerClassName: 'text-right',
+                className: 'text-right',
                 cell: (license: LicenseEntity) => {
                     const isCopied = copiedKey === license.license_key;
                     return (
@@ -138,9 +148,7 @@ const LicensesTable = ({ licenses, onClearSearch }: LicensesTableProps) => {
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() =>
-                                    handleCopyKey(license.license_key)
-                                }
+                                onClick={() => handleCopyKey(license)}
                                 title="Copiar clave"
                                 aria-label="Copiar clave de licencia"
                             >

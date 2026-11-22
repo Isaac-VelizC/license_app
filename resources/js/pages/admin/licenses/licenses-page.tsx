@@ -1,20 +1,20 @@
-import { useCallback, useState } from "react";
-import { PlusIcon } from "lucide-react";
+import { useCallback, useState } from 'react';
+import { PlusIcon } from 'lucide-react';
 import type {
     AppEntity,
     ClientEntity,
     LicenseEntity,
     LicenseFilters,
     PaginatedData,
-} from "@/types";
-import { Head, router } from "@inertiajs/react";
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui";
-import LicensesFilters from "./components/licenses-filters";
-import LicensesTable from "./components/licenses-table";
-import { dashboard } from "@/routes/admin";
-import { index } from "@/routes/admin/licenses";
-import LicensesForm from "./components/licenses-form";
+} from '@/types';
+import { Head, router } from '@inertiajs/react';
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui';
+import LicensesFilters from './components/licenses-filters';
+import LicensesTable from './components/licenses-table';
+import { dashboard } from '@/routes/admin';
+import { index } from '@/routes/admin/licenses';
+import LicensesForm from './components/licenses-form';
 
 interface Props {
     licenses: PaginatedData<LicenseEntity>;
@@ -39,7 +39,7 @@ export default function LicensesPage({
             // Limpia parámetros vacíos o "all" para mantener la URL legible
             const cleanParams = Object.entries(updatedFilters).reduce(
                 (acc, [key, value]) => {
-                    if (value && value !== "all") acc[key] = value;
+                    if (value && value !== 'all') acc[key] = value;
                     return acc;
                 },
                 {} as Record<string, string | number>,
@@ -48,7 +48,7 @@ export default function LicensesPage({
             router.get(index().url, cleanParams, {
                 preserveState: true,
                 preserveScroll: true,
-                only: ["licenses", "filters"],
+                only: ['licenses', 'filters'],
             });
         },
         [filters],
@@ -61,7 +61,7 @@ export default function LicensesPage({
             {
                 preserveState: false,
                 preserveScroll: true,
-                only: ["licenses", "filters"],
+                only: ['licenses', 'filters'],
             },
         );
     }, []);

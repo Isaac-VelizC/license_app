@@ -1,10 +1,10 @@
-import { ArrowLeft } from "lucide-react";
-import { Head, Link } from "@inertiajs/react";
-import LegalDocumentForm from "./components/legal-document-form";
-import type { LegalDocumentApp } from "@/types/admin/legal-document.contract";
-import Heading from "@/components/heading";
-import { index } from "@/routes/admin/legal-documents";
-import { dashboard } from "@/routes/admin";
+import { ArrowLeft } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import LegalDocumentForm from './components/legal-document-form';
+import type { LegalDocumentApp } from '@/types/admin/legal-document.contract';
+import Heading from '@/components/heading';
+import { index } from '@/routes/admin/legal-documents';
+import { dashboard } from '@/routes/admin';
 
 interface Props {
     apps: LegalDocumentApp[];
@@ -30,10 +30,7 @@ export default function Create({ apps }: Props) {
                     />
                 </div>
 
-                <LegalDocumentForm
-                    apps={apps}
-                    storeUrl={index().url}
-                />
+                <LegalDocumentForm apps={apps} storeUrl={index().url} />
             </div>
         </>
     );
@@ -41,8 +38,8 @@ export default function Create({ apps }: Props) {
 
 Create.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Documentos Legales", href: index().url },
-        { title: "Formulario", href: "#" },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Documentos Legales', href: index().url },
+        { title: 'Formulario', href: '#' },
     ],
 };

@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Head, Link, router } from "@inertiajs/react";
-import { ArrowLeft, KeyRound, Layers, Package, PlusIcon } from "lucide-react";
-import { Badge, Button } from "@/components/ui";
-import PlanCard from "./components/plan-card";
-import { destroy as destroyPlan, create, edit } from "@/routes/admin/plans";
-import { destroy as destroyProductVersion } from "@/routes/admin/product";
-import { index } from "@/routes/admin/apps";
-import { dashboard } from "@/routes/admin";
-import type { AppEntity, PlanEntity, ProductVersionEntity } from "@/types";
-import { useConfirmAction } from "@/hooks/use-confirm-action";
-import ConfirmModal from "@/components/confirm-modal";
-import ProductVersionCard from "./components/product-version-card";
-import ProductVersionForm from "./components/product-version-form";
+import { useState } from 'react';
+import { Head, Link, router } from '@inertiajs/react';
+import { ArrowLeft, KeyRound, Layers, Package, PlusIcon } from 'lucide-react';
+import { Badge, Button } from '@/components/ui';
+import PlanCard from './components/plan-card';
+import { destroy as destroyPlan, create, edit } from '@/routes/admin/plans';
+import { destroy as destroyProductVersion } from '@/routes/admin/product';
+import { index } from '@/routes/admin/apps';
+import { dashboard } from '@/routes/admin';
+import type { AppEntity, PlanEntity, ProductVersionEntity } from '@/types';
+import { useConfirmAction } from '@/hooks/use-confirm-action';
+import ConfirmModal from '@/components/confirm-modal';
+import ProductVersionCard from './components/product-version-card';
+import ProductVersionForm from './components/product-version-form';
 
 export default function AppDetails({ app }: { app: AppEntity }) {
     // ---------------------------------------------------------
@@ -26,7 +26,7 @@ export default function AppDetails({ app }: { app: AppEntity }) {
         processing: deletingPlanProcessing,
     } = useConfirmAction<PlanEntity>({
         action: (plan) => destroyPlan(plan.id).url,
-        method: "delete",
+        method: 'delete',
     });
 
     const redirectToPlanForm = (planId?: number) => {
@@ -54,7 +54,7 @@ export default function AppDetails({ app }: { app: AppEntity }) {
         processing: deletingVersionProcessing,
     } = useConfirmAction<ProductVersionEntity>({
         action: (version) => destroyProductVersion(version.id).url,
-        method: "delete",
+        method: 'delete',
     });
 
     const handleOpenCreateVersionModal = () => {
@@ -94,14 +94,14 @@ export default function AppDetails({ app }: { app: AppEntity }) {
 
                                 <Badge
                                     variant="soft"
-                                    color={app.is_active ? "success" : "danger"}
+                                    color={app.is_active ? 'success' : 'danger'}
                                 >
-                                    {app.is_active ? "Activa" : "Inactiva"}
+                                    {app.is_active ? 'Activa' : 'Inactiva'}
                                 </Badge>
                             </div>
 
                             <p className="text-sm text-muted-foreground">
-                                {app.description || "Sin descripción asignada."}
+                                {app.description || 'Sin descripción asignada.'}
                             </p>
 
                             <div className="flex flex-wrap gap-4 pt-2 text-xs text-muted-foreground">
@@ -116,7 +116,7 @@ export default function AppDetails({ app }: { app: AppEntity }) {
 
                                 <span className="flex items-center gap-1">
                                     <Package className="size-3.5" />
-                                    {app.product_versions?.length ?? 0}{" "}
+                                    {app.product_versions?.length ?? 0}{' '}
                                     Versiones
                                 </span>
 
@@ -305,8 +305,8 @@ export default function AppDetails({ app }: { app: AppEntity }) {
 
 AppDetails.layout = {
     breadcrumbs: [
-        { title: "Dashboard", href: dashboard().url },
-        { title: "Aplicaciones", href: index().url },
-        { title: "Detalles y Planes", href: "#" },
+        { title: 'Dashboard', href: dashboard().url },
+        { title: 'Aplicaciones', href: index().url },
+        { title: 'Detalles y Planes', href: '#' },
     ],
 };

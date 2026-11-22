@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from '@inertiajs/react';
 import {
     BadgeCheck,
     CircleDollarSign,
@@ -8,17 +8,17 @@ import {
     Mail,
     PackageCheck,
     ReceiptText,
-} from "lucide-react";
+} from 'lucide-react';
 
-import Heading from "@/components/heading";
-import { Badge, Button, Textarea } from "@/components/ui";
-import { markAsPaid } from "@/routes/admin/order";
-import { formatDateTime } from "@/lib/utils";
-import InputError from "@/components/input-error";
-import { dashboard } from "@/routes/admin";
-import { index } from "@/routes/admin/order";
-import type { OrderDetailEntity } from "@/types/admin/order.contract";
-import licenses from "@/routes/admin/licenses";
+import Heading from '@/components/heading';
+import { Badge, Button, Textarea } from '@/components/ui';
+import { markAsPaid } from '@/routes/admin/order';
+import { formatDateTime } from '@/lib/utils';
+import InputError from '@/components/input-error';
+import { dashboard } from '@/routes/admin';
+import { index } from '@/routes/admin/order';
+import type { OrderDetailEntity } from '@/types/admin/order.contract';
+import licenses from '@/routes/admin/licenses';
 
 type OrderDetailProps = {
     order: OrderDetailEntity;
@@ -26,10 +26,10 @@ type OrderDetailProps = {
 
 export default function OrderDetail({ order }: OrderDetailProps) {
     const form = useForm({
-        payment_reference: order.payment_reference ?? "",
+        payment_reference: order.payment_reference ?? '',
     });
 
-    const canMarkAsPaid = order.status === "pending";
+    const canMarkAsPaid = order.status === 'pending';
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -72,7 +72,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                 <Link
                                     href={licenses.show(order.license?.id).url}
                                 >
-                                    <Button variant={"link"} size={"sm"}>
+                                    <Button variant={'link'} size={'sm'}>
                                         Ver Licencia
                                     </Button>
                                 </Link>
@@ -83,7 +83,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
 
                 <div className="grid gap-6 xl:grid-cols-3">
                     <div className="space-y-6 xl:col-span-2">
-                        <section className="rounded-lg border border-border bg-card space-y-4 p-5">
+                        <section className="space-y-4 rounded-lg border border-border bg-card p-5">
                             <div className="flex items-center gap-2">
                                 <CircleDollarSign className="size-4 text-muted-foreground" />
                                 <h2 className="text-sm font-semibold text-foreground">
@@ -109,10 +109,10 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                     </p>
 
                                     <p className="mt-1 text-sm font-medium text-foreground">
-                                        {order.plan.max_devices}{" "}
+                                        {order.plan.max_devices}{' '}
                                         {order.plan.max_devices === 1
-                                            ? "dispositivo"
-                                            : "dispositivos"}
+                                            ? 'dispositivo'
+                                            : 'dispositivos'}
                                     </p>
                                 </div>
 
@@ -134,7 +134,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                             )}
                         </section>
 
-                        <section className="rounded-lg border border-border bg-card space-y-4 p-5">
+                        <section className="space-y-4 rounded-lg border border-border bg-card p-5">
                             <div className="flex items-center gap-2">
                                 <Mail className="size-4 text-muted-foreground" />
                                 <h2 className="text-sm font-semibold text-foreground">
@@ -165,19 +165,19 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                             {order.client.phone}
                                         </a>
                                     ) : (
-                                        "No registrado"
+                                        'No registrado'
                                     )}
                                 </InfoItem>
 
                                 <InfoItem label="Empresa">
                                     {order.client.company_name ??
-                                        "No registrada"}
+                                        'No registrada'}
                                 </InfoItem>
                             </div>
                         </section>
 
                         {order.license && (
-                            <section className="rounded-lg border border-border bg-card space-y-4 p-5">
+                            <section className="space-y-4 rounded-lg border border-border bg-card p-5">
                                 <div className="flex items-center gap-2">
                                     <KeyRound className="size-4 text-muted-foreground" />
                                     <h2 className="text-sm font-semibold text-foreground">
@@ -212,7 +212,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                             ? formatDateTime(
                                                   order.license.expires_at,
                                               )
-                                            : "Sin vencimiento"}
+                                            : 'Sin vencimiento'}
                                     </InfoItem>
                                 </div>
                             </section>
@@ -220,7 +220,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                     </div>
 
                     <aside className="space-y-6">
-                        <section className="rounded-lg border border-border bg-card space-y-4 p-5">
+                        <section className="space-y-4 rounded-lg border border-border bg-card p-5">
                             <div className="flex items-center gap-2">
                                 <ClipboardCheck className="size-4 text-muted-foreground" />
                                 <h2 className="text-sm font-semibold text-foreground">
@@ -228,7 +228,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                 </h2>
                             </div>
 
-                            {order.status === "paid" ? (
+                            {order.status === 'paid' ? (
                                 <div className="mt-5 space-y-4">
                                     <div className="flex items-start gap-2 rounded-md border border-emerald-500/20 bg-emerald-500/10 p-3">
                                         <BadgeCheck className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
@@ -239,7 +239,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                             </p>
 
                                             <p className="mt-1 text-xs text-muted-foreground">
-                                                Pagada el{" "}
+                                                Pagada el{' '}
                                                 {formatDateTime(order.paid_at)}
                                             </p>
                                         </div>
@@ -255,7 +255,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
 
                                     {order.payment_reference && (
                                         <InfoItem label="Referencia de pago">
-                                            <code className="block break-all rounded-md bg-muted px-3 py-2 font-mono text-xs text-foreground">
+                                            <code className="block rounded-md bg-muted px-3 py-2 font-mono text-xs break-all text-foreground">
                                                 {order.payment_reference}
                                             </code>
                                         </InfoItem>
@@ -296,7 +296,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                             value={form.data.payment_reference}
                                             onChange={(event) =>
                                                 form.setData(
-                                                    "payment_reference",
+                                                    'payment_reference',
                                                     event.target.value,
                                                 )
                                             }
@@ -317,8 +317,8 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                         className="w-full"
                                     >
                                         {form.processing
-                                            ? "Verificando pago..."
-                                            : "Marcar como pagada"}
+                                            ? 'Verificando pago...'
+                                            : 'Marcar como pagada'}
                                     </Button>
 
                                     <p className="text-center text-xs text-muted-foreground">
@@ -329,7 +329,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                             ) : (
                                 <div className="mt-5 rounded-md bg-muted p-3 text-sm text-muted-foreground">
                                     Esta orden no puede marcarse como pagada
-                                    porque su estado es{" "}
+                                    porque su estado es{' '}
                                     <span className="font-medium">
                                         {order.status_label}
                                     </span>
@@ -338,7 +338,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                             )}
                         </section>
 
-                        <section className="rounded-lg border border-border bg-card space-y-4 p-5">
+                        <section className="space-y-4 rounded-lg border border-border bg-card p-5">
                             <div className="flex items-center gap-2">
                                 <ReceiptText className="size-4 text-muted-foreground" />
                                 <h2 className="text-sm font-semibold text-foreground">
@@ -372,7 +372,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                     <dd className="text-right text-foreground">
                                         {order.expires_at
                                             ? formatDateTime(order.expires_at)
-                                            : "Sin vencimiento"}
+                                            : 'Sin vencimiento'}
                                     </dd>
                                 </div>
                             </dl>
@@ -393,7 +393,7 @@ function InfoItem({ label, children }: InfoItemProps) {
     return (
         <div className="min-w-0">
             <p className="text-xs text-muted-foreground">{label}</p>
-            <div className="mt-1 wrap-break-words text-sm font-medium text-foreground">
+            <div className="wrap-break-words mt-1 text-sm font-medium text-foreground">
                 {children}
             </div>
         </div>
@@ -402,8 +402,8 @@ function InfoItem({ label, children }: InfoItemProps) {
 
 OrderDetail.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard().url },
-        { title: "Órdenes", href: index().url },
-        { title: "Detalles del orden", href: "#" },
+        { title: 'Panel Central', href: dashboard().url },
+        { title: 'Órdenes', href: index().url },
+        { title: 'Detalles del orden', href: '#' },
     ],
 };

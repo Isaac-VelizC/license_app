@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react';
 
 /**
  * Renderiza sus hijos solo después de montar en el cliente. Evita mismatches
@@ -9,17 +9,17 @@ import { useEffect, useState, type ReactNode } from 'react'
  * podía coincidir exactamente.
  */
 export function ClientOnly({
-  children,
-  fallback = null
+    children,
+    fallback = null,
 }: {
-  children: ReactNode
-  fallback?: ReactNode
+    children: ReactNode;
+    fallback?: ReactNode;
 }): ReactNode {
-  const [mounted, setMounted] = useState(false)
+    const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), [])
+    useEffect(() => setMounted(true), []);
 
-  if (!mounted) return fallback
+    if (!mounted) return fallback;
 
-  return children
+    return children;
 }

@@ -1,17 +1,16 @@
-import { PlusIcon } from "lucide-react";
-import { useState } from "react";
-import { Head } from "@inertiajs/react";
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui";
-import { dashboard } from "@/routes/admin";
-import AppsTable from "./components/apps-table";
-import type { PaginatedData, AppEntity } from "@/types";
-import AppsForm from "./components/apps-form";
+import { PlusIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Head } from '@inertiajs/react';
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui';
+import { dashboard } from '@/routes/admin';
+import AppsTable from './components/apps-table';
+import type { PaginatedData, AppEntity } from '@/types';
+import AppsForm from './components/apps-form';
 
 export default function AppsPage({ apps }: { apps: PaginatedData<AppEntity> }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [editingApp, setEditingApp] = useState<AppEntity | null>(null);
-    const [togglingId, setTogglingId] = useState<number | null>(null);
 
     const openCreateModal = () => {
         setEditingApp(null);
@@ -44,11 +43,7 @@ export default function AppsPage({ apps }: { apps: PaginatedData<AppEntity> }) {
                     }
                 />
 
-                <AppsTable
-                    apps={apps.data}
-                    togglingId={togglingId}
-                    onEdit={openEditModal}
-                />
+                <AppsTable apps={apps.data} onEdit={openEditModal} />
 
                 {/*apps.meta.last_page > 1 && (
                     <Pagination links={apps.meta.links} />
@@ -65,7 +60,7 @@ export default function AppsPage({ apps }: { apps: PaginatedData<AppEntity> }) {
 
 AppsPage.layout = {
     breadcrumbs: [
-        { title: "Panel Central", href: dashboard() },
-        { title: "Aplicaciones", href: "#" },
+        { title: 'Panel Central', href: dashboard() },
+        { title: 'Aplicaciones', href: '#' },
     ],
 };

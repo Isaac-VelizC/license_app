@@ -1,11 +1,11 @@
-import type { UrlMethodPair } from "@inertiajs/core";
-import { router } from "@inertiajs/react";
-import { usePasskeyVerify } from "@laravel/passkeys/react";
-import { KeyRound } from "lucide-react";
-import InputError from "@/components/input-error";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Spinner } from "@/components/ui/spinner";
+import type { UrlMethodPair } from '@inertiajs/core';
+import { router } from '@inertiajs/react';
+import { usePasskeyVerify } from '@laravel/passkeys/react';
+import { KeyRound } from 'lucide-react';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
 
 type Props = {
     routes?: {
@@ -31,7 +31,7 @@ export default function PasskeyVerify({
             },
         }),
         onSuccess: (response) => {
-            router.visit(response.redirect ?? "/dashboard");
+            router.visit(response.redirect ?? '/dashboard');
         },
     });
 
@@ -52,8 +52,8 @@ export default function PasskeyVerify({
                     {isLoading ? <Spinner /> : <KeyRound className="h-4 w-4" />}
 
                     {isLoading
-                        ? (loadingLabel ?? "Autenticando...")
-                        : (label ?? "Iniciar sesión con una clave de acceso")}
+                        ? (loadingLabel ?? 'Autenticando...')
+                        : (label ?? 'Iniciar sesión con una clave de acceso')}
                 </Button>
 
                 {error && (
@@ -67,8 +67,8 @@ export default function PasskeyVerify({
                 </div>
 
                 <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background text-muted-foreground px-2">
-                        {separator ?? "O continúa con tu correo electrónico"}
+                    <span className="bg-background px-2 text-muted-foreground">
+                        {separator ?? 'O continúa con tu correo electrónico'}
                     </span>
                 </div>
             </div>

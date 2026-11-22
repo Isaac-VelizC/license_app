@@ -1,13 +1,13 @@
-import { useMemo } from "react";
-import { router } from "@inertiajs/react";
-import { Eye, FileText } from "lucide-react";
+import { useMemo } from 'react';
+import { router } from '@inertiajs/react';
+import { Eye, FileText } from 'lucide-react';
 
-import { type Column, DataTable } from "@/components/datatable";
-import { Badge, Button } from "@/components/ui";
+import { type Column, DataTable } from '@/components/datatable';
+import { Badge, Button } from '@/components/ui';
 
-import { show } from "@/actions/App/Http/Controllers/Admin/LegalDocumentController";
-import { type LegalDocumentEntity } from "@/types";
-import { LEGAL_DOCUMENT_TYPES } from "@/types/admin/legal-document.contract";
+import { show } from '@/actions/App/Http/Controllers/Admin/LegalDocumentController';
+import { type LegalDocumentEntity } from '@/types';
+import { LEGAL_DOCUMENT_TYPES } from '@/types/admin/legal-document.contract';
 
 interface Props {
     documents: LegalDocumentEntity[];
@@ -17,8 +17,8 @@ export default function LegalDocumentsTable({ documents }: Props) {
     const columns = useMemo<Column<LegalDocumentEntity>[]>(
         () => [
             {
-                id: "title",
-                header: "Documento",
+                id: 'title',
+                header: 'Documento',
                 cell: (document) => (
                     <div className="flex items-center gap-3">
                         <FileText className="size-4 shrink-0 text-muted-foreground" />
@@ -36,17 +36,17 @@ export default function LegalDocumentsTable({ documents }: Props) {
                 ),
             },
             {
-                id: "app",
-                header: "Aplicación",
+                id: 'app',
+                header: 'Aplicación',
                 cell: (document) => (
                     <span className="text-sm">
-                        {document.app?.name ?? "Sin aplicación"}
+                        {document.app?.name ?? 'Sin aplicación'}
                     </span>
                 ),
             },
             {
-                id: "version",
-                header: "Versión",
+                id: 'version',
+                header: 'Versión',
                 cell: (document) => (
                     <span className="font-mono text-xs font-medium">
                         {document.version}
@@ -54,22 +54,22 @@ export default function LegalDocumentsTable({ documents }: Props) {
                 ),
             },
             {
-                id: "status",
-                header: "Estado",
+                id: 'status',
+                header: 'Estado',
                 cell: (document) => {
                     const status = document.is_active
                         ? {
-                              label: "Vigente",
-                              color: "success" as const,
+                              label: 'Vigente',
+                              color: 'success' as const,
                           }
                         : document.published_at
                           ? {
-                                label: "Anterior",
-                                color: "neutral" as const,
+                                label: 'Anterior',
+                                color: 'neutral' as const,
                             }
                           : {
-                                label: "Borrador",
-                                color: "warning" as const,
+                                label: 'Borrador',
+                                color: 'warning' as const,
                             };
 
                     return (
@@ -80,10 +80,10 @@ export default function LegalDocumentsTable({ documents }: Props) {
                 },
             },
             {
-                id: "actions",
-                header: "Acciones",
-                headerClassName: "text-right",
-                className: "text-right",
+                id: 'actions',
+                header: 'Acciones',
+                headerClassName: 'text-right',
+                className: 'text-right',
                 cell: (document) => (
                     <div className="flex justify-end">
                         <Button
